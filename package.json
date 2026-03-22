@@ -2,10 +2,8 @@
   "name": "rut-toolkit",
   "version": "0.0.1",
   "private": true,
+  "description": "A complete toolkit for working with Chilean RUT numbers — validation, formatting, cleaning, and more.",
   "license": "MIT",
-  "workspaces": [
-    "packages/*"
-  ],
   "author": {
     "name": "Matías Castañeda",
     "url": "https://github.com/matcastaneda"
@@ -24,7 +22,9 @@
     "lint": "biome check .",
     "lint:fix": "biome check . --write",
     "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
     "check": "pnpm lint && pnpm typecheck",
+    "clean": "turbo run clean",
     "prepare": "husky"
   },
   "devDependencies": {
