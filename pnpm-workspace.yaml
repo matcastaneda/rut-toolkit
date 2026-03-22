@@ -2,13 +2,16 @@ packages:
   - "packages/*"
   - "packages/config/*"
 
-blockExoticSubdeps: true
-enableGlobalVirtualStore: true
-
-catalog: 
+catalog:
   tsdown: 0.21.4
 
-linkWorkspacePackages: true
+catalogs:
+  vitest:
+    vitest: 4.1.0
+    "@vitest/coverage-v8": 4.1.0
 
+linkWorkspacePackages: true
+blockExoticSubdeps: true
+enableGlobalVirtualStore: true
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 43200

@@ -17,20 +17,24 @@
   },
   "homepage": "https://rut-toolkit.dev/",
   "scripts": {
-    "build": "turbo run build",
     "dev": "turbo run dev",
+    "build": "turbo run build",
+    "clean": "turbo run clean",
     "lint": "biome check .",
     "lint:fix": "biome check . --write",
     "typecheck": "turbo run typecheck",
-    "test": "turbo run test",
-    "check": "pnpm lint && pnpm typecheck",
-    "clean": "turbo run clean",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "check": "pnpm lint && pnpm typecheck && pnpm test",
     "prepare": "husky"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.8",
+    "@vitest/coverage-v8": "catalog:vitest",
     "husky": "9.1.7",
-    "turbo": "2.8.20"
+    "turbo": "2.8.20",
+    "vitest": "catalog:vitest"
   },
   "engines": {
     "node": ">=22"
