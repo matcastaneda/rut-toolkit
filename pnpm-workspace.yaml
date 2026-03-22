@@ -1,0 +1,14 @@
+packages:
+  - "packages/*"
+  - "packages/config/*"
+
+blockExoticSubdeps: true
+enableGlobalVirtualStore: true
+
+catalog: 
+  tsdown: 0.21.4
+
+linkWorkspacePackages: true
+
+trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 43200

@@ -1,0 +1,39 @@
+{
+  "name": "rut-toolkit",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "author": {
+    "name": "Matías Castañeda",
+    "url": "https://github.com/matcastaneda"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/matcastaneda/rut-toolkit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/matcastaneda/rut-toolkit/issues"
+  },
+  "homepage": "https://rut-toolkit.dev/",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "typecheck": "turbo run typecheck",
+    "check": "pnpm lint && pnpm typecheck",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.8",
+    "husky": "9.1.7",
+    "turbo": "2.8.20"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@10.32.1"
+}
