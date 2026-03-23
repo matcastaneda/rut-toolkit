@@ -63,6 +63,10 @@ describe("format", () => {
         expect(maskRut("1-2")).toBe("1-2");
       });
 
+      it("does not add dots if the resulting masked body is 3 characters or less", () => {
+        expect(maskRut("123-4")).toBe("12*-4");
+      });
+
       it("normalizes k to K in the visible DV via splitRut", () => {
         expect(maskRut("12.345.678-k")).toBe("12.***.***-K");
       });
