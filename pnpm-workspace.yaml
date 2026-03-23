@@ -4,6 +4,7 @@ packages:
 
 catalog:
   tsdown: 0.21.4
+  typescript: 5.9.3
 
 catalogs:
   vitest:
