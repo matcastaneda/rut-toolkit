@@ -1,6 +1,6 @@
 import type { ErrorCode, ErrorMeta } from "./types";
 
-type ErrorConstructorWithCapture = typeof Error & {
+export type ErrorConstructorWithCapture = typeof Error & {
   captureStackTrace?(
     targetObject: object,
     constructorOpt?: new (...args: never[]) => unknown,
@@ -91,8 +91,7 @@ export class RutError extends Error {
   readonly meta: (typeof ERROR_META)[ErrorCode];
 
   constructor(code: ErrorCode, rut?: string) {
-    const detail = rut != null ? ` ("${rut}")` : "";
-    super(`[${code}] ${detail}`.trim());
+    super(rut != null ? `[${code}] ("${rut}")` : `[${code}]`);
 
     Object.setPrototypeOf(this, new.target.prototype);
 
