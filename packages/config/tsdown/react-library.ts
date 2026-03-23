@@ -1,5 +1,5 @@
 import type { UserConfig } from "tsdown";
-import { libraryPreset } from "./library";
+import { libraryPreset } from "./library.ts";
 
 /**
  * Shared tsdown preset for React library packages.
