@@ -17,16 +17,46 @@ export type ValidRut = string & { readonly [__brand]: "ValidRut" };
 export type RutParts = {
   /** The numeric body of the RUT (digits only, no DV). */
   readonly body: string;
+
   /** The verification digit of the RUT. */
   readonly dv: string;
+};
+
+/** Options for cleaning a RUT. */
+export type CleanOptions = {
+  /**
+   * If true, prevents the cleaning step from stripping leading zeros.
+   * Useful for real-time input formatting in UIs. Defaults to `false`.
+   */
+  readonly keepLeadingZeros?: boolean;
 };
 
 /** Formatting options shared by {@link formatRut} and {@link buildRut}. */
 export type FormatOptions = {
   /** Insert dots as thousands separator (e.g. `12.345.678`). Defaults to `true`. */
   readonly withDots?: boolean;
+
   /** Insert a hyphen before the verification digit. Defaults to `true`. */
   readonly withHyphen?: boolean;
+
+  /** * Forces the verification digit 'K' to be uppercase or lowercase.
+   * Defaults to `true` (uppercase 'K').
+   */
+  readonly uppercaseDv?: boolean;
+
+  /** * Pads the numeric body with leading zeros to reach the specified length.
+   * Useful for strict database schemas (e.g., `padBodyLength: 8` -> `"01.234.567"`).
+   */
+  readonly padBodyLength?: number;
+};
+
+/** Identifies the physical source of the scanned barcode data. */
+export type BarcodeSource = "QR_FRONT" | "PDF417_REAR" | "UNKNOWN";
+
+/** Metadata returned when analyzing an ID card barcode. */
+export type BarcodeAnalysis = {
+  readonly rut: ValidRut | null;
+  readonly source: BarcodeSource;
 };
 
 /** Structured error codes emitted by {@link RutError}. */
@@ -83,4 +113,9 @@ export type Locale = "es" | "en";
  */
 export type RutResult =
   | { readonly ok: true; readonly rut: ValidRut }
-  | { readonly ok: false; readonly code: ErrorCode; readonly message: string };
+  | {
+      readonly ok: false;
+      readonly code: ErrorCode;
+      readonly message: string;
+      readonly meta: ErrorMeta;
+    };

@@ -3,13 +3,34 @@ import type { FormatOptions } from "./types";
 
 const DOTS_RE = /\B(?=(\d{3})+(?!\d))/g;
 
-function assemble(body: string, dv: string, opts: FormatOptions): string {
-  const { withDots = true, withHyphen = true } = opts;
+const MASK_DOTS_RE = /\B(?=(.{3})+(?!.))/g;
 
-  const formattedBody = withDots ? body.replace(DOTS_RE, ".") : body;
+function assemble(
+  body: string,
+  dv: string,
+  opts: Readonly<FormatOptions>,
+): string {
+  const {
+    withDots = true,
+    withHyphen = true,
+    uppercaseDv = true,
+    padBodyLength,
+  } = opts;
+
+  let finalBody = body;
+  if (padBodyLength !== undefined && finalBody.length < padBodyLength) {
+    finalBody = finalBody.padStart(padBodyLength, "0");
+  }
+
+  if (withDots) {
+    finalBody = finalBody.replace(DOTS_RE, ".");
+  }
+
   const separator = withHyphen ? "-" : "";
 
-  return `${formattedBody}${separator}${dv}`;
+  const finalDv = uppercaseDv ? dv.toUpperCase() : dv.toLowerCase();
+
+  return `${finalBody}${separator}${finalDv}`;
 }
 
 /**
@@ -25,10 +46,15 @@ function assemble(body: string, dv: string, opts: FormatOptions): string {
  * formatRut("123456785", { withDots: false })               // "12345678-5"
  * formatRut("123456785", { withDots: false, withHyphen: false }) // "123456785"
  */
-export function formatRut(rut: string, options: FormatOptions = {}): string {
+export function formatRut(
+  rut: string,
+  options: Readonly<FormatOptions> = {},
+): string {
   const { body, dv } = splitRut(rut);
 
-  if (!body) return "";
+  if (!body) {
+    return "";
+  }
 
   return assemble(body, dv, options);
 }
@@ -51,15 +77,19 @@ export function formatRut(rut: string, options: FormatOptions = {}): string {
 export function maskRut(rut: string, pattern?: string): string {
   const { body, dv } = splitRut(rut);
 
-  if (!body) return "";
+  if (!body) {
+    return "";
+  }
 
   const formatted = assemble(body, dv, { withDots: true, withHyphen: true });
 
-  if (pattern) return applyPattern(formatted, pattern);
+  if (pattern) {
+    return applyPattern(formatted, pattern);
+  }
 
   const visible = Math.min(2, body.length);
-  const maskedBody = body.slice(0, visible) + "X".repeat(body.length - visible);
-  const dotted = maskedBody.replace(/\B(?=(.{3})+(?!.))/g, ".");
+  const maskedBody = body.slice(0, visible) + "*".repeat(body.length - visible);
+  const dotted = maskedBody.replace(MASK_DOTS_RE, ".");
 
   return `${dotted}-${dv}`;
 }
@@ -91,14 +121,17 @@ function applyPattern(formatted: string, pattern: string): string {
  */
 export function buildRut(
   body: number | string,
-  dv: string,
-  options: FormatOptions = {},
+  dv: string | number,
+  options: Readonly<FormatOptions> = {},
 ): string {
   const bodyStr = String(body);
+  const dvStr = String(dv);
 
-  if (!bodyStr || bodyStr === "0" || !dv) return "";
+  if (!bodyStr || bodyStr === "0" || dvStr.trim() === "") {
+    return "";
+  }
 
-  return assemble(bodyStr, dv.toUpperCase(), options);
+  return assemble(bodyStr, dvStr.toUpperCase(), options);
 }
 
 /**

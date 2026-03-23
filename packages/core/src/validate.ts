@@ -1,5 +1,5 @@
 import { cleanRut, splitRut } from "./clean";
-import { RutError } from "./errors";
+import { ERROR_META, RutError } from "./errors";
 import type { RutResult, ValidRut } from "./types";
 
 /**
@@ -94,11 +94,15 @@ export function verifyDv(body: string, dv: string): boolean {
  * }
  */
 export function isValidRut(rut: string): boolean {
-  if (typeof rut !== "string") return false;
+  if (typeof rut !== "string") {
+    return false;
+  }
 
   const { body, dv } = splitRut(rut);
 
-  if (!body) return false;
+  if (!body) {
+    return false;
+  }
 
   return verifyDv(body, dv);
 }
@@ -121,22 +125,38 @@ export function parseRut(rut: string): ValidRut {
   }
 
   const trimmed = rut.trim();
-  if (trimmed.length === 0) throw new RutError("RUT_EMPTY", rut);
-  if (/[^0-9kK.\-\s]/.test(trimmed))
+  if (trimmed.length === 0) {
+    throw new RutError("RUT_EMPTY", rut);
+  }
+
+  if (/[^0-9kK.\-\s]/.test(trimmed)) {
     throw new RutError("RUT_INVALID_CHARACTERS", rut);
+  }
 
-  const cleaned = cleanRut(rut);
+  const cleaned = cleanRut(trimmed);
 
-  if (cleaned.length < 2) throw new RutError("RUT_TOO_SHORT", rut);
-  if (cleaned.length > 10) throw new RutError("RUT_TOO_LONG", rut);
+  if (cleaned.length < 2) {
+    throw new RutError("RUT_TOO_SHORT", rut);
+  }
+  if (cleaned.length > 10) {
+    throw new RutError("RUT_TOO_LONG", rut);
+  }
 
-  const { body, dv } = splitRut(rut);
+  const { body, dv } = splitRut(cleaned);
 
-  if (!body) throw new RutError("RUT_DV_MISSING", rut);
-  if (!/^\d+$/.test(body)) throw new RutError("RUT_BODY_NOT_NUMERIC", rut);
-  if (!/^[\dkK]$/.test(dv)) throw new RutError("RUT_DV_INVALID", rut);
+  if (!body) {
+    throw new RutError("RUT_DV_MISSING", rut);
+  }
+  if (!/^\d+$/.test(body)) {
+    throw new RutError("RUT_BODY_NOT_NUMERIC", rut);
+  }
+  if (!/^[\dkK]$/.test(dv)) {
+    throw new RutError("RUT_DV_INVALID", rut);
+  }
 
-  if (!verifyDv(body, dv)) throw new RutError("RUT_DV_MISMATCH", rut);
+  if (!verifyDv(body, dv)) {
+    throw new RutError("RUT_DV_MISMATCH", rut);
+  }
 
   return cleaned as ValidRut;
 }
@@ -155,9 +175,9 @@ export function parseRut(rut: string): ValidRut {
  */
 export function isSuspiciousRut(rut: string): boolean {
   const { body } = splitRut(rut);
-
-  if (!body) return false;
-
+  if (!body) {
+    return false;
+  }
   return SUSPICIOUS_BODIES.has(body);
 }
 
@@ -172,7 +192,9 @@ export function isSuspiciousRut(rut: string): boolean {
  * assertNotSuspiciousRut("11.111.111-1") // throws RutError
  */
 export function assertNotSuspiciousRut(rut: string): void {
-  if (isSuspiciousRut(rut)) throw new RutError("RUT_SUSPICIOUS", rut);
+  if (isSuspiciousRut(rut)) {
+    throw new RutError("RUT_SUSPICIOUS", rut);
+  }
 }
 
 /**
@@ -195,12 +217,19 @@ export function safeParseRut(rut: string): RutResult {
     return { ok: true, rut: parseRut(rut) };
   } catch (error) {
     if (error instanceof RutError) {
-      return { ok: false, code: error.code, message: error.message };
+      return {
+        ok: false,
+        code: error.code,
+        message: error.message,
+        meta: error.meta,
+      };
     }
+
     return {
       ok: false,
       code: "SYSTEM_UNEXPECTED",
       message: error instanceof Error ? error.message : "Unknown error",
+      meta: ERROR_META.SYSTEM_UNEXPECTED,
     };
   }
 }
