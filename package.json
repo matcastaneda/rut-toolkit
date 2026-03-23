@@ -3,42 +3,35 @@
   "version": "0.0.0",
   "type": "module",
   "private": true,
-  "description": "A complete toolkit for working with Chilean RUT numbers — validation, formatting, cleaning, and more.",
-  "license": "MIT",
-  "author": {
-    "name": "Matías Castañeda",
-    "url": "https://github.com/matcastaneda"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/matcastaneda/rut-toolkit.git"
-  },
-  "bugs": {
-    "url": "https://github.com/matcastaneda/rut-toolkit/issues"
-  },
-  "homepage": "https://rut-toolkit.dev/",
+  "packageManager": "pnpm@10.32.1",
   "scripts": {
     "dev": "turbo run dev",
-    "lint": "biome check .",
-    "lint:fix": "biome check . --write",
-    "typecheck": "turbo run typecheck",
+    "build": "turbo run build --filter=./packages/*",
+    "clean": "turbo run clean",
+    "clean:all": "turbo run clean && shx rm -rf node_modules",
+    "format": "biome format . --write",
+    "lint": "biome check . --error-on-warnings",
+    "lint:dependencies": "knip --strict",
+    "lint:fix": "biome check . --fix --unsafe",
+    "lint:spell": "cspell . --color",
+    "lint:types": "turbo lint:types --filter=./packages/*",
+    "lint:packages": "turbo lint:package --filter=./packages/*",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "check": "pnpm lint && pnpm typecheck && pnpm test",
+    "typecheck": "tsc --build --noEmit",
     "prepare": "husky"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.2",
     "@biomejs/biome": "2.4.8",
     "@vitest/coverage-v8": "catalog:vitest",
+    "cspell": "9.7.0",
     "husky": "9.1.7",
     "knip": "6.0.3",
     "publint": "0.3.18",
+    "shx": "0.4.0",
     "turbo": "2.8.20",
     "vitest": "catalog:vitest"
-  },
-  "engines": {
-    "node": ">=22"
-  },
-  "packageManager": "pnpm@10.32.1"
+  }
 }
