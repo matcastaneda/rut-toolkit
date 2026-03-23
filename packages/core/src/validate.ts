@@ -3,11 +3,6 @@ import { ERROR_META, RutError } from "./errors";
 import type { RutResult, ValidRut } from "./types";
 
 /**
- * The weights used to calculate the verification digit.
- */
-const DV_WEIGHTS = [2, 3, 4, 5, 6, 7] as const;
-
-/**
  * A set of suspicious RUT bodies that are unlikely to belong to a real person or entity.
  * @example
  * const suspiciousBodies = new Set([
@@ -40,7 +35,7 @@ const SUSPICIOUS_BODIES = new Set([
  *
  * @example
  * calculateDv("12345678") // "5"
- * calculateDv("6543210")  // "K"
+ * calculateDv("6")        // "K"
  */
 export function calculateDv(body: string): string {
   if (!body || !/^\d+$/.test(body)) return "";
@@ -49,7 +44,7 @@ export function calculateDv(body: string): string {
   let w = 0;
 
   for (let i = body.length - 1; i >= 0; i--) {
-    const weight = DV_WEIGHTS[w % 6] ?? 2;
+    const weight = (w % 6) + 2;
     sum += (body.charCodeAt(i) - 48) * weight;
     w++;
   }
@@ -144,14 +139,8 @@ export function parseRut(rut: string): ValidRut {
 
   const { body, dv } = splitRut(cleaned);
 
-  if (!body) {
-    throw new RutError("RUT_DV_MISSING", rut);
-  }
   if (!/^\d+$/.test(body)) {
     throw new RutError("RUT_BODY_NOT_NUMERIC", rut);
-  }
-  if (!/^[\dkK]$/.test(dv)) {
-    throw new RutError("RUT_DV_INVALID", rut);
   }
 
   if (!verifyDv(body, dv)) {
