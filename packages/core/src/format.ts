@@ -129,5 +129,12 @@ export function fromCompactFormat(rut: string): string {
   return formatRut(rut);
 }
 
-/** Alias for {@link toCompactFormat}. Matches the SII DTE convention. */
-export const toSiiFormat = toCompactFormat;
+/**
+ * Alias for {@link toCompactFormat}. Matches the SII DTE convention.
+ *
+ * @param rut - RUT string in any format.
+ * @returns The compact RUT for SII electronic tax documents.
+ */
+export function toSiiFormat(rut: string): string {
+  return toCompactFormat(rut);
+}

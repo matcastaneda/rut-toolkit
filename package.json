@@ -19,8 +19,6 @@
   "homepage": "https://rut-toolkit.dev/",
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build",
-    "clean": "turbo run clean",
     "lint": "biome check .",
     "lint:fix": "biome check . --write",
     "typecheck": "turbo run typecheck",
@@ -34,6 +32,7 @@
     "@biomejs/biome": "2.4.8",
     "@vitest/coverage-v8": "catalog:vitest",
     "husky": "9.1.7",
+    "knip": "6.0.3",
     "publint": "0.3.18",
     "turbo": "2.8.20",
     "vitest": "catalog:vitest"
