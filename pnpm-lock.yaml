@@ -37,12 +37,22 @@ importers:
         specifier: catalog:vitest
         version: 4.1.0(vite@8.0.1)
 
-  packages/config/tests: {}
-
   packages/config/tsconfig: {}
 
   packages/config/tsdown:
     devDependencies:
+      tsdown:
+        specifier: 'catalog:'
+        version: 0.21.4
+
+  packages/core:
+    devDependencies:
+      '@rut-toolkit/tsconfig':
+        specifier: workspace:*
+        version: link:../config/tsconfig
+      '@rut-toolkit/tsdown':
+        specifier: workspace:*
+        version: link:../config/tsdown
       tsdown:
         specifier: 'catalog:'
         version: 0.21.4

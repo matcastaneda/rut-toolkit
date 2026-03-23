@@ -1,0 +1,70 @@
+{
+  "name": "@rut-toolkit/core",
+  "version": "0.1.0",
+  "description": "Core utilities for working with Chilean RUT numbers — validation, formatting, cleaning, and more.",
+  "type": "module",
+  "license": "MIT",
+  "author": {
+    "name": "Matías Castañeda",
+    "url": "https://github.com/matcastaneda"
+  },
+  "homepage": "https://rut-toolkit.dev/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matcastaneda/rut-toolkit.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/matcastaneda/rut-toolkit/issues"
+  },
+  "keywords": [
+    "rut",
+    "run",
+    "chilean",
+    "chile",
+    "validation",
+    "formatting",
+    "modulo-11",
+    "digito-verificador",
+    "toolkit",
+    "typescript"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@rut-toolkit/tsconfig": "workspace:*",
+    "@rut-toolkit/tsdown": "workspace:*",
+    "tsdown": "catalog:"
+  }
+}

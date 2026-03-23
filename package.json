@@ -1,6 +1,6 @@
 {
   "name": "rut-toolkit",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "private": true,
   "description": "A complete toolkit for working with Chilean RUT numbers — validation, formatting, cleaning, and more.",
   "license": "MIT",
