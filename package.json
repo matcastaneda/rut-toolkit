@@ -1,6 +1,7 @@
 {
-  "name": "rut-toolkit",
+  "name": "@rut-toolkit/root",
   "version": "0.0.0",
+  "type": "module",
   "private": true,
   "description": "A complete toolkit for working with Chilean RUT numbers — validation, formatting, cleaning, and more.",
   "license": "MIT",
@@ -33,6 +34,7 @@
     "@biomejs/biome": "2.4.8",
     "@vitest/coverage-v8": "catalog:vitest",
     "husky": "9.1.7",
+    "publint": "0.3.18",
     "turbo": "2.8.20",
     "vitest": "catalog:vitest"
   },
