@@ -1,4 +1,4 @@
-import { defineConfig } from "vitest/config";
+import { configDefaults, defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
@@ -10,6 +10,7 @@ export default defineConfig({
       reportsDirectory: "./coverage",
       include: ["packages/*/src/**/*.ts"],
       exclude: [
+        ...configDefaults.exclude,
         "node_modules",
         "dist",
         "**/*.d.ts",
