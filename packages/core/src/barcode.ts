@@ -11,7 +11,7 @@ const SIDIV_DOMAIN = "registrocivil.cl";
 /** * Matches a RUT-like pattern: 1–9 digits, optional separator, then a DV.
  * Optimized with word boundaries and non-capturing groups where applicable.
  */
-const RUT_PATTERN = /\b(\d{1,9})\s*[-.]?\s*([0-9kK])\b/i;
+const RUT_PATTERN = /\b([\d.]{1,11})\s*[-.]?\s*([0-9kK])\b/i;
 
 /** Matches the `RUN` query parameter from a Registro Civil URL. */
 const RUN_PARAM_RE = /[?&]RUN=([^&]+)/i;
