@@ -1,13 +1,12 @@
 {
   "name": "@rut-toolkit/core",
   "version": "0.1.0",
-  "description": "Core utilities for working with Chilean RUT numbers — validation, formatting, cleaning, and more.",
-  "type": "module",
-  "license": "MIT",
+  "description": "High-performance, zero-dependency core engine to validate, format, clean, and parse Chilean RUT/RUN numbers.",
   "author": {
     "name": "Matías Castañeda",
     "url": "https://github.com/matcastaneda"
   },
+  "license": "MIT",
   "homepage": "https://rut-toolkit.dev/",
   "repository": {
     "type": "git",
@@ -29,15 +28,10 @@
     "toolkit",
     "typescript"
   ],
+  "type": "module",
   "sideEffects": false,
   "publishConfig": {
     "access": "public"
-  },
-  "scripts": {
-    "build": "tsdown",
-    "dev": "tsdown --watch",
-    "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist"
   },
   "files": [
     "dist",
@@ -45,13 +39,13 @@
     "LICENSE"
   ],
   "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
       },
       "require": {
         "types": "./dist/index.d.cts",
@@ -59,12 +53,28 @@
       }
     }
   },
-  "engines": {
-    "node": ">=22"
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/index.d.mts"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage",
+    "lint:package": "publint run --strict",
+    "lint:types": "attw --pack .",
+    "typecheck": "tsc --project tsconfig.json"
   },
   "devDependencies": {
     "@rut-toolkit/tsconfig": "workspace:*",
     "@rut-toolkit/tsdown": "workspace:*",
-    "tsdown": "catalog:"
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

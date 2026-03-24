@@ -1,6 +1,15 @@
 import { splitRut } from "./clean";
 import { RutError } from "./errors";
 
+const RUT_COMPANY_MIN = 50_000_000;
+const RUT_COMPANY_MAX = 99_999_999;
+
+const RUT_PROVISIONAL_SII_MIN = 48_000_000;
+const RUT_PROVISIONAL_SII_MAX = 49_999_999;
+
+const RUT_PROVISIONAL_IPE_MIN = 100_000_000;
+const RUT_PROVISIONAL_IPE_MAX = 199_999_999;
+
 /**
  * Checks whether a RUT belongs to a company (persona jurídica).
  * Company RUTs have a body typically between `50.000.000` and `99.999.999`.
@@ -16,10 +25,12 @@ import { RutError } from "./errors";
 export function isCompanyRut(rut: string): boolean {
   const { body } = splitRut(rut);
 
-  if (!body) return false;
+  if (!body) {
+    return false;
+  }
 
   const num = Number(body);
-  return num >= 50_000_000 && num < 100_000_000;
+  return num >= RUT_COMPANY_MIN && num <= RUT_COMPANY_MAX;
 }
 
 /**
@@ -36,10 +47,12 @@ export function isCompanyRut(rut: string): boolean {
 export function isPersonRut(rut: string): boolean {
   const { body } = splitRut(rut);
 
-  if (!body) return false;
+  if (!body) {
+    return false;
+  }
 
   const num = Number(body);
-  return num > 0 && num < 50_000_000;
+  return num > 0 && num < RUT_COMPANY_MIN;
 }
 
 /**
@@ -57,12 +70,16 @@ export function isPersonRut(rut: string): boolean {
 export function isProvisionalRut(rut: string): boolean {
   const { body } = splitRut(rut);
 
-  if (!body) return false;
+  if (!body) {
+    return false;
+  }
 
   const num = Number(body);
 
-  const isIpeIpa = num >= 100_000_000 && num <= 199_999_999;
-  const isSiiForeigner = num >= 48_000_000 && num <= 49_999_999;
+  const isIpeIpa =
+    num >= RUT_PROVISIONAL_IPE_MIN && num <= RUT_PROVISIONAL_IPE_MAX;
+  const isSiiForeigner =
+    num >= RUT_PROVISIONAL_SII_MIN && num <= RUT_PROVISIONAL_SII_MAX;
 
   return isIpeIpa || isSiiForeigner;
 }

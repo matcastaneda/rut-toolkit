@@ -1,26 +1,37 @@
-import type { RutParts } from "./types";
+import type { CleanOptions, RutParts } from "./types";
 
-const EMPTY_PARTS: RutParts = { body: "", dv: "" };
+const EMPTY_PARTS: Readonly<RutParts> = Object.freeze({ body: "", dv: "" });
 
 /**
- * Strips formatting characters, spaces, and leading zeros from a RUT.
+ * Strips formatting characters, spaces, and optionally leading zeros from a RUT.
  * The check digit `k` is always normalized to uppercase `K`.
  *
  * @param rut - Raw RUT string in any format.
+ * @param options - Configures the cleaning behavior (e.g., preserving leading zeros).
  * @returns Cleaned RUT, or `""` if the input is empty or not a string.
  *
  * @example
- * cleanRut("12.345.678-9")  // "123456789"
- * cleanRut("12345678-K")    // "12345678K"
- * cleanRut("  6.543.210-k") // "6543210K"
- * cleanRut("")              // ""
+ * cleanRut("12.345.678-9")                         // "123456789"
+ * cleanRut("  06.543.210-k")                       // "6543210K"
+ * cleanRut("06.543.210-k", { keepLeadingZeros: true }) // "06543210K"
  */
-export function cleanRut(rut: string): string {
-  if (typeof rut !== "string") return "";
+export function cleanRut(
+  rut: string,
+  options: Readonly<CleanOptions> = {},
+): string {
+  if (typeof rut !== "string") {
+    return "";
+  }
 
   const cleaned = rut.replace(/[^0-9kK]/g, "").toUpperCase();
 
-  if (cleaned.length === 0) return "";
+  if (cleaned.length === 0) {
+    return "";
+  }
+
+  if (options.keepLeadingZeros) {
+    return cleaned;
+  }
 
   return cleaned.replace(/^0+/, "") || "0";
 }
@@ -30,17 +41,22 @@ export function cleanRut(rut: string): string {
  * Accepts any format — the input is cleaned internally via {@link cleanRut}.
  *
  * @param rut - RUT string in any format.
+ * @param options - Passed down to `cleanRut` to control zero stripping.
  * @returns `{ body, dv }` — both are `""` when the input is invalid or too short.
  *
  * @example
- * splitRut("12.345.678-9") // { body: "12345678", dv: "9" }
- * splitRut("12345678K")    // { body: "12345678", dv: "K" }
- * splitRut("")             // { body: "", dv: "" }
+ * splitRut("01234567-K", { keepLeadingZeros: true })
+ * // { body: "01234567", dv: "K" }
  */
-export function splitRut(rut: string): RutParts {
-  const cleaned = cleanRut(rut);
+export function splitRut(
+  rut: string,
+  options: Readonly<CleanOptions> = {},
+): RutParts {
+  const cleaned = cleanRut(rut, options);
 
-  if (cleaned.length < 2) return EMPTY_PARTS;
+  if (cleaned.length < 2) {
+    return EMPTY_PARTS;
+  }
 
   return {
     body: cleaned.slice(0, -1),
@@ -63,7 +79,9 @@ export function splitRut(rut: string): RutParts {
 export function padRut(rut: string, bodyLength = 8): string {
   const { body, dv } = splitRut(rut);
 
-  if (!body) return "";
+  if (!body) {
+    return "";
+  }
 
   return body.padStart(bodyLength, "0") + dv;
 }

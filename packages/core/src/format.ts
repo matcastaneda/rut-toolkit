@@ -3,13 +3,49 @@ import type { FormatOptions } from "./types";
 
 const DOTS_RE = /\B(?=(\d{3})+(?!\d))/g;
 
-function assemble(body: string, dv: string, opts: FormatOptions): string {
-  const { withDots = true, withHyphen = true } = opts;
+function dotGroupFromRight(segment: string): string {
+  if (segment.length <= 3) {
+    return segment;
+  }
 
-  const formattedBody = withDots ? body.replace(DOTS_RE, ".") : body;
+  const parts: string[] = [];
+  let i = segment.length;
+
+  while (i > 0) {
+    const start = Math.max(0, i - 3);
+    parts.unshift(segment.slice(start, i));
+    i = start;
+  }
+
+  return parts.join(".");
+}
+
+function assemble(
+  body: string,
+  dv: string,
+  opts: Readonly<FormatOptions>,
+): string {
+  const {
+    withDots = true,
+    withHyphen = true,
+    uppercaseDv = true,
+    padBodyLength,
+  } = opts;
+
+  let finalBody = body;
+  if (padBodyLength !== undefined && finalBody.length < padBodyLength) {
+    finalBody = finalBody.padStart(padBodyLength, "0");
+  }
+
+  if (withDots) {
+    finalBody = finalBody.replace(DOTS_RE, ".");
+  }
+
   const separator = withHyphen ? "-" : "";
 
-  return `${formattedBody}${separator}${dv}`;
+  const finalDv = uppercaseDv ? dv.toUpperCase() : dv.toLowerCase();
+
+  return `${finalBody}${separator}${finalDv}`;
 }
 
 /**
@@ -25,17 +61,23 @@ function assemble(body: string, dv: string, opts: FormatOptions): string {
  * formatRut("123456785", { withDots: false })               // "12345678-5"
  * formatRut("123456785", { withDots: false, withHyphen: false }) // "123456785"
  */
-export function formatRut(rut: string, options: FormatOptions = {}): string {
+export function formatRut(
+  rut: string,
+  options: Readonly<FormatOptions> = {},
+): string {
   const { body, dv } = splitRut(rut);
 
-  if (!body) return "";
+  if (!body) {
+    return "";
+  }
 
   return assemble(body, dv, options);
 }
 
 /**
- * Masks a RUT by hiding certain positions. Without a pattern, leading body digits
- * are replaced with `X` while the first two and the DV remain visible.
+ * Masks a RUT by hiding certain positions. Without a pattern, the first two body
+ * digits and the DV stay visible; the rest of the body is replaced with `*`, then
+ * grouped with dots like a normal RUT body (e.g. `12.***.***-5`).
  *
  * With a pattern, each character maps 1:1 to the formatted RUT (`XX.XXX.XXX-X`).
  * Use `*` to mask a position; any other character lets the original through.
@@ -45,23 +87,34 @@ export function formatRut(rut: string, options: FormatOptions = {}): string {
  * @returns The masked RUT, or `""` if the input is invalid.
  *
  * @example
- * maskRut("12.345.678-5")                    // "12.XXX.XXX-5"
+ * maskRut("12.345.678-5")                    // "12.***.***-5"
  * maskRut("12.345.678-5", "XX.XXX.XXX-*")   // "12.345.678-*"
  */
 export function maskRut(rut: string, pattern?: string): string {
   const { body, dv } = splitRut(rut);
 
-  if (!body) return "";
+  if (!body) {
+    return "";
+  }
 
   const formatted = assemble(body, dv, { withDots: true, withHyphen: true });
 
-  if (pattern) return applyPattern(formatted, pattern);
+  if (pattern) {
+    return applyPattern(formatted, pattern);
+  }
 
   const visible = Math.min(2, body.length);
-  const maskedBody = body.slice(0, visible) + "X".repeat(body.length - visible);
-  const dotted = maskedBody.replace(/\B(?=(.{3})+(?!.))/g, ".");
+  const visiblePart = body.slice(0, visible);
+  const restLen = body.length - visible;
 
-  return `${dotted}-${dv}`;
+  if (restLen === 0) {
+    return `${visiblePart}-${dv}`;
+  }
+
+  const maskedBody = body.slice(0, visible) + "*".repeat(restLen);
+  const dottedBody = dotGroupFromRight(maskedBody);
+
+  return `${dottedBody}-${dv}`;
 }
 
 function applyPattern(formatted: string, pattern: string): string {
@@ -91,14 +144,17 @@ function applyPattern(formatted: string, pattern: string): string {
  */
 export function buildRut(
   body: number | string,
-  dv: string,
-  options: FormatOptions = {},
+  dv: string | number,
+  options: Readonly<FormatOptions> = {},
 ): string {
   const bodyStr = String(body);
+  const dvStr = String(dv);
 
-  if (!bodyStr || bodyStr === "0" || !dv) return "";
+  if (!bodyStr || /^0+$/.test(bodyStr) || dvStr.trim() === "") {
+    return "";
+  }
 
-  return assemble(bodyStr, dv.toUpperCase(), options);
+  return assemble(bodyStr, dvStr.toUpperCase(), options);
 }
 
 /**
@@ -129,5 +185,12 @@ export function fromCompactFormat(rut: string): string {
   return formatRut(rut);
 }
 
-/** Alias for {@link toCompactFormat}. Matches the SII DTE convention. */
-export const toSiiFormat = toCompactFormat;
+/**
+ * Alias for {@link toCompactFormat}. Matches the SII DTE convention.
+ *
+ * @param rut - RUT string in any format.
+ * @returns The compact RUT for SII electronic tax documents.
+ */
+export function toSiiFormat(rut: string): string {
+  return toCompactFormat(rut);
+}

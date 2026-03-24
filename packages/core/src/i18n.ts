@@ -47,7 +47,7 @@ export const ERROR_MESSAGES: Record<Locale, Record<ErrorCode, string>> = {
     BARCODE_RUT_NOT_FOUND: "No RUT found in scanned payload.",
     SYSTEM_UNEXPECTED: "An unexpected error occurred.",
   },
-};
+} as const satisfies Record<Locale, Record<ErrorCode, string>>;
 
 /**
  * Resolves a localized message for the given error code.
@@ -64,5 +64,9 @@ export function getErrorMessage(
   code: ErrorCode,
   locale: Locale = "es",
 ): string {
-  return ERROR_MESSAGES[locale][code];
+  return (
+    ERROR_MESSAGES[locale]?.[code] ??
+    ERROR_MESSAGES[locale]?.SYSTEM_UNEXPECTED ??
+    ERROR_MESSAGES.en.SYSTEM_UNEXPECTED
+  );
 }
