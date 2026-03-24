@@ -75,20 +75,33 @@ export function formatRut(
 }
 
 /**
- * Masks a RUT by hiding certain positions. Without a pattern, the first two body
- * digits and the DV stay visible; the rest of the body is replaced with `*`, then
- * grouped with dots like a normal RUT body (e.g. `12.***.***-5`).
+ * Masks a RUT by hiding certain positions. Without a pattern, the first group of digits
+ * (before the first dot) and the DV stay visible; the rest is replaced with `*`,
+ * preserving the standard dotted grouping (e.g. `12.***.***-5` or `4.***.***-1`).
  *
- * With a pattern, each character maps 1:1 to the formatted RUT (`XX.XXX.XXX-X`).
- * Use `*` to mask a position; any other character lets the original through.
+ * With a pattern, each character maps 1:1 aligned from the **right** against the fully
+ * formatted RUT (dots and hyphen). Use `*` to mask a digit; any other pattern character
+ * keeps the original formatted character. Dots and hyphens are never replaced by `*` when
+ * the pattern says mask — separators are always preserved in that case.
  *
  * @param rut - RUT string in any format.
- * @param pattern - Optional mask pattern. `*` = hidden, anything else = pass-through.
+ * @param pattern - Optional mask pattern. `*` = hide digit; any other char = pass-through for that column.
  * @returns The masked RUT, or `""` if the input is invalid.
+ *
+ * @remarks
+ * **Default (no pattern):** If the dotted body has no `.` (very short bodies), only the
+ * first digit of the body stays visible and the rest is masked, then re-dotted.
+ *
+ * **Pattern length:** The pattern is right-aligned with the formatted string. If the pattern
+ * is **shorter**, missing positions on the **left** behave as pass-through (leading digits
+ * can stay visible). If the pattern is **longer**, extra characters on the **left** are
+ * ignored.
  *
  * @example
  * maskRut("12.345.678-5")                    // "12.***.***-5"
+ * maskRut("1.234.567-5")                     // "1.***.***-5"
  * maskRut("12.345.678-5", "XX.XXX.XXX-*")   // "12.345.678-*"
+ * maskRut("4.716.137-1", "*.XXX.XXX-X")     // "*.716.137-1"
  */
 export function maskRut(rut: string, pattern?: string): string {
   const { body, dv } = splitRut(rut);
@@ -103,26 +116,42 @@ export function maskRut(rut: string, pattern?: string): string {
     return applyPattern(formatted, pattern);
   }
 
-  const visible = Math.min(2, body.length);
-  const visiblePart = body.slice(0, visible);
-  const restLen = body.length - visible;
+  const parts = formatted.split(".");
+  if (parts.length > 1) {
+    const firstGroup = parts[0];
+    if (!firstGroup) {
+      return "";
+    }
+    const restLen = body.length - firstGroup.length;
+    const maskedBody = firstGroup + "*".repeat(restLen);
+    const dottedBody = dotGroupFromRight(maskedBody);
 
-  if (restLen === 0) {
-    return `${visiblePart}-${dv}`;
+    return `${dottedBody}-${dv}`;
   }
 
-  const maskedBody = body.slice(0, visible) + "*".repeat(restLen);
-  const dottedBody = dotGroupFromRight(maskedBody);
+  const visible = Math.min(1, body.length);
+  const maskedBody = body.slice(0, visible) + "*".repeat(body.length - visible);
 
-  return `${dottedBody}-${dv}`;
+  return `${dotGroupFromRight(maskedBody)}-${dv}`;
 }
 
 function applyPattern(formatted: string, pattern: string): string {
   let result = "";
-  const len = Math.min(formatted.length, pattern.length);
+  let fIdx = formatted.length - 1;
+  let pIdx = pattern.length - 1;
 
-  for (let i = 0; i < len; i++) {
-    result += pattern.charAt(i) === "*" ? "*" : formatted.charAt(i);
+  while (fIdx >= 0) {
+    const fChar = formatted[fIdx];
+    const pChar = pIdx >= 0 ? pattern[pIdx] : "X";
+
+    if (pChar === "*") {
+      result = fChar === "." || fChar === "-" ? fChar + result : `*${result}`;
+    } else {
+      result = fChar + result;
+    }
+
+    fIdx--;
+    pIdx--;
   }
 
   return result;

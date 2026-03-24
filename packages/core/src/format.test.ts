@@ -55,30 +55,45 @@ describe("format", () => {
 
   describe("maskRut", () => {
     describe("default mask (no pattern)", () => {
-      it("keeps two leading body digits and the DV; masks the rest with *", () => {
+      it("preserves the first group before the dot (RUT of 8 digits)", () => {
         expect(maskRut("12.345.678-5")).toBe("12.***.***-5");
       });
 
-      it("does not mask when the body has only one digit (no trailing * run)", () => {
+      it("preserves the first group before the dot (RUT of 7 digits)", () => {
+        expect(maskRut("1.234.567-1")).toBe("1.***.***-1");
+      });
+
+      it("handles extremely short RUTs by showing only 1 digit", () => {
+        expect(maskRut("123-4")).toBe("1**-4");
+      });
+
+      it("handles single digit RUTs", () => {
         expect(maskRut("1-2")).toBe("1-2");
       });
 
-      it("does not add dots if the resulting masked body is 3 characters or less", () => {
-        expect(maskRut("123-4")).toBe("12*-4");
-      });
-
-      it("normalizes k to K in the visible DV via splitRut", () => {
+      it("normalizes k to K in the visible DV", () => {
         expect(maskRut("12.345.678-k")).toBe("12.***.***-K");
       });
     });
 
-    describe("custom pattern", () => {
-      it("maps * to hidden positions and copies other chars from the formatted RUT", () => {
+    describe("custom pattern (Right Alignment)", () => {
+      it("maps * to hidden positions from right to left", () => {
         expect(maskRut("12.345.678-5", "XX.XXX.XXX-*")).toBe("12.345.678-*");
       });
 
-      it("stops at the shorter of formatted vs pattern length", () => {
-        expect(maskRut("12.345.678-5", "XX.*")).toBe("12.*");
+      it("correctly aligns patterns for short RUTs (7 digits)", () => {
+        expect(maskRut("1.234.567-1", "*.XXX.XXX-X")).toBe("*.234.567-1");
+      });
+
+      it("ignores extra pattern on the left when the pattern is longer than the formatted RUT (right-aligned)", () => {
+        // Formatted "1-2"; pattern pairs from the right, so the body digit and DV are masked by '*';
+        // the hyphen keeps '-' from pattern[4] (not '*').
+        expect(maskRut("1-2", "****-*")).toBe("*-*");
+      });
+
+      it("when the pattern is shorter than the formatted RUT, missing pattern is treated as pass-through; * still preserves . and -", () => {
+        // 10× '*' cover the rightmost 10 chars; the leading "12" uses implicit pass-through.
+        expect(maskRut("12.345.678-5", "**********")).toBe("12.***.***-*");
       });
     });
 
@@ -103,7 +118,7 @@ describe("format", () => {
         expect(buildRut("12345678", 5)).toBe("12.345.678-5");
       });
 
-      it("respects uppercaseDv: false (hyphen still comes from withHyphen default)", () => {
+      it("respects uppercaseDv: false", () => {
         expect(
           buildRut(12345678, "k", { uppercaseDv: false, withDots: false }),
         ).toBe("12345678-k");
