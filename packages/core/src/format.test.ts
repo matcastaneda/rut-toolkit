@@ -76,24 +76,43 @@ describe("format", () => {
       });
     });
 
-    describe("custom pattern (Right Alignment)", () => {
-      it("maps * to hidden positions from right to left", () => {
-        expect(maskRut("12.345.678-5", "XX.XXX.XXX-*")).toBe("12.345.678-*");
+    describe("MaskOptions (pattern & maskChar)", () => {
+      it("maps * to hidden positions and X to visible positions", () => {
+        expect(maskRut("12.345.678-5", { pattern: "XX.XXX.XXX-*" })).toBe(
+          "12.345.678-*",
+        );
       });
 
-      it("correctly aligns patterns for short RUTs (7 digits)", () => {
-        expect(maskRut("1.234.567-1", "*.XXX.XXX-X")).toBe("*.234.567-1");
+      it("correctly aligns patterns from right for short RUTs (7 digits)", () => {
+        expect(maskRut("1.234.567-1", { pattern: "*.XXX.XXX-X" })).toBe(
+          "*.234.567-1",
+        );
       });
 
-      it("ignores extra pattern on the left when the pattern is longer than the formatted RUT (right-aligned)", () => {
-        // Formatted "1-2"; pattern pairs from the right, so the body digit and DV are masked by '*';
-        // the hyphen keeps '-' from pattern[4] (not '*').
-        expect(maskRut("1-2", "****-*")).toBe("*-*");
+      it("ignores extra pattern on the left when the pattern is longer than the formatted RUT", () => {
+        expect(maskRut("1-2", { pattern: "****-*" })).toBe("*-*");
       });
 
-      it("when the pattern is shorter than the formatted RUT, missing pattern is treated as pass-through; * still preserves . and -", () => {
-        // 10× '*' cover the rightmost 10 chars; the leading "12" uses implicit pass-through.
-        expect(maskRut("12.345.678-5", "**********")).toBe("12.***.***-*");
+      it("treats missing pattern on the left as pass-through (X)", () => {
+        expect(maskRut("12.345.678-5", { pattern: "**********" })).toBe(
+          "12.***.***-*",
+        );
+      });
+
+      it("supports custom maskChar without pattern", () => {
+        expect(maskRut("12.345.678-5", { maskChar: "•" })).toBe("12.•••.•••-5");
+      });
+
+      it("combines custom maskChar and pattern correctly", () => {
+        expect(
+          maskRut("12.345.678-5", { pattern: "**.***.XXX-X", maskChar: "•" }),
+        ).toBe("••.•••.678-5");
+      });
+
+      it("defaults to masking unknown characters in pattern for safety", () => {
+        expect(maskRut("12.345.678-5", { pattern: "??.###.XXX-X" })).toBe(
+          "**.***.678-5",
+        );
       });
     });
 
