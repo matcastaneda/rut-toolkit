@@ -12,6 +12,9 @@ catalogs:
     typescript:
       specifier: 5.9.3
       version: 5.9.3
+    zod:
+      specifier: 4.3.6
+      version: 4.3.6
   vitest:
     '@vitest/coverage-v8':
       specifier: 4.1.0
@@ -77,6 +80,28 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
+
+  packages/zod:
+    dependencies:
+      '@rut-toolkit/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@rut-toolkit/tsconfig':
+        specifier: workspace:*
+        version: link:../config/tsconfig
+      '@rut-toolkit/tsdown':
+        specifier: workspace:*
+        version: link:../config/tsdown
+      tsdown:
+        specifier: 'catalog:'
+        version: 0.21.4(@arethetypeswrong/core@0.18.2)(oxc-resolver@11.19.1)(publint@0.3.18)(typescript@5.9.3)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      zod:
+        specifier: 'catalog:'
+        version: 4.3.6
 
 packages:
 

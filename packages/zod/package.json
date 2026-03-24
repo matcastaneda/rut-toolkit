@@ -1,0 +1,84 @@
+{
+  "name": "@rut-toolkit/zod",
+  "version": "0.1.0",
+  "description": "Zod schema for Chilean RUT/RUN numbers.",
+  "author": {
+    "name": "Matías Castañeda",
+    "url": "https://github.com/matcastaneda"
+  },
+  "license": "MIT",
+  "homepage": "https://rut-toolkit.dev/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matcastaneda/rut-toolkit.git",
+    "directory": "packages/zod"
+  },
+  "bugs": {
+    "url": "https://github.com/matcastaneda/rut-toolkit/issues"
+  },
+  "keywords": [
+    "zod",
+    "chilean",
+    "rut",
+    "run",
+    "toolkit",
+    "typescript"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/index.d.mts"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage",
+    "lint:package": "publint run --strict",
+    "lint:types": "attw --pack .",
+    "typecheck": "tsc --project tsconfig.json"
+  },
+  "dependencies": {
+    "@rut-toolkit/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@rut-toolkit/tsconfig": "workspace:*",
+    "@rut-toolkit/tsdown": "workspace:*",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "@rut-toolkit/core": "workspace:*",
+    "zod": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
