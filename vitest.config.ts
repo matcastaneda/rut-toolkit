@@ -12,10 +12,12 @@ export default defineConfig({
       exclude: [
         "node_modules",
         "dist",
+        "**/*.d.ts",
         "**/*.test.{ts,tsx}",
         "**/*.config.{ts,js}",
         "**/index.ts",
         "packages/config/**",
+        "packages/*/src/types.ts",
       ],
       thresholds: {
         statements: 90,
