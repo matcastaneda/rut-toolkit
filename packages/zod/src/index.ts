@@ -6,5 +6,11 @@
  * {@link https://www.npmjs.com/package/@rut-toolkit/core | `@rut-toolkit/core`}.
  */
 
-export * from "./schema";
-export * from "./types";
+export {
+  createRutSchema,
+  rutCleanSchema,
+  rutFormattedSchema,
+  rutSchema,
+} from "./schema";
+
+export type { ZodRutIssueParams, ZodRutSchemaOptions } from "./types";
