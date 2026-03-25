@@ -1,16 +1,16 @@
 import { describe, expect, it } from "vitest";
-import type { RutZodIssueParams } from "./schema";
 import {
   createRutSchema,
-  zodRutCleanSchema,
-  zodRutFormattedSchema,
-  zodRutSchema,
+  rutCleanSchema,
+  rutFormattedSchema,
+  rutSchema,
 } from "./schema";
+import type { ZodRutIssueParams } from "./types";
 
 describe("@rut-toolkit/zod", () => {
-  describe("zodRutSchema", () => {
+  describe("rutSchema", () => {
     it("outputs compact RUT (no dots, with hyphen)", () => {
-      const r = zodRutSchema.safeParse("12.345.678-5");
+      const r = rutSchema.safeParse("12.345.678-5");
       expect(r.success).toBe(true);
       if (r.success) {
         expect(r.data).toBe("12345678-5");
@@ -18,7 +18,7 @@ describe("@rut-toolkit/zod", () => {
     });
 
     it("trims surrounding whitespace by default", () => {
-      const r = zodRutSchema.safeParse("  12.345.678-5  ");
+      const r = rutSchema.safeParse("  12.345.678-5  ");
       expect(r.success).toBe(true);
       if (r.success) {
         expect(r.data).toBe("12345678-5");
@@ -26,12 +26,12 @@ describe("@rut-toolkit/zod", () => {
     });
 
     it("adds a custom issue with rutErrorCode and meta on DV mismatch", () => {
-      const r = zodRutSchema.safeParse("12345678-0");
+      const r = rutSchema.safeParse("12345678-0");
       expect(r.success).toBe(false);
       if (!r.success) {
         const issue = r.error.issues[0] as {
           code: string;
-          params?: RutZodIssueParams;
+          params?: ZodRutIssueParams;
         };
         expect(issue.code).toBe("custom");
         expect(issue.params?.rutErrorCode).toBe("RUT_DV_MISMATCH");
@@ -40,7 +40,7 @@ describe("@rut-toolkit/zod", () => {
     });
 
     it("handles non-string inputs gracefully during preprocess", () => {
-      const r = zodRutSchema.safeParse(123456785);
+      const r = rutSchema.safeParse(123456785);
 
       expect(r.success).toBe(false);
       if (!r.success) {
@@ -50,20 +50,20 @@ describe("@rut-toolkit/zod", () => {
     });
   });
 
-  describe("createRutSchema({ rejectSuspicious: true })", () => {
+  describe("createRutSchema({ rejectPlaceholders: true })", () => {
     it("fails for RUT bodies on the core suspicious list", () => {
-      const schema = createRutSchema({ rejectSuspicious: true });
+      const schema = createRutSchema({ rejectPlaceholders: true });
       const r = schema.safeParse("12.345.678-5");
 
       expect(r.success).toBe(false);
       if (!r.success) {
-        const issue = r.error.issues[0] as { params?: RutZodIssueParams };
+        const issue = r.error.issues[0] as { params?: ZodRutIssueParams };
         expect(issue.params?.rutErrorCode).toBe("RUT_SUSPICIOUS");
       }
     });
 
     it("allows a completely normal RUT to pass", () => {
-      const schema = createRutSchema({ rejectSuspicious: true });
+      const schema = createRutSchema({ rejectPlaceholders: true });
       const r = schema.safeParse("13.000.000-2");
 
       expect(r.success).toBe(true);
@@ -78,23 +78,23 @@ describe("@rut-toolkit/zod", () => {
 
       expect(r.success).toBe(false);
       if (!r.success) {
-        const issue = r.error.issues[0] as { params?: RutZodIssueParams };
+        const issue = r.error.issues[0] as { params?: ZodRutIssueParams };
         expect(issue.params?.rutErrorCode).toBe("RUT_EMPTY");
       }
     });
   });
 
   describe("presets", () => {
-    it("zodRutCleanSchema strips separators for storage", () => {
-      const r = zodRutCleanSchema.safeParse("12.345.678-5");
+    it("rutCleanSchema strips separators for storage", () => {
+      const r = rutCleanSchema.safeParse("12.345.678-5");
       expect(r.success).toBe(true);
       if (r.success) {
         expect(r.data).toBe("123456785");
       }
     });
 
-    it("zodRutFormattedSchema uses dotted display format", () => {
-      const r = zodRutFormattedSchema.safeParse("123456785");
+    it("rutFormattedSchema uses dotted display format", () => {
+      const r = rutFormattedSchema.safeParse("123456785");
       expect(r.success).toBe(true);
       if (r.success) {
         expect(r.data).toBe("12.345.678-5");
