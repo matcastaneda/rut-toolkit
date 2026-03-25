@@ -1,7 +1,7 @@
 {
   "name": "@rut-toolkit/core",
   "version": "0.1.0",
-  "description": "High-performance, zero-dependency core engine to validate, format, clean, and parse Chilean RUT/RUN numbers.",
+  "description": "Enterprise-grade, zero-dependency toolkit for Chilean RUT/RUN validation, formatting, and ID barcode parsing.",
   "author": {
     "name": "Matías Castañeda",
     "url": "https://github.com/matcastaneda"
