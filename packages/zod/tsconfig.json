@@ -1,7 +1,7 @@
 {
   "extends": "@rut-toolkit/tsconfig/base.json",
   "compilerOptions": {
-    "outDir": "dist"
+    "lib": ["ES2022"]
   },
   "include": ["src"]
 }
