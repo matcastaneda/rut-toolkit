@@ -18,9 +18,9 @@ const RUT_PROVISIONAL_IPE_MAX = 199_999_999;
  * @returns `true` if the RUT body falls in the company range.
  *
  * @example
- * isCompanyRut("76.123.456-7") // true
- * isCompanyRut("12.345.678-5") // false
- * isCompanyRut("100.200.300-4") // false (provisional, not a company)
+ * isCompanyRut("76.123.456-7")  // true
+ * isCompanyRut("12.345.678-5")  // false
+ * isCompanyRut("100.200.300-4") // false (not in company range, provisional)
  */
 export function isCompanyRut(rut: string): boolean {
   const { body } = splitRut(rut);
@@ -91,10 +91,10 @@ export function isProvisionalRut(rut: string): boolean {
  * @throws {RutError} `RUT_COMPANY_REQUIRED` when the RUT is not in the company range.
  *
  * @example
- * assertCompanyRut("76.123.456-7") // ok
- * assertCompanyRut("12.345.678-5") // throws RutError
+ * ensureCompanyRut("76.123.456-7") // ok
+ * ensureCompanyRut("12.345.678-5") // throws RutError
  */
-export function assertCompanyRut(rut: string): void {
+export function ensureCompanyRut(rut: string): void {
   if (!isCompanyRut(rut)) throw new RutError("RUT_COMPANY_REQUIRED", rut);
 }
 
@@ -105,10 +105,10 @@ export function assertCompanyRut(rut: string): void {
  * @throws {RutError} `RUT_PERSON_REQUIRED` when the RUT is not in the person range.
  *
  * @example
- * assertPersonRut("12.345.678-5") // ok
- * assertPersonRut("76.123.456-7") // throws RutError
+ * ensurePersonRut("12.345.678-5") // ok
+ * ensurePersonRut("76.123.456-7") // throws RutError
  */
-export function assertPersonRut(rut: string): void {
+export function ensurePersonRut(rut: string): void {
   if (!isPersonRut(rut)) throw new RutError("RUT_PERSON_REQUIRED", rut);
 }
 
@@ -119,10 +119,10 @@ export function assertPersonRut(rut: string): void {
  * @throws {RutError} `RUT_PROVISIONAL_NOT_ALLOWED` when the RUT falls in a provisional range.
  *
  * @example
- * assertNotProvisionalRut("12.345.678-5") // ok
- * assertNotProvisionalRut("100.200.300-4") // throws RutError
+ * ensureNotProvisionalRut("12.345.678-5")  // ok
+ * ensureNotProvisionalRut("100.200.300-4") // throws RutError
  */
-export function assertNotProvisionalRut(rut: string): void {
+export function ensureNotProvisionalRut(rut: string): void {
   if (isProvisionalRut(rut))
     throw new RutError("RUT_PROVISIONAL_NOT_ALLOWED", rut);
 }

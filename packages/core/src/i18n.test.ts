@@ -1,52 +1,54 @@
 import { describe, expect, it } from "vitest";
-import { ERROR_MESSAGES, getErrorMessage } from "./i18n";
-import type { ErrorCode, Locale } from "./types";
+import { getRutErrorMessage, RUT_ERROR_MESSAGES } from "./i18n";
+import type { RutErrorCode, RutLocale } from "./types";
 
-const ERROR_CODES = Object.keys(ERROR_MESSAGES.es) as ErrorCode[];
-const LOCALES: Locale[] = ["es", "en"];
+const ERROR_CODES = Object.keys(RUT_ERROR_MESSAGES.es) as RutErrorCode[];
+const LOCALES: RutLocale[] = ["es", "en"];
 
 describe("i18n", () => {
-  describe("ERROR_MESSAGES", () => {
+  describe("RUT_ERROR_MESSAGES", () => {
     it("defines the same keys for es and en", () => {
-      expect(Object.keys(ERROR_MESSAGES.es).sort()).toEqual(
-        Object.keys(ERROR_MESSAGES.en).sort(),
+      expect(Object.keys(RUT_ERROR_MESSAGES.es).sort()).toEqual(
+        Object.keys(RUT_ERROR_MESSAGES.en).sort(),
       );
     });
 
     it.each(
       LOCALES,
-    )("locale %s has a non-empty string for every ErrorCode", (locale) => {
+    )("locale %s has a non-empty string for every RutErrorCode", (locale) => {
       for (const code of ERROR_CODES) {
-        const msg = ERROR_MESSAGES[locale][code];
+        const msg = RUT_ERROR_MESSAGES[locale][code];
         expect(typeof msg).toBe("string");
         expect(msg.length).toBeGreaterThan(0);
       }
     });
 
     it.each(ERROR_CODES)("es and en strings differ for %s", (code) => {
-      expect(ERROR_MESSAGES.es[code]).not.toBe(ERROR_MESSAGES.en[code]);
+      expect(RUT_ERROR_MESSAGES.es[code]).not.toBe(RUT_ERROR_MESSAGES.en[code]);
     });
   });
 
-  describe("getErrorMessage", () => {
+  describe("getRutErrorMessage", () => {
     describe("resolved messages", () => {
       it.each(
         ERROR_CODES,
-      )("matches ERROR_MESSAGES.es[%s] by default", (code) => {
-        expect(getErrorMessage(code)).toBe(ERROR_MESSAGES.es[code]);
+      )("matches RUT_ERROR_MESSAGES.es[%s] by default", (code) => {
+        expect(getRutErrorMessage(code)).toBe(RUT_ERROR_MESSAGES.es[code]);
       });
 
       it.each(
         ERROR_CODES,
-      )("matches ERROR_MESSAGES.en[%s] when locale is en", (code) => {
-        expect(getErrorMessage(code, "en")).toBe(ERROR_MESSAGES.en[code]);
+      )("matches RUT_ERROR_MESSAGES.en[%s] when locale is en", (code) => {
+        expect(getRutErrorMessage(code, "en")).toBe(
+          RUT_ERROR_MESSAGES.en[code],
+        );
       });
     });
 
     describe("fallback when locale is unknown at runtime", () => {
       it("returns English SYSTEM_UNEXPECTED", () => {
-        const msg = getErrorMessage("RUT_EMPTY", "fr" as Locale);
-        expect(msg).toBe(ERROR_MESSAGES.en.SYSTEM_UNEXPECTED);
+        const msg = getRutErrorMessage("RUT_EMPTY", "fr" as RutLocale);
+        expect(msg).toBe(RUT_ERROR_MESSAGES.en.SYSTEM_UNEXPECTED);
       });
     });
   });

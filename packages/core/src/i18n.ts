@@ -1,14 +1,17 @@
-import type { ErrorCode, Locale } from "./types";
+import type { RutErrorCode, RutLocale } from "./types";
 
 /**
  * Bilingual message dictionary for all error codes.
- * Use with {@link getErrorMessage} to resolve a localized string.
+ * Use with {@link getRutErrorMessage} to resolve a localized string.
  *
  * @example
- * ERROR_MESSAGES.es.RUT_DV_MISMATCH // "El dígito verificador no coincide."
- * ERROR_MESSAGES.en.RUT_DV_MISMATCH // "Check digit does not match."
+ * RUT_ERROR_MESSAGES.es.RUT_DV_MISMATCH // "El dígito verificador no coincide."
+ * RUT_ERROR_MESSAGES.en.RUT_DV_MISMATCH // "Check digit does not match."
  */
-export const ERROR_MESSAGES: Record<Locale, Record<ErrorCode, string>> = {
+export const RUT_ERROR_MESSAGES: Record<
+  RutLocale,
+  Record<RutErrorCode, string>
+> = {
   es: {
     RUT_EMPTY: "Debes ingresar un RUT.",
     RUT_NULLISH: "No se recibió un RUT.",
@@ -47,7 +50,7 @@ export const ERROR_MESSAGES: Record<Locale, Record<ErrorCode, string>> = {
     BARCODE_RUT_NOT_FOUND: "No RUT found in scanned payload.",
     SYSTEM_UNEXPECTED: "An unexpected error occurred.",
   },
-} as const satisfies Record<Locale, Record<ErrorCode, string>>;
+} as const satisfies Record<RutLocale, Record<RutErrorCode, string>>;
 
 /**
  * Resolves a localized message for the given error code.
@@ -57,16 +60,16 @@ export const ERROR_MESSAGES: Record<Locale, Record<ErrorCode, string>> = {
  * @returns The localized message string.
  *
  * @example
- * getErrorMessage("RUT_DV_MISMATCH")        // "El dígito verificador no coincide."
- * getErrorMessage("RUT_DV_MISMATCH", "en")  // "Check digit does not match."
+ * getRutErrorMessage("RUT_DV_MISMATCH")        // "El dígito verificador no coincide."
+ * getRutErrorMessage("RUT_DV_MISMATCH", "en")  // "Check digit does not match."
  */
-export function getErrorMessage(
-  code: ErrorCode,
-  locale: Locale = "es",
+export function getRutErrorMessage(
+  code: RutErrorCode,
+  locale: RutLocale = "es",
 ): string {
   return (
-    ERROR_MESSAGES[locale]?.[code] ??
-    ERROR_MESSAGES[locale]?.SYSTEM_UNEXPECTED ??
-    ERROR_MESSAGES.en.SYSTEM_UNEXPECTED
+    RUT_ERROR_MESSAGES[locale]?.[code] ??
+    RUT_ERROR_MESSAGES[locale]?.SYSTEM_UNEXPECTED ??
+    RUT_ERROR_MESSAGES.en.SYSTEM_UNEXPECTED
   );
 }

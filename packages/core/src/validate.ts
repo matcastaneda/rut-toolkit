@@ -1,17 +1,17 @@
 import { cleanRut, splitRut } from "./clean";
-import { ERROR_META, RutError } from "./errors";
-import type { RutResult, ValidRut } from "./types";
+import { RUT_ERROR_META, RutError } from "./errors";
+import type { RutDv, RutParseResult, ValidRut } from "./types";
 
 /**
- * A set of suspicious RUT bodies that are unlikely to belong to a real person or entity.
- * @example
- * const suspiciousBodies = new Set([
- *   "11111111",
- *   "22222222",
- *   "33333333",
+ * A set of placeholder RUT bodies that are structurally valid but
+ * unlikely to belong to a real person or entity (e.g., testing RUTs).
+ * * @example
+ * const placeholders = new Set([
+ * "11111111",
+ * "22222222",
  * ]);
  */
-const SUSPICIOUS_BODIES = new Set([
+const PLACEHOLDER_RUTS = new Set([
   "0",
   "1",
   "11111111",
@@ -30,46 +30,51 @@ const SUSPICIOUS_BODIES = new Set([
  * Computes the verification digit (dígito verificador) for a RUT body
  * using the standard modulo 11 algorithm.
  *
- * @param body - Numeric body of the RUT (digits only, no DV).
+ * @param body - Numeric body of the RUT (can be a number or string).
  * @returns The expected DV (`"0"`–`"9"` or `"K"`), or `""` if the body is empty or non-numeric.
  *
  * @example
  * calculateDv("12345678") // "5"
  * calculateDv("6")        // "K"
  */
-export function calculateDv(body: string): string {
-  if (!body || !/^\d+$/.test(body)) return "";
+export function calculateDv(body: string | number): RutDv {
+  const bodyText = String(body).trim();
+  if (!bodyText || !/^\d+$/.test(bodyText)) {
+    return "";
+  }
 
   let sum = 0;
-  let w = 0;
+  let multiplier = 2;
 
-  for (let i = body.length - 1; i >= 0; i--) {
-    const weight = (w % 6) + 2;
-    sum += (body.charCodeAt(i) - 48) * weight;
-    w++;
+  for (let i = bodyText.length - 1; i >= 0; i--) {
+    sum += Number(bodyText[i]) * multiplier;
+    multiplier = multiplier === 7 ? 2 : multiplier + 1;
   }
 
   const remainder = 11 - (sum % 11);
 
   if (remainder === 11) return "0";
   if (remainder === 10) return "K";
-  return String(remainder);
+
+  return String(remainder) as RutDv;
 }
 
 /**
  * Checks whether a given DV matches the expected one for a RUT body.
  *
  * @param body - Numeric body of the RUT.
- * @param dv - The verification digit to check against.
- * @returns `true` if `dv` matches the computed DV for `body`.
+ * @param expectedDv - The verification digit to check against.
+ * @returns `true` if `expectedDv` matches the computed DV for `body`.
  *
  * @example
  * verifyDv("12345678", "5") // true
  * verifyDv("12345678", "0") // false
  */
-export function verifyDv(body: string, dv: string): boolean {
-  const expected = calculateDv(body);
-  return expected !== "" && expected === dv.toUpperCase();
+export function verifyDv(body: string, expectedDv: RutDv): boolean {
+  if (!expectedDv) return false;
+
+  const calculatedDv = calculateDv(body);
+  return calculatedDv === expectedDv.toUpperCase();
 }
 
 /**
@@ -83,12 +88,12 @@ export function verifyDv(body: string, dv: string): boolean {
  * @returns `true` if the RUT has a valid structure and its DV is correct.
  *
  * @example
- * if (isValidRut(input)) {
+ * if (isRut(input)) {
  *   // `input` is narrowed to ValidRut here
  *   saveToDb(input);
  * }
  */
-export function isValidRut(rut: string): boolean {
+export function isRut(rut: string): boolean {
   if (typeof rut !== "string") {
     return false;
   }
@@ -111,10 +116,10 @@ export function isValidRut(rut: string): boolean {
  * @throws {RutError} When the RUT is invalid.
  *
  * @example
- * const rut = parseRut("12.345.678-5"); // ValidRut "123456785"
- * const bad = parseRut("12345678-0");   // throws RutError
+ * const rut = toValidRut("12.345.678-5"); // ValidRut "123456785"
+ * const bad = toValidRut("12345678-0");   // throws RutError
  */
-export function parseRut(rut: string): ValidRut {
+export function toValidRut(rut: string): ValidRut {
   if (rut == null || typeof rut !== "string") {
     throw new RutError("RUT_NULLISH");
   }
@@ -159,15 +164,15 @@ export function parseRut(rut: string): ValidRut {
  * @returns `true` if the RUT body matches a known suspicious pattern.
  *
  * @example
- * isSuspiciousRut("11.111.111-1") // true
- * isSuspiciousRut("12.345.678-5") // false
+ * isPlaceholderRut("11.111.111-1") // true
+ * isPlaceholderRut("12.345.678-5") // false
  */
-export function isSuspiciousRut(rut: string): boolean {
+export function isPlaceholderRut(rut: string): boolean {
   const { body } = splitRut(rut);
   if (!body) {
     return false;
   }
-  return SUSPICIOUS_BODIES.has(body);
+  return PLACEHOLDER_RUTS.has(body);
 }
 
 /**
@@ -177,33 +182,33 @@ export function isSuspiciousRut(rut: string): boolean {
  * @throws {RutError} `RUT_SUSPICIOUS` when the RUT body matches a known fake pattern.
  *
  * @example
- * assertNotSuspiciousRut("12.345.678-5") // ok
- * assertNotSuspiciousRut("11.111.111-1") // throws RutError
+ * ensureRealRut("12.345.678-5") // ok
+ * ensureRealRut("11.111.111-1") // throws RutError
  */
-export function assertNotSuspiciousRut(rut: string): void {
-  if (isSuspiciousRut(rut)) {
+export function ensureRealRut(rut: string): void {
+  if (isPlaceholderRut(rut)) {
     throw new RutError("RUT_SUSPICIOUS", rut);
   }
 }
 
 /**
- * Non-throwing variant of {@link parseRut}.
+ * Non-throwing variant of {@link toValidRut}.
  * Returns a discriminated union instead of throwing on invalid input.
  *
  * @param rut - RUT string in any format.
  * @returns `{ ok: true, rut: ValidRut }` on success, `{ ok: false, code, message }` on failure.
  *
  * @example
- * const result = safeParseRut("12.345.678-5");
+ * const result = tryParseRut("12.345.678-5");
  * if (result.ok) {
  *   console.log(result.rut); // ValidRut "123456785"
  * } else {
- *   console.log(result.code); // ErrorCode
+ *   console.log(result.code); // RutErrorCode
  * }
  */
-export function safeParseRut(rut: string): RutResult {
+export function tryParseRut(rut: string): RutParseResult {
   try {
-    return { ok: true, rut: parseRut(rut) };
+    return { ok: true, rut: toValidRut(rut) };
   } catch (error) {
     if (error instanceof RutError) {
       return {
@@ -218,7 +223,7 @@ export function safeParseRut(rut: string): RutResult {
       ok: false,
       code: "SYSTEM_UNEXPECTED",
       message: error instanceof Error ? error.message : "Unknown error",
-      meta: ERROR_META.SYSTEM_UNEXPECTED,
+      meta: RUT_ERROR_META.SYSTEM_UNEXPECTED,
     };
   }
 }

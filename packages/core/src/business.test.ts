@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
-  assertCompanyRut,
-  assertNotProvisionalRut,
-  assertPersonRut,
+  ensureCompanyRut,
+  ensureNotProvisionalRut,
+  ensurePersonRut,
   isCompanyRut,
   isPersonRut,
   isProvisionalRut,
@@ -113,43 +113,43 @@ describe("business", () => {
     });
   });
 
-  describe("assertCompanyRut", () => {
+  describe("ensureCompanyRut", () => {
     it("does not throw for a company-range body", () => {
-      expect(() => assertCompanyRut("76.123.456-0")).not.toThrow();
+      expect(() => ensureCompanyRut("76.123.456-0")).not.toThrow();
     });
 
     it("throws RutError RUT_COMPANY_REQUIRED otherwise", () => {
-      expect(() => assertCompanyRut("12.345.678-5")).toThrow(RutError);
-      expect(() => assertCompanyRut("12.345.678-5")).toThrow(
+      expect(() => ensureCompanyRut("12.345.678-5")).toThrow(RutError);
+      expect(() => ensureCompanyRut("12.345.678-5")).toThrow(
         expect.objectContaining({ code: "RUT_COMPANY_REQUIRED" }),
       );
     });
   });
 
-  describe("assertPersonRut", () => {
+  describe("ensurePersonRut", () => {
     it("does not throw for a natural-person body", () => {
-      expect(() => assertPersonRut("12.345.678-5")).not.toThrow();
+      expect(() => ensurePersonRut("12.345.678-5")).not.toThrow();
     });
 
     it("throws RutError RUT_PERSON_REQUIRED for a company body", () => {
-      expect(() => assertPersonRut("76.123.456-0")).toThrow(RutError);
-      expect(() => assertPersonRut("76.123.456-0")).toThrow(
+      expect(() => ensurePersonRut("76.123.456-0")).toThrow(RutError);
+      expect(() => ensurePersonRut("76.123.456-0")).toThrow(
         expect.objectContaining({ code: "RUT_PERSON_REQUIRED" }),
       );
     });
   });
 
-  describe("assertNotProvisionalRut", () => {
+  describe("ensureNotProvisionalRut", () => {
     it("does not throw when the body is not provisional", () => {
-      expect(() => assertNotProvisionalRut("12.345.678-5")).not.toThrow();
+      expect(() => ensureNotProvisionalRut("12.345.678-5")).not.toThrow();
     });
 
     it.each([
       ["100.200.300-0", "IPE range"],
       ["48.000.000-0", "SII foreigner range"],
     ])("throws RUT_PROVISIONAL_NOT_ALLOWED for %s (%s)", (rut) => {
-      expect(() => assertNotProvisionalRut(rut)).toThrow(RutError);
-      expect(() => assertNotProvisionalRut(rut)).toThrow(
+      expect(() => ensureNotProvisionalRut(rut)).toThrow(RutError);
+      expect(() => ensureNotProvisionalRut(rut)).toThrow(
         expect.objectContaining({ code: "RUT_PROVISIONAL_NOT_ALLOWED" }),
       );
     });

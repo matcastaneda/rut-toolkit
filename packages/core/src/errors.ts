@@ -1,14 +1,14 @@
-import type { ErrorCode, ErrorMeta } from "./types";
+import type { RutErrorCode, RutErrorMeta } from "./types";
 
-export type ErrorConstructorWithCapture = typeof Error & {
+export type RutErrorConstructorWithCapture = typeof Error & {
   captureStackTrace?(
     targetObject: object,
     constructorOpt?: new (...args: never[]) => unknown,
   ): void;
 };
 
-/** Semantic metadata for every {@link ErrorCode}. */
-export const ERROR_META = {
+/** Semantic metadata for every {@link RutErrorCode}. */
+export const RUT_ERROR_META = {
   RUT_EMPTY: { category: "input", severity: "warning", httpStatus: 400 },
   RUT_NULLISH: { category: "input", severity: "warning", httpStatus: 400 },
   RUT_TOO_SHORT: { category: "input", severity: "warning", httpStatus: 400 },
@@ -66,42 +66,42 @@ export const ERROR_META = {
     severity: "critical",
     httpStatus: 500,
   },
-} as const satisfies Record<ErrorCode, ErrorMeta>;
+} as const satisfies Record<RutErrorCode, RutErrorMeta>;
 
 /**
  * Structured error thrown by rut-toolkit functions.
- * Carries a machine-readable {@link ErrorCode} and semantic metadata
+ * Carries a machine-readable {@link RutErrorCode} and semantic metadata
  * for programmatic handling, logging, and API responses.
  *
  * @example
  * try {
- *   parseRut(input);
+ *   toValidRut(input);
  * } catch (err) {
  *   if (err instanceof RutError) {
- *     err.code;          // "RUT_DV_MISMATCH"
- *     err.meta.category; // "validation"
- *     err.meta.severity; // "error"
+ *     err.code;            // "RUT_DV_MISMATCH"
+ *     err.meta.category;   // "validation"
+ *     err.meta.severity;   // "error"
  *     err.meta.httpStatus; // 422
  *   }
  * }
  */
 export class RutError extends Error {
   override readonly name = "RutError";
-  readonly code: ErrorCode;
-  readonly meta: (typeof ERROR_META)[ErrorCode];
+  readonly code: RutErrorCode;
+  readonly meta: (typeof RUT_ERROR_META)[RutErrorCode];
 
-  constructor(code: ErrorCode, rut?: string) {
+  constructor(code: RutErrorCode, rut?: string) {
     super(rut != null ? `[${code}] ("${rut}")` : `[${code}]`);
 
     Object.setPrototypeOf(this, new.target.prototype);
 
-    const ErrorWithCapture = Error as ErrorConstructorWithCapture;
+    const ErrorWithCapture = Error as RutErrorConstructorWithCapture;
     if (typeof ErrorWithCapture.captureStackTrace === "function") {
       ErrorWithCapture.captureStackTrace(this, RutError);
     }
 
     this.code = code;
-    this.meta = ERROR_META[code];
+    this.meta = RUT_ERROR_META[code];
 
     Object.freeze(this);
   }

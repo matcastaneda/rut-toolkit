@@ -2,10 +2,10 @@ import { describe, expect, it } from "vitest";
 import {
   buildRut,
   formatRut,
-  fromCompactFormat,
+  fromCompactRut,
   maskRut,
-  toCompactFormat,
-  toSiiFormat,
+  toCompactRut,
+  toSiiRut,
 } from "./format";
 
 describe("format", () => {
@@ -76,7 +76,7 @@ describe("format", () => {
       });
     });
 
-    describe("MaskOptions (pattern & maskChar)", () => {
+    describe("RutMaskOptions (pattern & maskChar)", () => {
       it("maps * to hidden positions and X to visible positions", () => {
         expect(maskRut("12.345.678-5", { pattern: "XX.XXX.XXX-*" })).toBe(
           "12.345.678-*",
@@ -174,28 +174,28 @@ describe("format", () => {
     });
   });
 
-  describe("toCompactFormat", () => {
+  describe("toCompactRut", () => {
     it("removes dots and keeps hyphen", () => {
-      expect(toCompactFormat("12.345.678-5")).toBe("12345678-5");
-      expect(toCompactFormat("123456785")).toBe("12345678-5");
+      expect(toCompactRut("12.345.678-5")).toBe("12345678-5");
+      expect(toCompactRut("123456785")).toBe("12345678-5");
     });
 
     it("returns empty string when split yields no body", () => {
-      expect(toCompactFormat("")).toBe("");
+      expect(toCompactRut("")).toBe("");
     });
   });
 
-  describe("fromCompactFormat", () => {
+  describe("fromCompactRut", () => {
     it("adds thousands separators and hyphen", () => {
-      expect(fromCompactFormat("12345678-5")).toBe("12.345.678-5");
+      expect(fromCompactRut("12345678-5")).toBe("12.345.678-5");
     });
   });
 
-  describe("toSiiFormat", () => {
-    it("aliases toCompactFormat", () => {
+  describe("toSiiRut", () => {
+    it("aliases toCompactRut", () => {
       const rut = "12.345.678-k";
-      expect(toSiiFormat(rut)).toBe(toCompactFormat(rut));
-      expect(toSiiFormat(rut)).toBe("12345678-K");
+      expect(toSiiRut(rut)).toBe(toCompactRut(rut));
+      expect(toSiiRut(rut)).toBe("12345678-K");
     });
   });
 });
