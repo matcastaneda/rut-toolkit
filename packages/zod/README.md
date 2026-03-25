@@ -79,12 +79,6 @@ if (!result.success) {
 
 ## 📦 Main Exports
 
-<!-- - **Factory:** `createRutSchema(options?)`
-- **Pre-configured Schemas:** `rutSchema` (compact), `rutCleanSchema` (raw/DB), `rutFormattedSchema` (UI/display)
-- **Types & Interfaces:** `ZodRutSchemaOptions`, `ZodRutIssueParams` -->
-
-## 📦 Main Exports
-
 | Export | Type | Description |
 | :--- | :--- | :--- |
 | `createRutSchema` | Function | Factory to build customized schemas. |
