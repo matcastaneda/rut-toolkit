@@ -1,6 +1,6 @@
 import { cleanRut } from "./clean";
-import type { BarcodeAnalysis, ValidRut } from "./types";
-import { isValidRut } from "./validate";
+import type { BarcodeScanResult, ValidRut } from "./types";
+import { isRut } from "./validate";
 
 /**
  * Domain constants for the Chilean Registro Civil.
@@ -23,10 +23,10 @@ const RUN_PARAM_RE = /[?&]RUN=([^&]+)/i;
  * @returns `true` if the input contains the Registro Civil domain and a `RUN=` parameter.
  *
  * @example
- * isIdBarcode("portal.nuevosidiv.registrocivil.cl/document-validity?RUN=12345678-5&type=CEDULA") // true
- * isIdBarcode("random text") // false
+ * isRegistroCivilQrUrl("portal.nuevosidiv.registrocivil.cl/document-validity?RUN=12345678-5&type=CEDULA") // true
+ * isRegistroCivilQrUrl("random text") // false
  */
-export function isIdBarcode(input: string): boolean {
+export function isRegistroCivilQrUrl(input: string): boolean {
   if (typeof input !== "string") return false;
 
   return input.includes(SIDIV_DOMAIN) && RUN_PARAM_RE.test(input);
@@ -39,29 +39,49 @@ export function isIdBarcode(input: string): boolean {
  * @returns An object containing the validated RUT and the identified source.
  *
  * @example
- * analyzeIdBarcode("portal.nuevosidiv.registrocivil.cl/document-validity?RUN=12345678-5&type=CEDULA")
+ * analyzeRutBarcode("portal.nuevosidiv.registrocivil.cl/document-validity?RUN=12345678-5&type=CEDULA")
  * // { rut: ValidRut "123456785", source: "QR_FRONT" }
  *
- * analyzeIdBarcode("RUT: 12.345.678-5 some extra data")
+ * analyzeRutBarcode("RUT: 12.345.678-5 some extra data")
  * // { rut: ValidRut "123456785", source: "PDF417_REAR" }
  */
-export function analyzeIdBarcode(barcode: string): BarcodeAnalysis {
+export function analyzeRutBarcode(barcode: string): BarcodeScanResult {
   if (typeof barcode !== "string" || barcode.trim().length === 0) {
-    return Object.freeze({ rut: null, source: "UNKNOWN" });
+    return Object.freeze({ ok: false, rut: null, source: "UNKNOWN" });
   }
 
-  if (isIdBarcode(barcode)) {
+  if (isRegistroCivilQrUrl(barcode)) {
+    const parsedRut = parseRutFromBarcode(barcode);
+
+    if (parsedRut) {
+      return Object.freeze({
+        ok: true,
+        rut: parsedRut,
+        source: "QR_FRONT",
+      });
+    }
+
     return Object.freeze({
-      rut: parseIdBarcode(barcode),
+      ok: false,
+      rut: null,
       source: "QR_FRONT",
     });
   }
 
-  const rutFromRaw = parseIdBarcode(barcode);
+  const rutFromRaw = parseRutFromBarcode(barcode);
+
+  if (rutFromRaw) {
+    return Object.freeze({
+      ok: true,
+      rut: rutFromRaw,
+      source: "PDF417_REAR",
+    });
+  }
 
   return Object.freeze({
-    rut: rutFromRaw,
-    source: rutFromRaw ? "PDF417_REAR" : "UNKNOWN",
+    ok: false,
+    rut: null,
+    source: "UNKNOWN",
   });
 }
 
@@ -74,21 +94,21 @@ export function analyzeIdBarcode(barcode: string): BarcodeAnalysis {
  * @returns The validated RUT as a {@link ValidRut}, or `null` if no valid RUT is found.
  *
  * @example
- * parseIdBarcode("portal.nuevosidiv.registrocivil.cl/document-validity?RUN=12345678-5&type=CEDULA")
+ * parseRutFromBarcode("portal.nuevosidiv.registrocivil.cl/document-validity?RUN=12345678-5&type=CEDULA")
  * // ValidRut "123456785"
  *
- * parseIdBarcode("RUT: 12.345.678-5 some extra data")
+ * parseRutFromBarcode("RUT: 12.345.678-5 some extra data")
  * // ValidRut "123456785"
  *
- * parseIdBarcode("invalid data")
+ * parseRutFromBarcode("invalid data")
  * // null
  */
-export function parseIdBarcode(barcode: string): ValidRut | null {
+export function parseRutFromBarcode(barcode: string): ValidRut | null {
   if (typeof barcode !== "string" || barcode.trim().length === 0) {
     return null;
   }
 
-  const candidate = extractFromUrl(barcode) ?? extractFromRaw(barcode);
+  const candidate = extractRutFromUrl(barcode) ?? extractRutFromRaw(barcode);
 
   if (!candidate) {
     return null;
@@ -96,7 +116,7 @@ export function parseIdBarcode(barcode: string): ValidRut | null {
 
   const cleaned = cleanRut(candidate);
 
-  if (!isValidRut(cleaned)) {
+  if (!isRut(cleaned)) {
     return null;
   }
 
@@ -106,7 +126,7 @@ export function parseIdBarcode(barcode: string): ValidRut | null {
 /**
  * Attempts to extract the RUN parameter from a URL.
  */
-function extractFromUrl(input: string): string | null {
+function extractRutFromUrl(input: string): string | null {
   if (!input.includes(SIDIV_DOMAIN)) return null;
 
   const match = RUN_PARAM_RE.exec(input);
@@ -116,7 +136,7 @@ function extractFromUrl(input: string): string | null {
 /**
  * Attempts to extract a RUT pattern from raw text.
  */
-function extractFromRaw(input: string): string | null {
+function extractRutFromRaw(input: string): string | null {
   const match = RUT_PATTERN.exec(input);
   if (!match) return null;
 

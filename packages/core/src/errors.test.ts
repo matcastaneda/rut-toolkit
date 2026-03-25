@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { ErrorConstructorWithCapture } from "./errors";
-import { ERROR_META, RutError } from "./errors";
-import type { ErrorCode } from "./types";
+import type { RutErrorConstructorWithCapture } from "./errors";
+import { RUT_ERROR_META, RutError } from "./errors";
+import type { RutErrorCode } from "./types";
 
-/** Every key in {@link ERROR_META} must match a {@link ErrorCode}. */
-const ERROR_CODES = Object.keys(ERROR_META) as ErrorCode[];
+/** Every key in {@link RUT_ERROR_META} must match a {@link RutErrorCode}. */
+const ERROR_CODES = Object.keys(RUT_ERROR_META) as RutErrorCode[];
 
 describe("RutError", () => {
   describe("construction and identity", () => {
@@ -35,15 +35,15 @@ describe("RutError", () => {
     });
   });
 
-  describe("metadata (ERROR_META)", () => {
+  describe("metadata (RUT_ERROR_META)", () => {
     it.each(
       ERROR_CODES,
-    )("maps code %s to the same ERROR_META entry (identity)", (code) => {
+    )("maps code %s to the same RUT_ERROR_META entry (identity)", (code) => {
       const error = new RutError(code);
 
       expect(error.code).toBe(code);
-      expect(error.meta).toBe(ERROR_META[code]);
-      expect(error.meta).toEqual(ERROR_META[code]);
+      expect(error.meta).toBe(RUT_ERROR_META[code]);
+      expect(error.meta).toEqual(RUT_ERROR_META[code]);
     });
 
     it("exposes representative fields for SYSTEM_UNEXPECTED", () => {
@@ -91,8 +91,8 @@ describe("RutError", () => {
   });
 
   describe("without Error.captureStackTrace (non-V8)", () => {
-    const ErrorCtor = Error as ErrorConstructorWithCapture;
-    let originalCapture: ErrorConstructorWithCapture["captureStackTrace"];
+    const ErrorCtor = Error as RutErrorConstructorWithCapture;
+    let originalCapture: RutErrorConstructorWithCapture["captureStackTrace"];
 
     beforeEach(() => {
       originalCapture = ErrorCtor.captureStackTrace;
@@ -109,7 +109,7 @@ describe("RutError", () => {
       const error = new RutError("RUT_EMPTY");
 
       expect(error.code).toBe("RUT_EMPTY");
-      expect(error.meta).toBe(ERROR_META.RUT_EMPTY);
+      expect(error.meta).toBe(RUT_ERROR_META.RUT_EMPTY);
       expect(error.stack).toBeDefined();
       expect(typeof error.stack).toBe("string");
     });

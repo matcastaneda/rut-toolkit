@@ -1,5 +1,5 @@
 import { splitRut } from "./clean";
-import type { FormatOptions, MaskOptions } from "./types";
+import type { RutDv, RutFormatOptions, RutMaskOptions } from "./types";
 
 const DOTS_RE = /\B(?=(\d{3})+(?!\d))/g;
 
@@ -12,13 +12,13 @@ const DOTS_RE = /\B(?=(\d{3})+(?!\d))/g;
  * @returns The formatted RUT, or `""` if the input is invalid.
  *
  * @example
- * formatRut("123456785")                                    // "12.345.678-5"
- * formatRut("123456785", { withDots: false })               // "12345678-5"
+ * formatRut("123456785")                                         // "12.345.678-5"
+ * formatRut("123456785", { withDots: false })                    // "12345678-5"
  * formatRut("123456785", { withDots: false, withHyphen: false }) // "123456785"
  */
 export function formatRut(
   rut: string,
-  options: Readonly<FormatOptions> = {},
+  options: Readonly<RutFormatOptions> = {},
 ): string {
   const { body, dv } = splitRut(rut);
 
@@ -26,13 +26,13 @@ export function formatRut(
     return "";
   }
 
-  return assemble(body, dv, options);
+  return assembleRutParts(body, dv, options);
 }
 
-function assemble(
+function assembleRutParts(
   body: string,
-  dv: string,
-  opts: Readonly<FormatOptions>,
+  dv: RutDv,
+  opts: Readonly<RutFormatOptions>,
 ): string {
   const {
     withDots = true,
@@ -87,7 +87,7 @@ function assemble(
  */
 export function maskRut(
   rut: string,
-  options: Readonly<MaskOptions> = {},
+  options: Readonly<RutMaskOptions> = {},
 ): string {
   const { body, dv } = splitRut(rut);
 
@@ -97,10 +97,13 @@ export function maskRut(
 
   const { pattern, maskChar = "*" } = options;
 
-  const formatted = assemble(body, dv, { withDots: true, withHyphen: true });
+  const formatted = assembleRutParts(body, dv, {
+    withDots: true,
+    withHyphen: true,
+  });
 
   if (pattern) {
-    return applyPattern(formatted, pattern, maskChar);
+    return applyMaskPattern(formatted, pattern, maskChar);
   }
 
   const parts = formatted.split(".");
@@ -108,14 +111,14 @@ export function maskRut(
     const [firstGroup = ""] = parts;
     const restLen = body.length - firstGroup.length;
     const maskedBody = firstGroup + "*".repeat(restLen);
-    const dottedBody = dotGroupFromRight(maskedBody).replace(/\*/g, maskChar);
+    const dottedBody = insertDotsFromRight(maskedBody).replace(/\*/g, maskChar);
 
     return `${dottedBody}-${dv}`;
   }
 
   const visible = Math.min(1, body.length);
   const maskedBody = body.slice(0, visible) + "*".repeat(body.length - visible);
-  const finalDottedBody = dotGroupFromRight(maskedBody).replace(
+  const finalDottedBody = insertDotsFromRight(maskedBody).replace(
     /\*/g,
     maskChar,
   );
@@ -123,7 +126,7 @@ export function maskRut(
   return `${finalDottedBody}-${dv}`;
 }
 
-function applyPattern(
+function applyMaskPattern(
   formatted: string,
   pattern: string,
   maskChar: string,
@@ -155,7 +158,7 @@ function applyPattern(
   return result;
 }
 
-function dotGroupFromRight(segment: string): string {
+function insertDotsFromRight(segment: string): string {
   if (segment.length <= 3) {
     return segment;
   }
@@ -189,16 +192,17 @@ function dotGroupFromRight(segment: string): string {
 export function buildRut(
   body: number | string,
   dv: string | number,
-  options: Readonly<FormatOptions> = {},
+  options: Readonly<RutFormatOptions> = {},
 ): string {
   const bodyStr = String(body);
-  const dvStr = String(dv);
+  const dvStr = String(dv).trim();
 
   if (!bodyStr || /^0+$/.test(bodyStr) || dvStr.trim() === "") {
     return "";
   }
 
-  return assemble(bodyStr, dvStr.toUpperCase(), options);
+  const normalizedDv = dvStr.toUpperCase() as RutDv;
+  return assembleRutParts(bodyStr, normalizedDv, options);
 }
 
 /**
@@ -209,10 +213,10 @@ export function buildRut(
  * @returns The compact RUT, or `""` if the input is invalid.
  *
  * @example
- * toCompactFormat("12.345.678-5") // "12345678-5"
- * toCompactFormat("123456785")    // "12345678-5"
+ * toCompactRut("12.345.678-5") // "12345678-5"
+ * toCompactRut("123456785")    // "12345678-5"
  */
-export function toCompactFormat(rut: string): string {
+export function toCompactRut(rut: string): string {
   return formatRut(rut, { withDots: false });
 }
 
@@ -223,18 +227,18 @@ export function toCompactFormat(rut: string): string {
  * @returns The formatted RUT with dots and hyphen, or `""` if the input is invalid.
  *
  * @example
- * fromCompactFormat("12345678-5") // "12.345.678-5"
+ * fromCompactRut("12345678-5") // "12.345.678-5"
  */
-export function fromCompactFormat(rut: string): string {
+export function fromCompactRut(rut: string): string {
   return formatRut(rut);
 }
 
 /**
- * Alias for {@link toCompactFormat}. Matches the SII DTE convention.
+ * Alias for {@link toCompactRut}. Matches the SII DTE convention.
  *
  * @param rut - RUT string in any format.
  * @returns The compact RUT for SII electronic tax documents.
  */
-export function toSiiFormat(rut: string): string {
-  return toCompactFormat(rut);
+export function toSiiRut(rut: string): string {
+  return toCompactRut(rut);
 }

@@ -1,61 +1,21 @@
-/**
- * @packageDocumentation
- * @module @rut-toolkit/zod
- *
- * Zod v4 string schemas for Chilean **RUT/RUN** validation and formatting, built on
- * {@link https://www.npmjs.com/package/@rut-toolkit/core | `@rut-toolkit/core`}.
- */
-
-import type {
-  ErrorCode,
-  ErrorMeta,
-  FormatOptions,
-  Locale,
-} from "@rut-toolkit/core";
+import type { RutErrorCode } from "@rut-toolkit/core";
 import {
-  ERROR_META,
   formatRut,
-  getErrorMessage,
-  isSuspiciousRut,
-  parseRut,
-  safeParseRut,
+  getRutErrorMessage,
+  isPlaceholderRut,
+  RUT_ERROR_META,
+  toValidRut,
+  tryParseRut,
 } from "@rut-toolkit/core";
 import { z } from "zod";
-
-/**
- * Shape of `params` on Zod `"custom"` issues emitted when RUT validation fails.
- *
- * Use this when branching in UI or APIs on {@link ErrorCode} / {@link ErrorMeta}
- * (e.g. severity, `httpStatus`).
- *
- * @remarks
- * Zod's public `issues` union may not list `params` on every variant; cast when needed:
- * `issue as { params?: RutZodIssueParams }`.
- *
- * @example
- * ```ts
- * const result = zodRutSchema.safeParse("12345678-0");
- * if (!result.success) {
- *   const issue = result.error.issues[0] as { params?: RutZodIssueParams };
- *   if (issue.params?.rutErrorCode === "RUT_DV_MISMATCH") {
- *     // handle wrong check digit
- *   }
- * }
- * ```
- */
-export interface RutZodIssueParams extends Record<string, unknown> {
-  /** Core {@link ErrorCode} (e.g. `RUT_DV_MISMATCH`, `RUT_TOO_SHORT`). */
-  rutErrorCode: ErrorCode;
-  /** Core metadata: category, severity, `httpStatus`. */
-  rutErrorMeta: ErrorMeta;
-}
+import type { ZodRutIssueParams, ZodRutSchemaOptions } from "./types";
 
 /** @internal */
 type RutZodRefinementCtx = {
   addIssue: (issue: {
     code: "custom";
     message: string;
-    params: RutZodIssueParams;
+    params: ZodRutIssueParams;
     input: string;
   }) => void;
 };
@@ -65,7 +25,7 @@ function addRutCustomIssue(
   ctx: RutZodRefinementCtx,
   input: string,
   message: string,
-  params: RutZodIssueParams,
+  params: ZodRutIssueParams,
 ): void {
   ctx.addIssue({
     code: "custom",
@@ -75,45 +35,6 @@ function addRutCustomIssue(
   });
 }
 
-/** Options for {@link createRutSchema}. */
-export interface RutSchemaOptions {
-  /**
-   * Passed to {@link formatRut} on successful parse (same shape as core `FormatOptions`).
-   *
-   * @defaultValue `{ withDots: false }` — compact visual form with hyphen, e.g. `"12345678-5"`
-   * (hyphen remains on because core defaults keep `withHyphen: true` unless you set it to `false`).
-   */
-  format?: Readonly<FormatOptions>;
-
-  /**
-   * Per-code message overrides. Keys are {@link ErrorCode}; missing keys use
-   * {@link getErrorMessage} with `locale`.
-   */
-  messages?: Partial<Record<ErrorCode, string>>;
-
-  /**
-   * Locale for default messages from core i18n.
-   *
-   * @defaultValue `"es"`
-   */
-  locale?: Locale;
-
-  /**
-   * If `true`, fails valid RUTs whose body is in the core suspicious list ({@link isSuspiciousRut})
-   * with `RUT_SUSPICIOUS`.
-   *
-   * @defaultValue `false`
-   */
-  rejectSuspicious?: boolean;
-
-  /**
-   * If `true`, runs `String#trim` on the input before `z.string()` / validation.
-   *
-   * @defaultValue `true`
-   */
-  trim?: boolean;
-}
-
 /**
  * Creates a Zod string schema that validates a Chilean RUT/RUN and returns a formatted string.
  *
@@ -121,9 +42,9 @@ export interface RutSchemaOptions {
  * @returns A schema for `.parse()`, `.safeParse()`, or composition with other Zod types.
  *
  * @remarks
- * - **Validation:** {@link safeParseRut} / {@link parseRut} from `@rut-toolkit/core`.
- * - **Errors:** Zod issue `code` is `"custom"`; see {@link RutZodIssueParams} on `params`.
- * - **Output:** `formatRut(parseRut(value), format)` — see {@link formatRut}.
+ * - **Validation:** {@link tryParseRut} / {@link toValidRut} from `@rut-toolkit/core`.
+ * - **Errors:** Zod issue `code` is `"custom"`; see {@link ZodRutIssueParams} on `params`.
+ * - **Output:** `formatRut(toValidRut(value), format)` — see {@link formatRut}.
  *
  * @example Pad body for fixed-width storage
  * ```ts
@@ -139,33 +60,33 @@ export interface RutSchemaOptions {
  *   locale: "en",
  *   messages: { RUT_EMPTY: "Please enter your RUT." },
  * });
- * schema.safeParse(""); // fails with "Please enter your RUT."
+ * schema.safeParse("");         // fails with "Please enter your RUT."
  * schema.parse("12.345.678-5"); // "12345678-5"
  * ```
  */
-export function createRutSchema(options: RutSchemaOptions = {}) {
+export function createRutSchema(options: Readonly<ZodRutSchemaOptions> = {}) {
   const {
     messages = {},
     format = { withDots: false },
     locale = "es",
     trim: trimInput = true,
-    rejectSuspicious = false,
+    rejectPlaceholders = false,
   } = options;
 
   const requiredMsg =
-    messages.RUT_EMPTY ?? getErrorMessage("RUT_EMPTY", locale);
+    messages.RUT_EMPTY ?? getRutErrorMessage("RUT_EMPTY", locale);
 
   const inner = z
     .string({ error: requiredMsg })
     .min(1, { error: requiredMsg })
     .superRefine((val, ctx) => {
-      const result = safeParseRut(val);
+      const result = tryParseRut(val);
 
       if (!result.ok) {
         addRutCustomIssue(
           ctx,
           val,
-          messages[result.code] ?? getErrorMessage(result.code, locale),
+          messages[result.code] ?? getRutErrorMessage(result.code, locale),
           {
             rutErrorCode: result.code,
             rutErrorMeta: result.meta,
@@ -174,21 +95,21 @@ export function createRutSchema(options: RutSchemaOptions = {}) {
         return;
       }
 
-      if (rejectSuspicious && isSuspiciousRut(val)) {
-        const code: ErrorCode = "RUT_SUSPICIOUS";
+      if (rejectPlaceholders && isPlaceholderRut(val)) {
+        const code: RutErrorCode = "RUT_SUSPICIOUS";
         addRutCustomIssue(
           ctx,
           val,
-          messages[code] ?? getErrorMessage(code, locale),
+          messages[code] ?? getRutErrorMessage(code, locale),
           {
             rutErrorCode: code,
-            rutErrorMeta: ERROR_META.RUT_SUSPICIOUS,
+            rutErrorMeta: RUT_ERROR_META.RUT_SUSPICIOUS,
           },
         );
       }
     })
     .transform((val) => {
-      return formatRut(parseRut(val), format);
+      return formatRut(toValidRut(val), format);
     });
 
   if (!trimInput) {
@@ -206,20 +127,20 @@ export function createRutSchema(options: RutSchemaOptions = {}) {
  *
  * @example
  * ```ts
- * zodRutSchema.parse(" 12.345.678-5 "); // "12345678-5"
+ * rutSchema.parse(" 12.345.678-5 "); // "12345678-5"
  * ```
  */
-export const zodRutSchema = createRutSchema();
+export const rutSchema = createRutSchema();
 
 /**
  * RUT schema for **persistence**: digits + check digit only, no dots or hyphen (`"123456785"`).
  *
  * @example
  * ```ts
- * zodRutCleanSchema.parse(" 12.345.678-5 "); // "123456785"
+ * rutCleanSchema.parse(" 12.345.678-5 "); // "123456785"
  * ```
  */
-export const zodRutCleanSchema = createRutSchema({
+export const rutCleanSchema = createRutSchema({
   format: { withDots: false, withHyphen: false },
 });
 
@@ -228,9 +149,9 @@ export const zodRutCleanSchema = createRutSchema({
  *
  * @example
  * ```ts
- * zodRutFormattedSchema.parse("123456785"); // "12.345.678-5"
+ * rutFormattedSchema.parse("123456785"); // "12.345.678-5"
  * ```
  */
-export const zodRutFormattedSchema = createRutSchema({
+export const rutFormattedSchema = createRutSchema({
   format: { withDots: true, withHyphen: true },
 });

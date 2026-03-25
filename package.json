@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.32.1",
+  "packageManager": "pnpm@10.33.0",
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build --filter=./packages/*",
@@ -24,11 +24,11 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.2",
-    "@biomejs/biome": "2.4.8",
+    "@biomejs/biome": "2.4.9",
     "@vitest/coverage-v8": "catalog:vitest",
     "cspell": "9.7.0",
     "husky": "9.1.7",
-    "knip": "6.0.3",
+    "knip": "6.0.5",
     "publint": "0.3.18",
     "shx": "0.4.0",
     "turbo": "2.8.20",
