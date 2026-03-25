@@ -64,10 +64,8 @@
     "lint:types": "attw --pack .",
     "typecheck": "tsc --project tsconfig.json"
   },
-  "dependencies": {
-    "@rut-toolkit/core": "workspace:*"
-  },
   "devDependencies": {
+    "@rut-toolkit/core": "workspace:*",
     "@rut-toolkit/tsconfig": "workspace:*",
     "@rut-toolkit/tsdown": "workspace:*",
     "tsdown": "catalog:",
