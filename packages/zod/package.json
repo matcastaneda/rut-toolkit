@@ -1,7 +1,7 @@
 {
   "name": "@rut-toolkit/zod",
   "version": "0.1.0",
-  "description": "Zod schema for Chilean RUT/RUN numbers.",
+  "description": "Strict Zod v4 schemas for Chilean RUT/RUN validation, featuring automatic formatting and deeply typed custom error messages.",
   "author": {
     "name": "Matías Castañeda",
     "url": "https://github.com/matcastaneda"
