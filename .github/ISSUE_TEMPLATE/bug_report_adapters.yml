@@ -1,4 +1,4 @@
-name: Bug report (by area)
+name: 🐛 Bug report (by area)
 description: Report a bug or unexpected behavior in @rut-toolkit.
 title: "[Bug] "
 labels: ["type: bug"]
