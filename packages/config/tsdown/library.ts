@@ -15,6 +15,8 @@ export function libraryPreset(overrides?: UserConfig): UserConfig {
     target: "es2022",
     sourcemap: true,
     publint: true,
+    unbundle: true,
+    tsconfig: overrides?.tsconfig || "./tsconfig.build.json",
     ...overrides,
   };
 }

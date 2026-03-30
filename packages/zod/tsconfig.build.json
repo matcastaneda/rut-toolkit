@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "emitDeclarationOnly": true
+  },
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "vitest.config.ts",
+    "tsdown.config.ts"
+  ],
+  "references": [{ "path": "../core/tsconfig.build.json" }]
+}

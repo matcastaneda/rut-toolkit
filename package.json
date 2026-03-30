@@ -4,6 +4,15 @@
   "type": "module",
   "private": true,
   "packageManager": "pnpm@10.33.0",
+  "pnpm": {
+    "packageExtensions": {
+      "vitest@*": {
+        "dependencies": {
+          "@vitest/coverage-v8": "4.1.2"
+        }
+      }
+    }
+  },
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build --filter=./packages/*",
@@ -11,27 +20,26 @@
     "clean:all": "turbo run clean && shx rm -rf node_modules",
     "format": "biome format . --write",
     "lint": "biome check . --error-on-warnings",
-    "lint:dependencies": "knip --strict",
     "lint:fix": "biome check . --fix --unsafe",
+    "lint:dependencies": "knip --strict",
     "lint:spell": "cspell . --color",
     "lint:types": "turbo lint:types --filter=./packages/*",
     "lint:packages": "turbo lint:package --filter=./packages/*",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "typecheck": "tsc --build --noEmit",
+    "test": "turbo test --continue --filter=./packages/*",
+    "test:coverage": "turbo test:coverage --filter=./packages/*",
+    "typecheck": "turbo typecheck --filter=./packages/*",
     "prepare": "husky"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.2",
-    "@biomejs/biome": "2.4.9",
+    "@biomejs/biome": "2.4.10",
     "@vitest/coverage-v8": "catalog:vitest",
     "cspell": "9.7.0",
     "husky": "9.1.7",
-    "knip": "6.0.5",
+    "knip": "6.1.0",
     "publint": "0.3.18",
     "shx": "0.4.0",
-    "turbo": "2.8.20",
+    "turbo": "2.9.0",
     "vitest": "catalog:vitest"
   }
 }

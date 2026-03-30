@@ -14,6 +14,7 @@ node_modules
 
 # Testing
 coverage
+packages/**/coverage/
 
 # Turbo
 .turbo
@@ -32,6 +33,10 @@ dist
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# TypeScript
+tsconfig.tsbuildinfo
+tsconfig.build.tsbuildinfo
 
 # Misc
 .DS_Store

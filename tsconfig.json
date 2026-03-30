@@ -1,0 +1,8 @@
+{
+  "extends": "@rut-toolkit/tsconfig/base.json",
+  "files": [],
+  "references": [
+    { "path": "./packages/core/tsconfig.json" },
+    { "path": "./packages/zod/tsconfig.json" }
+  ]
+}

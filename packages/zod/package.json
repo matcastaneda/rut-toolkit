@@ -59,21 +59,23 @@
   "scripts": {
     "build": "tsdown",
     "test": "vitest run",
-    "coverage": "vitest run --coverage",
+    "test:coverage": "vitest run --coverage",
     "lint:package": "publint run --strict",
     "lint:types": "attw --pack .",
-    "typecheck": "tsc --project tsconfig.json"
+    "typecheck": "tsc --project tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@rut-toolkit/core": "workspace:*"
   },
   "devDependencies": {
-    "@rut-toolkit/core": "workspace:*",
     "@rut-toolkit/tsconfig": "workspace:*",
     "@rut-toolkit/tsdown": "workspace:*",
     "tsdown": "catalog:",
     "typescript": "catalog:",
+    "vitest": "catalog:vitest",
     "zod": "catalog:"
   },
   "peerDependencies": {
-    "@rut-toolkit/core": "workspace:*",
     "zod": "^4.0.0"
   },
   "engines": {
