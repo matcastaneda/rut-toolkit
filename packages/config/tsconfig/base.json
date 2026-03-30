@@ -12,6 +12,7 @@
     "verbatimModuleSyntax": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": false,
+    "allowImportingTsExtensions": true,
     "incremental": true,
     "noErrorTruncation": true,
     "composite": true,
