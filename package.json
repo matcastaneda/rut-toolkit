@@ -16,9 +16,8 @@
     "lint:spell": "cspell . --color",
     "lint:types": "turbo lint:types --filter=./packages/*",
     "lint:packages": "turbo lint:package --filter=./packages/*",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
+    "test": "turbo test --continue --filter=./packages/*",
+    "coverage": "turbo coverage --filter=./packages/*",
     "typecheck": "tsc --build --noEmit",
     "prepare": "husky"
   },
