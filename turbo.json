@@ -13,7 +13,7 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$"],
+      "inputs": ["$TURBO_DEFAULT$", "tsconfig.build.json", "tsdown.config.ts"],
       "outputs": ["dist/**"]
     },
     "clean": {},
@@ -28,7 +28,9 @@
     "lint:package": {
       "dependsOn": ["build"]
     },
-    "typecheck": {},
+    "typecheck": {
+      "inputs": ["src/**/*.ts", "tsconfig.json"]
+    },
     "test": {
       "dependsOn": ["^build", "build"],
       "inputs": [
