@@ -1,0 +1,74 @@
+name: Bug report (by area)
+description: Report a bug or unexpected behavior in @rut-toolkit.
+title: "[Bug] "
+labels: ["type: bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Thank you** for helping us improve `@rut-toolkit`! 🇨🇱
+        Please provide as much context as possible so we can fix the issue quickly.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description (tl;dr)
+      description: A clear and concise description of what the bug is.
+      placeholder: e.g., The formatRut function returns an incorrect value when receiving a string with dots...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expectation
+    attributes:
+      label: Expected behavior
+      placeholder: What did you expect to happen instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      description: A minimal code snippet or steps to reproduce the issue.
+      placeholder: |
+        1. Import `formatRut` from `@rut-toolkit/core`
+        2. Call `formatRut('12345678-5')`
+        3. See error...
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: area
+    attributes:
+      label: Which package or area does this relate to?
+      description: Select all that apply.
+      options:
+        - label: "@rut-toolkit/core (Validation, Formatting, Utils)"
+        - label: "@rut-toolkit/zod (Zod Schemas)"
+        - label: "TypeScript (Type definitions, autocompletion)"
+        - label: "Build / Imports (ESM, CJS, resolving the package)"
+        - label: "Documentation"
+        - label: "Other"
+
+  - type: input
+    id: version
+    attributes:
+      label: "@rut-toolkit Version"
+      description: Which version of the package are you using?
+      placeholder: "e.g., 0.1.0"
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Where are you running this code?
+      placeholder: "e.g., Node v20.x, TypeScript 5.x, Vite, Next.js, or Browser"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "---\n**Thank you** for your bug report – we appreciate it!"
