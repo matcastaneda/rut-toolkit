@@ -62,7 +62,7 @@
     "coverage": "vitest run --coverage",
     "lint:package": "publint run --strict",
     "lint:types": "attw --pack .",
-    "typecheck": "tsc --project tsconfig.json"
+    "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "devDependencies": {
     "@rut-toolkit/core": "workspace:*",

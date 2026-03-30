@@ -28,6 +28,7 @@
     "lint:package": {
       "dependsOn": ["build"]
     },
+    "typecheck": {},
     "test": {
       "dependsOn": ["^build", "build"],
       "inputs": [

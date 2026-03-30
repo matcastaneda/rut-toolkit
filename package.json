@@ -18,7 +18,7 @@
     "lint:packages": "turbo lint:package --filter=./packages/*",
     "test": "turbo test --continue --filter=./packages/*",
     "coverage": "turbo coverage --filter=./packages/*",
-    "typecheck": "tsc --build --noEmit",
+    "typecheck": "turbo typecheck --filter=./packages/*",
     "prepare": "husky"
   },
   "devDependencies": {
