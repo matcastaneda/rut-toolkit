@@ -26,7 +26,7 @@ const PARSE_RUT_STRING_ERRORS: [string, RutErrorCode][] = [
   ["12345678-0", "RUT_DV_MISMATCH"],
 ];
 
-function expecttoValidRutThrows(input: string, code: RutErrorCode): void {
+function expectToValidRutThrows(input: string, code: RutErrorCode): void {
   expect(() => toValidRut(input)).toThrow(RutError);
   expect(() => toValidRut(input)).toThrow(expect.objectContaining({ code }));
 }
@@ -136,7 +136,7 @@ describe("validate", () => {
       it.each(
         PARSE_RUT_STRING_ERRORS,
       )("code %s for input %j", (input, code) => {
-        expecttoValidRutThrows(input, code);
+        expectToValidRutThrows(input, code);
       });
     });
   });
