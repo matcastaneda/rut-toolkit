@@ -35,6 +35,7 @@ yarn-error.log*
 
 # TypeScript
 tsconfig.tsbuildinfo
+tsconfig.build.tsbuildinfo
 
 # Misc
 .DS_Store
