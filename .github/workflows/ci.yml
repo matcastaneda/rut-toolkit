@@ -1,0 +1,69 @@
+name: ✅ Code Quality
+
+on:
+  pull_request:
+    branches: ["*"]
+  push:
+    branches: ["main"]
+  merge_group:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+env: 
+  FORCE_COLOR: 3
+  SKIP_ENV_VALIDATION: true
+  NEXT_TELEMETRY_DISABLED: 1
+
+jobs:
+  format:
+    name: ✨ Lint & Format
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📦 Checkout repository
+        uses: actions/checkout@v6
+
+      - name: 🔧 Setup Environment
+        uses: ./.github/actions/setup-environment 
+
+      - name: 🎨 Biome Check (Lint & Format)
+        run: pnpm lint
+
+      - name: 🕵️ Check Dead Code & Deps (Knip)
+        run: pnpm lint:dependencies
+
+      - name: 📝 Spell Check
+        run: pnpm lint:spell
+
+  typecheck:
+    name: 🔎 Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📦 Checkout repository
+        uses: actions/checkout@v6
+
+      - name: 🔧 Setup Environment
+        uses: ./.github/actions/setup-environment 
+
+      - name: 🔎 Typecheck
+        run: pnpm typecheck
+
+  pkg-check:
+    name: 📦 Package Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📦 Checkout repository
+        uses: actions/checkout@v6
+
+      - name: 🔧 Setup Environment
+        uses: ./.github/actions/setup-environment 
+
+      - name: 🏗️ Build Packages
+        run: pnpm build
+        
+      - name: 🔬 Validate Exports (Publint)
+        run: pnpm lint:packages
+
+      - name: 🕵️ Check Types (ATTW)
+        run: pnpm lint:types
