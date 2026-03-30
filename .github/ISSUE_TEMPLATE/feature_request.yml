@@ -1,0 +1,51 @@
+name: Feature request
+description: Suggest a new feature, API, or improvement for @rut-toolkit.
+title: "[Feature] "
+labels: ["type: feature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Thank you** for taking the time to suggest an improvement! 💡
+        Please provide as much detail as possible to help us understand the use case.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem or a DX bottleneck?
+      description: A clear description of the problem (e.g., "It's frustrating when I have to manually map the RUT output to...")
+      placeholder: |
+        Describe the problem or limitation. If it's related to an existing issue, link it here.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the proposed solution or API
+      description: A clear description of what you want to happen and how the code would look.
+      placeholder: |
+        e.g., I would like a new function in `@rut-toolkit/core` called `cleanRut` that...
+        e.g., An integration package for Valibot similar to `@rut-toolkit/zod`...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Describe alternatives you've considered
+      description: Optional. Have you tried building a custom wrapper or using a different approach?
+      placeholder: |
+        e.g., Currently, I am doing this manually using Regex...
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Optional. Links to API design inspirations, other libraries, or TypeScript playground examples.
+      placeholder: |
+        Add any other context or code snippets about the feature request here.
+        
+  - type: markdown
+    attributes:
+      value: "---\n**Note:** See [CONTRIBUTING.md](https://github.com/matcastaneda/rut-toolkit/blob/main/CONTRIBUTING.md) — for code changes you'll need to be assigned to this issue before opening a PR."
