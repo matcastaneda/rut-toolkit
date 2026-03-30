@@ -1,0 +1,39 @@
+name: Q&A
+description: Ask a question about how to use, configure, or implement @rut-toolkit.
+title: "[Question] "
+labels: ["type: question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Welcome to the Q&A!** 💬
+        Before asking, please search the existing discussions to see if your question has already been answered.
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: What are you trying to achieve?
+      description: Explain your end goal.
+      placeholder: e.g., I am trying to format a RUT input field in real-time using React Hook Form...
+    validations:
+      required: true
+
+  - type: textarea
+    id: code
+    attributes:
+      label: Code Snippet / What have you tried?
+      description: Show us what you have so far. You can paste TypeScript code or link to a CodeSandbox/StackBlitz.
+      placeholder: |
+        ```typescript
+        import { formatRut } from '@rut-toolkit/core';
+        // Your code here...
+        ```
+    validations:
+      required: true
+
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: What framework or environment are you using?
+      placeholder: e.g., Next.js 14, Vite + React, Node.js script.

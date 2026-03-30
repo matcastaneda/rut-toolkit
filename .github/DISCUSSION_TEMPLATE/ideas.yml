@@ -1,0 +1,28 @@
+name: Idea
+description: Propose a new concept, utility, or architectural change before opening an issue.
+title: "[Idea] "
+labels: ["type: idea"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Have a great idea? Let's discuss it!** 🧠
+        This is a safe space to brainstorm. If the idea gets approved by the maintainers, we will convert it into an official Feature Request Issue.
+
+  - type: textarea
+    id: concept
+    attributes:
+      label: The Idea
+      description: What is your proposal?
+      placeholder: e.g., We should add a new package `@rut-toolkit/valibot` for Valibot schemas...
+    validations:
+      required: true
+
+  - type: textarea
+    id: usecase
+    attributes:
+      label: Why is this useful?
+      description: Who would benefit from this?
+      placeholder: e.g., Many developers are migrating from Zod to Valibot because of bundle size...
+    validations:
+      required: true
