@@ -18,11 +18,5 @@
     "declaration": true,
     "emitDeclarationOnly": true
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "vitest.config.ts"
-  ]
+  "exclude": ["**/dist/**", "**/node_modules/**"]
 }

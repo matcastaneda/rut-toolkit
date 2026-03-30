@@ -15,7 +15,7 @@ Shared TypeScript configurations for the monorepo.
 ```json
 {
   // ...
-  "extends": "@rut-toolkit/config/tsconfig/base.json",
+  "extends": "@rut-toolkit/tsconfig/base.json",
   // ...
 }
 ```
