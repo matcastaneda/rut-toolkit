@@ -23,6 +23,8 @@ catalogs:
       specifier: 4.1.2
       version: 4.1.2
 
+packageExtensionsChecksum: sha256-e3SaMPKLiF4r9p3n/sjJ8arn6YHHZ4IDTFamTgBC8wk=
+
 importers:
 
   .:
@@ -80,6 +82,9 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 6.0.2
+      vitest:
+        specifier: catalog:vitest
+        version: 4.1.2(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(jiti@2.6.1)(yaml@2.8.3))
 
   packages/zod:
     dependencies:
@@ -99,6 +104,9 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 6.0.2
+      vitest:
+        specifier: catalog:vitest
+        version: 4.1.2(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(jiti@2.6.1)(yaml@2.8.3))
       zod:
         specifier: 'catalog:'
         version: 4.3.6
@@ -3429,6 +3437,7 @@ snapshots:
 
   vitest@4.1.2(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(jiti@2.6.1)(yaml@2.8.3)):
     dependencies:
+      '@vitest/coverage-v8': 4.1.2(vitest@4.1.2(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(jiti@2.6.1)(yaml@2.8.3)))
       '@vitest/expect': 4.1.2
       '@vitest/mocker': 4.1.2(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(jiti@2.6.1)(yaml@2.8.3))
       '@vitest/pretty-format': 4.1.2
@@ -3450,6 +3459,7 @@ snapshots:
       vite: 8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(jiti@2.6.1)(yaml@2.8.3)
       why-is-node-running: 2.3.0
     transitivePeerDependencies:
+      - '@vitest/browser'
       - msw
 
   vscode-languageserver-textdocument@1.0.12: {}

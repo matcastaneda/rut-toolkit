@@ -4,6 +4,15 @@
   "type": "module",
   "private": true,
   "packageManager": "pnpm@10.33.0",
+  "pnpm": {
+    "packageExtensions": {
+      "vitest@*": {
+        "dependencies": {
+          "@vitest/coverage-v8": "4.1.2"
+        }
+      }
+    }
+  },
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build --filter=./packages/*",
@@ -17,7 +26,7 @@
     "lint:types": "turbo lint:types --filter=./packages/*",
     "lint:packages": "turbo lint:package --filter=./packages/*",
     "test": "turbo test --continue --filter=./packages/*",
-    "coverage": "turbo coverage --filter=./packages/*",
+    "test:coverage": "turbo test:coverage --filter=./packages/*",
     "typecheck": "turbo typecheck --filter=./packages/*",
     "prepare": "husky"
   },

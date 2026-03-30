@@ -72,7 +72,8 @@
     "@rut-toolkit/tsconfig": "workspace:*",
     "@rut-toolkit/tsdown": "workspace:*",
     "tsdown": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:vitest"
   },
   "engines": {
     "node": ">=22"
