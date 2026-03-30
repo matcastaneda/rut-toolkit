@@ -3,8 +3,17 @@ name: 🧪 Unit Tests
 on:
   pull_request:
     branches: ["*"]
+    paths-ignore:
+      - '**/*.md'
+      - '.vscode/**'
+      - '.github/ISSUE_TEMPLATE/**'
+      - 'LICENSE'
   push:
     branches: ["main"]
+    paths:
+      - 'packages/**'
+      - 'package.json'
+      - 'turbo.json'
   merge_group:
 
 concurrency:
@@ -13,7 +22,6 @@ concurrency:
 
 env:
   FORCE_COLOR: 3
-  NEXT_TELEMETRY_DISABLED: 1
 
 jobs:
   test:
