@@ -18,21 +18,21 @@
       "inputs": ["$TURBO_DEFAULT$", "tsconfig.build.json", "tsdown.config.ts"],
       "outputs": ["dist/**"]
     },
-    "clean": {},
-    "format": {
-      "dependsOn": ["//#format"]
+    "clean": {
+      "cache": false
     },
-    "//#format": {},
-    "lint": {},
     "lint:types": {
-      "dependsOn": ["build"]
+      "dependsOn": ["build"],
+      "cache": true
     },
     "lint:package": {
-      "dependsOn": ["build"]
+      "dependsOn": ["build"],
+      "cache": true
     },
     "typecheck": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", "tsconfig.json"]
+      "inputs": ["$TURBO_DEFAULT$", "tsconfig.json"],
+      "cache": true
     },
     "test": {
       "dependsOn": ["^build"],
@@ -42,7 +42,8 @@
     },
     "test:coverage": {
       "dependsOn": ["^build"],
-      "outputs": ["coverage/**"]
+      "outputs": ["coverage/**"],
+      "cache": true
     },
     "deploy": {
       "cache": false
