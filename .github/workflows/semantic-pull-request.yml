@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🔍 Validate PR title
-        uses: amannn/action-semantic-pull-request@v6
+        uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
         id: lint_pr_title
         with:
           scopes: |
@@ -38,7 +38,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ⚠️ Comment on invalid PR title
-        uses: marocchino/sticky-pull-request-comment@v3
+        uses: marocchino/sticky-pull-request-comment@70d2764d1a7d5d9560b100cbea0077fc8f633987 # v3.0.2
         if: always() && (steps.lint_pr_title.outputs.error_message != null)
         with:
           header: pr-title-lint-error
@@ -63,7 +63,7 @@ jobs:
             Just edit the title of this PR at the top of the page, and this check will automatically pass. Let us know if you need any help! 🚀
 
       - name: 🧹 Remove comment on valid PR title
-        uses: marocchino/sticky-pull-request-comment@v3
+        uses: marocchino/sticky-pull-request-comment@70d2764d1a7d5d9560b100cbea0077fc8f633987 # v3.0.2
         if: ${{ steps.lint_pr_title.outputs.error_message == null }}
         with:
           header: pr-title-lint-error
