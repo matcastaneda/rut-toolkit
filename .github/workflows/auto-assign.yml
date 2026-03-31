@@ -25,29 +25,35 @@ jobs:
               await github.rest.issues.addAssignees({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: pr.number,
+                issue_number: context.issue.number,
                 assignees: [pr.user.login]
               });
-              console.log(`🤖 Auto-assigned PR #${pr.number} to author @${pr.user.login}`);
+              console.log(`🤖 Auto-assigned PR #${context.issue.number} to author @${pr.user.login}`);
             }
 
       - name: 🏷️ Auto-label based on title
-        if: (github.event_name == 'issues' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false)) && github.actor != 'dependabot[bot]'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: github.event_name == 'issues' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false)
         uses: actions/github-script@v8
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const title = context.payload.pull_request ? context.payload.pull_request.title : context.payload.issue.title;
-            const issueNumber = context.payload.pull_request ? context.payload.pull_request.number : context.payload.issue.number;
+            // Safely extract title using optional chaining
+            const title = context.payload.pull_request?.title || context.payload.issue?.title;
+            const issueNumber = context.issue.number;
             
+            if (!title) {
+              console.log('ℹ️ No title found, skipping...');
+              return;
+            }
+
             const labelsToAdd = new Set();
 
+            // Mappings for conventional commit types
             const typeMappings = [
               { pattern: /^(feat|feature)(\(.*\))?:/i, label: 'type: feature' },
               { pattern: /^fix(\(.*\))?:/i, label: 'type: bug' },
               { pattern: /^docs(\(.*\))?:/i, label: 'type: docs' },
-              { pattern: /^(chore|build|ci)(\(.*\))?:/i, label: 'type: maintenance' },
+              { pattern: /^(chore|build|ci|test)(\(.*\))?:/i, label: 'type: maintenance' },
               { pattern: /^(refactor|perf)(\(.*\))?:/i, label: 'type: maintenance' }
             ];
 
@@ -58,6 +64,7 @@ jobs:
               }
             }
 
+            // Extract scope from parentheses (e.g., feat(core): -> core)
             const scopeMatch = title.match(/^[\w-]+(?:\(([\w-]+)\))?:/);
             if (scopeMatch && scopeMatch[1]) {
               const scope = scopeMatch[1].toLowerCase();
@@ -66,6 +73,7 @@ jobs:
               if (scope === 'infra' || scope === 'deps') labelsToAdd.add('area: infra');
             }
 
+            // Apply labels if any were matched
             if (labelsToAdd.size > 0) {
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,
