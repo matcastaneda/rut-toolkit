@@ -7,13 +7,18 @@ on:
       - '**/*.md'
       - '.vscode/**'
       - '.github/ISSUE_TEMPLATE/**'
+      - '.github/DISCUSSION_TEMPLATE/**'
       - 'LICENSE'
+      - 'FUNDING.yml'
   push:
     branches: ["main"]
-    paths:
-      - 'packages/**'
-      - 'package.json'
-      - 'turbo.json'
+    paths-ignore:
+      - '**/*.md'
+      - '.vscode/**'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/DISCUSSION_TEMPLATE/**'
+      - 'LICENSE'
+      - 'FUNDING.yml'
   merge_group:
 
 concurrency:
