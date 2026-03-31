@@ -16,7 +16,7 @@ jobs:
       pull-requests: write
     steps:
       - name: 🔍 Mark stale issues, close stale issues
-        uses: actions/stale@v10
+        uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f # v10.2.0
         id: issue-stale
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
@@ -33,7 +33,7 @@ jobs:
           operations-per-run: 300
 
       - name: 🔍 Mark stale PRs, close stale PRs
-        uses: actions/stale@v10
+        uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f # v10.2.0
         id: pr-state
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
