@@ -30,12 +30,12 @@
     "@changesets/changelog-github": "0.6.0",
     "@changesets/cli": "2.30.0",
     "@vitest/coverage-v8": "catalog:vitest",
-    "cspell": "9.7.0",
+    "cspell": "10.0.0",
     "husky": "9.1.7",
-    "knip": "6.1.0",
+    "knip": "6.3.0",
     "publint": "0.3.18",
     "shx": "0.4.0",
-    "turbo": "2.9.0",
+    "turbo": "2.9.5",
     "vitest": "catalog:vitest"
   }
 }
