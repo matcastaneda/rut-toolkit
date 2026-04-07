@@ -96,7 +96,7 @@ describe("RutError", () => {
 
     beforeEach(() => {
       originalCapture = ErrorCtor.captureStackTrace;
-      ErrorCtor.captureStackTrace = undefined;
+      ErrorCtor.captureStackTrace = () => {};
     });
 
     afterEach(() => {
