@@ -6,11 +6,14 @@
   "exports": {
     "./base.json": "./base.json",
     "./nextjs.json": "./nextjs.json",
-    "./react-library.json": "./react-library.json"
+    "./react.json": "./react.json"
   },
   "files": [
     "base.json",
-    "react-library.json",
+    "react.json",
     "nextjs.json"
-  ]
+  ],
+  "peerDependencies": {
+    "typescript": ">=5.0.0"
+  }
 }
