@@ -7,12 +7,19 @@ import { libraryPreset } from "./library.ts";
  * Extends the standard library preset with JSX transform support
  * and externalizes `react` / `react-dom` automatically.
  */
-export function reactLibraryPreset(overrides?: UserConfig): UserConfig {
+export function reactLibraryPreset(overrides: UserConfig = {}): UserConfig {
+  const { deps, ...restOverrides } = overrides;
+
   return libraryPreset({
     platform: "neutral",
+    ...restOverrides,
     deps: {
-      neverBundle: [/^react/, /^react-dom/],
+      ...deps,
+      neverBundle: [
+        /^react/,
+        /^react-dom/,
+        ...(Array.isArray(deps?.neverBundle) ? deps.neverBundle : []),
+      ],
     },
-    ...overrides,
   });
 }

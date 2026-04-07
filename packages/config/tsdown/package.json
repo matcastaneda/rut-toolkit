@@ -6,14 +6,9 @@
   "exports": {
     ".": "./index.ts",
     "./library": "./library.ts",
-    "./react-library": "./react-library.ts"
+    "./react": "./react.ts"
   },
-  "files": [
-    "index.ts",
-    "library.ts",
-    "react-library.ts"
-  ],
-  "devDependencies": {
+  "peerDependencies": {
     "tsdown": "catalog:"
   }
 }
