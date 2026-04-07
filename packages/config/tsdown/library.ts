@@ -6,7 +6,7 @@ import type { UserConfig } from "tsdown";
  * Outputs ESM + CJS with declaration files, targeting ES2022.
  * Override any option by passing a partial config object.
  */
-export function libraryPreset(overrides?: UserConfig): UserConfig {
+export function libraryPreset(overrides: UserConfig = {}): UserConfig {
   return {
     entry: ["src/index.ts"],
     format: ["esm", "cjs"],
@@ -16,7 +16,6 @@ export function libraryPreset(overrides?: UserConfig): UserConfig {
     sourcemap: true,
     publint: true,
     unbundle: true,
-    tsconfig: overrides?.tsconfig || "./tsconfig.build.json",
     ...overrides,
   };
 }

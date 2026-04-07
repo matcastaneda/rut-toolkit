@@ -1,8 +1,9 @@
 {
   "extends": "@rut-toolkit/tsconfig/base.json",
-  "compilerOptions": {
-    "lib": ["ES2022"],
-    "outDir": "./dist"
-  },
-  "include": ["src/**/*", "vitest.config.ts", "tsdown.config.ts"]
+  "include": [
+    "src/**/*",
+    "vitest.config.ts",
+    "tsdown.config.ts",
+    "**/*.test.ts"
+  ]
 }
