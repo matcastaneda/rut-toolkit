@@ -16,6 +16,5 @@ catalogs:
 linkWorkspacePackages: true
 
 blockExoticSubdeps: true
-enableGlobalVirtualStore: true
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 43200
