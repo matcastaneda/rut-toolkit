@@ -1,4 +1,5 @@
 import type { UserConfig } from "tsdown";
+import { defineConfig, mergeConfig } from "tsdown";
 
 /**
  * Shared tsdown preset for standard TypeScript library packages.
@@ -7,7 +8,7 @@ import type { UserConfig } from "tsdown";
  * Override any option by passing a partial config object.
  */
 export function libraryPreset(overrides: UserConfig = {}): UserConfig {
-  return {
+  const baseConfig = defineConfig({
     entry: ["src/index.ts"],
     format: ["esm", "cjs"],
     dts: true,
@@ -16,6 +17,7 @@ export function libraryPreset(overrides: UserConfig = {}): UserConfig {
     sourcemap: true,
     publint: true,
     unbundle: true,
-    ...overrides,
-  };
+  });
+
+  return mergeConfig(baseConfig, overrides);
 }
