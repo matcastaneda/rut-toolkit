@@ -3,7 +3,7 @@ import { configDefaults, defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     globals: false,
-    projects: ["./packages/*"],
+    projects: ["packages/*", "!packages/config/*"],
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html", "lcov"],
@@ -17,7 +17,6 @@ export default defineConfig({
         "**/*.test.{ts,tsx}",
         "**/*.config.{ts,js}",
         "**/index.ts",
-        "packages/config/**",
         "packages/*/src/types.ts",
       ],
       thresholds: {

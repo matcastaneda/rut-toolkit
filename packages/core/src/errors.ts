@@ -93,13 +93,6 @@ export class RutError extends Error {
   constructor(code: RutErrorCode, rut?: string) {
     super(rut != null ? `[${code}] ("${rut}")` : `[${code}]`);
 
-    Object.setPrototypeOf(this, new.target.prototype);
-
-    const ErrorWithCapture = Error as RutErrorConstructorWithCapture;
-    if (typeof ErrorWithCapture.captureStackTrace === "function") {
-      ErrorWithCapture.captureStackTrace(this, RutError);
-    }
-
     this.code = code;
     this.meta = RUT_ERROR_META[code];
 
