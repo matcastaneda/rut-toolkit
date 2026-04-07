@@ -1,4 +1,5 @@
 import type { UserConfig } from "tsdown";
+import { mergeConfig } from "tsdown";
 import { libraryPreset } from "./library.ts";
 
 /**
@@ -8,18 +9,14 @@ import { libraryPreset } from "./library.ts";
  * and externalizes `react` / `react-dom` automatically.
  */
 export function reactLibraryPreset(overrides: UserConfig = {}): UserConfig {
-  const { deps, ...restOverrides } = overrides;
-
-  return libraryPreset({
+  const reactBaseConfig: UserConfig = {
     platform: "neutral",
-    ...restOverrides,
     deps: {
-      ...deps,
-      neverBundle: [
-        /^react/,
-        /^react-dom/,
-        ...(Array.isArray(deps?.neverBundle) ? deps.neverBundle : []),
-      ],
+      neverBundle: [/^react/, /^react-dom/],
     },
-  });
+  };
+
+  const mergedReactConfig = mergeConfig(reactBaseConfig, overrides);
+
+  return libraryPreset(mergedReactConfig);
 }

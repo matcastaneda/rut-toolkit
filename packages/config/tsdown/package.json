@@ -15,5 +15,8 @@
   ],
   "devDependencies": {
     "tsdown": "catalog:"
+  },
+  "peerDependencies": {
+    "tsdown": "*"
   }
 }
