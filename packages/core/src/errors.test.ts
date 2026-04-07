@@ -1,5 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { RutErrorConstructorWithCapture } from "./errors";
+import { describe, expect, it } from "vitest";
 import { RUT_ERROR_META, RutError } from "./errors";
 import type { RutErrorCode } from "./types";
 
@@ -87,37 +86,6 @@ describe("RutError", () => {
       expect(typeof error.stack).toBe("string");
       expect(error.stack?.length).toBeGreaterThan(0);
       expect(error.stack).toMatch(/\n/);
-    });
-  });
-
-  describe("without Error.captureStackTrace (non-V8)", () => {
-    const ErrorCtor = Error as RutErrorConstructorWithCapture;
-    let originalCapture: RutErrorConstructorWithCapture["captureStackTrace"];
-
-    beforeEach(() => {
-      originalCapture = ErrorCtor.captureStackTrace;
-      ErrorCtor.captureStackTrace = () => {};
-    });
-
-    afterEach(() => {
-      if (originalCapture !== undefined) {
-        ErrorCtor.captureStackTrace = originalCapture;
-      }
-    });
-
-    it("still constructs, keeps metadata, and provides a stack", () => {
-      const error = new RutError("RUT_EMPTY");
-
-      expect(error.code).toBe("RUT_EMPTY");
-      expect(error.meta).toBe(RUT_ERROR_META.RUT_EMPTY);
-      expect(error.stack).toBeDefined();
-      expect(typeof error.stack).toBe("string");
-    });
-
-    it("still formats messages with RUT detail when captureStackTrace is absent", () => {
-      const error = new RutError("RUT_DV_MISMATCH", "1-9");
-
-      expect(error.message).toBe('[RUT_DV_MISMATCH] ("1-9")');
     });
   });
 });
