@@ -1,3 +1,4 @@
-import { libraryPreset } from "@rut-toolkit/tsdown";
+import { libraryPreset } from "@rut-toolkit/tsdown/library";
+import { defineConfig } from "tsdown";
 
-export default libraryPreset();
+export default defineConfig(libraryPreset());
