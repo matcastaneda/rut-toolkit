@@ -60,10 +60,14 @@ importers:
         specifier: catalog:vitest
         version: 4.1.2(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(jiti@2.6.1)(yaml@2.8.3))
 
-  packages/config/tsconfig: {}
+  packages/config/tsconfig:
+    dependencies:
+      typescript:
+        specifier: '>=5.0.0'
+        version: 6.0.2
 
   packages/config/tsdown:
-    devDependencies:
+    dependencies:
       tsdown:
         specifier: 'catalog:'
         version: 0.21.7(@arethetypeswrong/core@0.18.2)(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(oxc-resolver@11.19.1(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1))(publint@0.3.18)(typescript@6.0.2)
