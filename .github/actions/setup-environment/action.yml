@@ -1,5 +1,12 @@
 name: 🔧 Setup Environment Workflow
 description: 🚀 Composite action that sets up Node.js, pnpm, and installs dependencies
+
+inputs:
+  registry-url:
+    description: "The npm registry URL for publishing"
+    required: false
+    default: ""
+
 runs:
   using: "composite"
   steps:
@@ -13,6 +20,7 @@ runs:
       with:
         node-version-file: .node-version
         cache: 'pnpm'
+        registry-url: ${{ inputs.registry-url }}
 
     - name: 📥 Install dependencies
       shell: bash

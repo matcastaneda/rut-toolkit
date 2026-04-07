@@ -1,0 +1,14 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.1.3/schema.json",
+  "changelog": [
+    "@changesets/changelog-github",
+    { "repo": "matcastaneda/rut-toolkit" }
+  ],
+  "commit": false,
+  "fixed": [["@rut-toolkit/core", "@rut-toolkit/zod"]],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": []
+}

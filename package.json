@@ -28,11 +28,16 @@
     "test": "turbo test --continue --filter=./packages/*",
     "test:coverage": "turbo test:coverage --filter=./packages/*",
     "typecheck": "turbo typecheck --filter=./packages/*",
+    "changeset": "changeset",
+    "release": "changeset version",
+    "pub:release": "pnpm build && changeset publish --access public",
     "prepare": "husky"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.2",
     "@biomejs/biome": "2.4.10",
+    "@changesets/changelog-github": "0.6.0",
+    "@changesets/cli": "2.30.0",
     "@vitest/coverage-v8": "catalog:vitest",
     "cspell": "9.7.0",
     "husky": "9.1.7",
