@@ -8,7 +8,15 @@
     "./library": "./library.ts",
     "./react": "./react.ts"
   },
-  "peerDependencies": {
+  "files": [
+    "index.ts",
+    "library.ts",
+    "react.ts"
+  ],
+  "devDependencies": {
     "tsdown": "catalog:"
+  },
+  "peerDependencies": {
+    "tsdown": "*"
   }
 }
