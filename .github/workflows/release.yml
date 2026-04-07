@@ -1,0 +1,45 @@
+name: 🚀 Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  id-token: write 
+  contents: write 
+  pull-requests: write 
+
+jobs:
+  release:
+    if: ${{ github.repository_owner == 'matcastaneda' }}
+    name: 🚀 Release Packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📦 Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with: 
+          fetch-depth: 0
+
+      - name: 🔧 Setup Environment
+        uses: ./.github/actions/setup-environment
+        with:
+          registry-url: "https://registry.npmjs.org"
+      
+      - name: 🏗️ Build packages
+        run: pnpm build
+      
+      - name: 🦋 Create Release PR or Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          commit: "chore(release): version packages"
+          title: "chore(release): version packages"
+          version: pnpm release
+          publish: pnpm pub:release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
