@@ -40,7 +40,7 @@
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
       "import": {
@@ -51,13 +51,66 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/index.d.mts"
-      ]
+    },
+    "./errors": {
+      "import": {
+        "types": "./dist/errors/index.d.mts",
+        "default": "./dist/errors/index.mjs"
+      },
+      "require": {
+        "types": "./dist/errors/index.d.cts",
+        "default": "./dist/errors/index.cjs"
+      }
+    },
+    "./barcode": {
+      "import": {
+        "types": "./dist/barcode.d.mts",
+        "default": "./dist/barcode.mjs"
+      },
+      "require": {
+        "types": "./dist/barcode.d.cts",
+        "default": "./dist/barcode.cjs"
+      }
+    },
+    "./business": {
+      "import": {
+        "types": "./dist/business.d.mts",
+        "default": "./dist/business.mjs"
+      },
+      "require": {
+        "types": "./dist/business.d.cts",
+        "default": "./dist/business.cjs"
+      }
+    },
+    "./clean": {
+      "import": {
+        "types": "./dist/clean.d.mts",
+        "default": "./dist/clean.mjs"
+      },
+      "require": {
+        "types": "./dist/clean.d.cts",
+        "default": "./dist/clean.cjs"
+      }
+    },
+    "./format": {
+      "import": {
+        "types": "./dist/format.d.mts",
+        "default": "./dist/format.mjs"
+      },
+      "require": {
+        "types": "./dist/format.d.cts",
+        "default": "./dist/format.cjs"
+      }
+    },
+    "./validate": {
+      "import": {
+        "types": "./dist/validate.d.mts",
+        "default": "./dist/validate.mjs"
+      },
+      "require": {
+        "types": "./dist/validate.d.cts",
+        "default": "./dist/validate.cjs"
+      }
     }
   },
   "scripts": {

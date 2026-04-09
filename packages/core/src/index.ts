@@ -24,8 +24,9 @@ export {
 export { cleanRut, padRut, splitRut } from "./clean";
 
 export {
-  type RawError,
+  getRutErrorMessage,
   RUT_ERROR_CODES,
+  RUT_ERROR_MESSAGES,
   RUT_ERROR_META,
   RutError,
   type RutErrorCategory,
@@ -42,8 +43,6 @@ export {
   toCompactRut,
   toSiiRut,
 } from "./format";
-
-export { getRutErrorMessage, RUT_ERROR_MESSAGES } from "./i18n";
 
 export type {
   BarcodeScanResult,
