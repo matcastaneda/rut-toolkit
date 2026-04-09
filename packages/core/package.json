@@ -1,7 +1,7 @@
 {
   "name": "@rut-toolkit/core",
   "version": "0.1.0",
-  "description": "Enterprise-grade, zero-dependency toolkit for Chilean RUT/RUN validation, formatting, and ID barcode parsing.",
+  "description": "Zero-dependency Chilean RUT/RUN utilities: validation, formatting, cleaning, and ID-card barcode parsing.",
   "author": {
     "name": "Matías Castañeda",
     "url": "https://github.com/matcastaneda"
@@ -23,9 +23,13 @@
     "chile",
     "validation",
     "formatting",
+    "barcode",
+    "cedula",
+    "id-card",
     "modulo-11",
+    "check-digit",
     "digito-verificador",
-    "toolkit",
+    "zero-dependency",
     "typescript"
   ],
   "type": "module",
@@ -113,6 +117,28 @@
       }
     }
   },
+  "typesVersions": {
+    "*": {
+      "barcode": [
+        "./dist/barcode/index.d.mts"
+      ],
+      "business": [
+        "./dist/business/index.d.mts"
+      ],
+      "clean": [
+        "./dist/clean/index.d.mts"
+      ],
+      "errors": [
+        "./dist/errors/index.d.mts"
+      ],
+      "format": [
+        "./dist/format/index.d.mts"
+      ],
+      "validate": [
+        "./dist/validate/index.d.mts"
+      ]
+    }
+  },
   "scripts": {
     "build": "tsdown",
     "test": "vitest run",
@@ -129,6 +155,6 @@
     "vitest": "catalog:vitest"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.0.0"
   }
 }
