@@ -6,6 +6,10 @@
  * formatting, cleaning, and ID barcode parsing.
  */
 
+export type {
+  BarcodeScanResult,
+  BarcodeSource,
+} from "./barcode";
 export {
   analyzeRutBarcode,
   isRegistroCivilQrUrl,
@@ -21,20 +25,36 @@ export {
   isProvisionalRut,
 } from "./business";
 
-export { cleanRut, padRut, splitRut } from "./clean";
+export type {
+  RutCleanOptions,
+  RutComponents,
+} from "./clean";
+export {
+  cleanRut,
+  padRut,
+  splitRut,
+} from "./clean";
 
+export type {
+  RawError,
+  RutErrorCategory,
+  RutErrorCode,
+  RutErrorMeta,
+  RutErrorSeverity,
+  RutLocale,
+  ValidateErrorCodes,
+} from "./errors";
 export {
   getRutErrorMessage,
-  RUT_ERROR_CODES,
   RUT_ERROR_MESSAGES,
   RUT_ERROR_META,
   RutError,
-  type RutErrorCategory,
-  type RutErrorCode,
-  type RutErrorMeta,
-  type RutErrorSeverity,
 } from "./errors";
 
+export type {
+  RutFormatOptions,
+  RutMaskOptions,
+} from "./format";
 export {
   buildRut,
   formatRut,
@@ -45,17 +65,11 @@ export {
 } from "./format";
 
 export type {
-  BarcodeScanResult,
-  BarcodeSource,
-  RutCleanOptions,
-  RutComponents,
   RutDv,
-  RutFormatOptions,
-  RutLocale,
-  RutMaskOptions,
   ValidRut,
 } from "./types";
 
+export type { RutParseResult } from "./validate";
 export {
   calculateDv,
   ensureRealRut,
