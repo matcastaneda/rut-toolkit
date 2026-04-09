@@ -54,7 +54,7 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "lint:package": "publint run --strict",
-    "lint:types": "attw --pack .",
+    "lint:types": "attw --profile node16 --pack .",
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {
