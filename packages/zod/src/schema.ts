@@ -79,7 +79,7 @@ export function createRutSchema(options: Readonly<ZodRutSchemaOptions> = {}) {
   const inner = z
     .string({ error: requiredMsg })
     .min(1, { error: requiredMsg })
-    .superRefine((val, ctx) => {
+    .transform((val, ctx) => {
       const result = tryParseRut(val);
 
       if (!result.ok) {
@@ -87,29 +87,23 @@ export function createRutSchema(options: Readonly<ZodRutSchemaOptions> = {}) {
           ctx,
           val,
           messages[result.code] ?? getRutErrorMessage(result.code, locale),
-          {
-            rutErrorCode: result.code,
-            rutErrorMeta: result.meta,
-          },
+          { rutErrorCode: result.code, rutErrorMeta: result.meta },
         );
-        return;
+        return z.NEVER;
       }
 
-      if (rejectPlaceholders && isPlaceholderRut(val)) {
+      if (rejectPlaceholders && isPlaceholderRut(result.rut)) {
         const code: RutErrorCode = "RUT_SUSPICIOUS";
         addRutCustomIssue(
           ctx,
           val,
           messages[code] ?? getRutErrorMessage(code, locale),
-          {
-            rutErrorCode: code,
-            rutErrorMeta: RUT_ERROR_META.RUT_SUSPICIOUS,
-          },
+          { rutErrorCode: code, rutErrorMeta: RUT_ERROR_META.RUT_SUSPICIOUS },
         );
+        return z.NEVER;
       }
-    })
-    .transform((val) => {
-      return formatRut(toValidRut(val), format);
+
+      return formatRut(result.rut, format);
     });
 
   if (!trimInput) {
