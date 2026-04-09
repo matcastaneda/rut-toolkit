@@ -1,4 +1,5 @@
-import type { RutErrorCode, RutLocale } from "./types";
+import type { RutErrorCode } from "./errors";
+import type { RutLocale } from "./types";
 
 /**
  * Bilingual message dictionary for all error codes.

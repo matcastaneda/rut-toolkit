@@ -1,7 +1,8 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import * as cleanModule from "./clean";
+import type { RutErrorCode } from "./errors";
 import { RUT_ERROR_META, RutError } from "./errors";
-import type { RutDv, RutErrorCode } from "./types";
+import type { RutDv } from "./types";
 import {
   calculateDv,
   ensureRealRut,

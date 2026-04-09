@@ -24,9 +24,14 @@ export {
 export { cleanRut, padRut, splitRut } from "./clean";
 
 export {
+  type RawError,
+  RUT_ERROR_CODES,
   RUT_ERROR_META,
   RutError,
-  type RutErrorConstructorWithCapture,
+  type RutErrorCategory,
+  type RutErrorCode,
+  type RutErrorMeta,
+  type RutErrorSeverity,
 } from "./errors";
 
 export {
@@ -46,14 +51,9 @@ export type {
   RutCleanOptions,
   RutComponents,
   RutDv,
-  RutErrorCategory,
-  RutErrorCode,
-  RutErrorMeta,
-  RutErrorSeverity,
   RutFormatOptions,
   RutLocale,
   RutMaskOptions,
-  RutParseResult,
   ValidRut,
 } from "./types";
 

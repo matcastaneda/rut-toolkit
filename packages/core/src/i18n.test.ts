@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
+import type { RutErrorCode } from "./errors";
 import { getRutErrorMessage, RUT_ERROR_MESSAGES } from "./i18n";
-import type { RutErrorCode, RutLocale } from "./types";
+import type { RutLocale } from "./types";
 
 const ERROR_CODES = Object.keys(RUT_ERROR_MESSAGES.es) as RutErrorCode[];
 const LOCALES: RutLocale[] = ["es", "en"];
