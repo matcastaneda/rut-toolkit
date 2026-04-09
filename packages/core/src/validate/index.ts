@@ -1,9 +1,10 @@
+export type { RutParseResult } from "./validate";
+
 export {
   calculateDv,
   ensureRealRut,
   isPlaceholderRut,
   isRut,
-  type RutParseResult,
   toValidRut,
   tryParseRut,
   verifyDv,

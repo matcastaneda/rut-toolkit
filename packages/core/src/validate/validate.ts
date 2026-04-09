@@ -1,4 +1,4 @@
-import { cleanRut, splitRut } from "../clean";
+import { cleanRut } from "../clean";
 import type { RutErrorCode, RutErrorMeta } from "../errors";
 import { RUT_ERROR_META, RutError } from "../errors";
 import type { RutDv, ValidRut } from "../types";
@@ -48,7 +48,7 @@ export function calculateDv(body: string | number): RutDv {
   let multiplier = 2;
 
   for (let i = bodyText.length - 1; i >= 0; i--) {
-    sum += Number(bodyText[i]) * multiplier;
+    sum += (bodyText.charCodeAt(i) - 48) * multiplier;
     multiplier = multiplier === 7 ? 2 : multiplier + 1;
   }
 
@@ -94,16 +94,19 @@ export function verifyDv(body: string, expectedDv: RutDv): boolean {
  *   saveToDb(input);
  * }
  */
-export function isRut(rut: string): boolean {
+export function isRut(rut: string): rut is ValidRut {
   if (typeof rut !== "string") {
     return false;
   }
 
-  const { body, dv } = splitRut(rut);
+  const cleaned = cleanRut(rut);
 
-  if (!body) {
+  if (cleaned.length < 2) {
     return false;
   }
+
+  const body = cleaned.slice(0, -1);
+  const dv = cleaned.slice(-1) as RutDv;
 
   return verifyDv(body, dv);
 }
@@ -143,7 +146,8 @@ export function toValidRut(rut: string): ValidRut {
     throw new RutError("RUT_TOO_LONG", rut);
   }
 
-  const { body, dv } = splitRut(cleaned);
+  const body = cleaned.slice(0, -1);
+  const dv = cleaned.slice(-1) as RutDv;
 
   if (!/^\d+$/.test(body)) {
     throw new RutError("RUT_BODY_NOT_NUMERIC", rut);
@@ -169,11 +173,11 @@ export function toValidRut(rut: string): ValidRut {
  * isPlaceholderRut("12.345.678-5") // false
  */
 export function isPlaceholderRut(rut: string): boolean {
-  const { body } = splitRut(rut);
-  if (!body) {
+  const cleaned = cleanRut(rut);
+  if (cleaned.length < 2) {
     return false;
   }
-  return PLACEHOLDER_RUTS.has(body);
+  return PLACEHOLDER_RUTS.has(cleaned.slice(0, -1));
 }
 
 /**
