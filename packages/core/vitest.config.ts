@@ -5,5 +5,9 @@ export default defineProject({
     clearMocks: true,
     restoreMocks: true,
     testTimeout: 10_000,
+    typecheck: {
+      enabled: true,
+      include: ["src/**/*.test-d.ts"],
+    },
   },
 });
