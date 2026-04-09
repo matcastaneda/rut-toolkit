@@ -51,10 +51,7 @@ export {
   RutError,
 } from "./errors";
 
-export type {
-  RutFormatOptions,
-  RutMaskOptions,
-} from "./format";
+export type { FormattedRut, RutFormatOptions, RutMaskOptions } from "./format";
 export {
   buildRut,
   formatRut,

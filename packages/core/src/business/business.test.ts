@@ -28,11 +28,11 @@ describe("business", () => {
 
     describe("outside company range", () => {
       it.each([
-        ["1-9", true],
-        ["12.345.678-5", false],
-        ["49.999.999-0", false],
-        ["100.000.000-0", false],
-        ["100.200.300-0", false],
+        "1-9",
+        "12.345.678-5",
+        "49.999.999-0",
+        "100.000.000-0",
+        "100.200.300-0",
       ])("%j -> false", (rut) => {
         expect(isCompanyRut(rut)).toBe(false);
       });

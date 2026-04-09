@@ -23,3 +23,16 @@ export type RutCleanOptions = {
    */
   readonly keepLeadingZeros?: boolean;
 };
+
+/**
+ * The parts of a Chilean RUT when the input is known to be a {@link ValidRut}.
+ * Both `body` and `dv` are guaranteed non-empty — no null-checks required.
+ * Returned by {@link splitRut} when called with a {@link ValidRut}.
+ */
+export type FilledRutComponents = {
+  /** The numeric body of the RUT (digits only, always non-empty). */
+  readonly body: string;
+
+  /** The verification digit of the RUT (always a real digit, never `""`). */
+  readonly dv: Exclude<RutDv, "">;
+};

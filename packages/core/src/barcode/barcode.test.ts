@@ -80,14 +80,17 @@ describe("barcode", () => {
   });
 
   describe("analyzeRutBarcode", () => {
-    it("returns a frozen UNKNOWN result for empty or non-string input", () => {
-      const a = analyzeRutBarcode("  ");
-      expect(a).toEqual({ ok: false, rut: null, source: "UNKNOWN" });
-      expect(Object.isFrozen(a)).toBe(true);
-
-      const b = analyzeRutBarcode(null as unknown as string);
-      expect(b).toEqual({ ok: false, rut: null, source: "UNKNOWN" });
-      expect(Object.isFrozen(b)).toBe(true);
+    it("returns UNKNOWN result for empty or non-string input", () => {
+      expect(analyzeRutBarcode("  ")).toEqual({
+        ok: false,
+        rut: null,
+        source: "UNKNOWN",
+      });
+      expect(analyzeRutBarcode(null as unknown as string)).toEqual({
+        ok: false,
+        rut: null,
+        source: "UNKNOWN",
+      });
     });
 
     it("classifies Registro Civil URLs as QR_FRONT", () => {
@@ -95,7 +98,6 @@ describe("barcode", () => {
       expect(result.source).toBe("QR_FRONT");
       expect(result.ok).toBe(true);
       expect(result.rut).toBe("123456785");
-      expect(Object.isFrozen(result)).toBe(true);
     });
 
     it("uses QR_FRONT even when the RUN in the URL is invalid (rut null)", () => {
@@ -105,7 +107,6 @@ describe("barcode", () => {
       expect(result.source).toBe("QR_FRONT");
       expect(result.ok).toBe(false);
       expect(result.rut).toBeNull();
-      expect(Object.isFrozen(result)).toBe(true);
     });
 
     it("classifies plain text with a valid RUT as PDF417_REAR", () => {
@@ -113,21 +114,22 @@ describe("barcode", () => {
       expect(result.source).toBe("PDF417_REAR");
       expect(result.ok).toBe(true);
       expect(result.rut).toBe("123456785");
-      expect(Object.isFrozen(result)).toBe(true);
     });
 
     it("returns UNKNOWN when no valid RUT can be parsed from non-QR text", () => {
-      const result = analyzeRutBarcode("hello world");
-      expect(result).toEqual({ ok: false, rut: null, source: "UNKNOWN" });
-      expect(Object.isFrozen(result)).toBe(true);
+      expect(analyzeRutBarcode("hello world")).toEqual({
+        ok: false,
+        rut: null,
+        source: "UNKNOWN",
+      });
     });
 
     it("returns UNKNOWN when text matches RUT shape but DV is wrong", () => {
-      const result = analyzeRutBarcode("RUT: 12345678-0");
-      expect(result).toEqual({ ok: false, rut: null, source: "UNKNOWN" });
-      expect(Object.isFrozen(result)).toBe(true);
-      expect(result.ok).toBe(false);
-      expect(result.rut).toBeNull();
+      expect(analyzeRutBarcode("RUT: 12345678-0")).toEqual({
+        ok: false,
+        rut: null,
+        source: "UNKNOWN",
+      });
     });
   });
 });

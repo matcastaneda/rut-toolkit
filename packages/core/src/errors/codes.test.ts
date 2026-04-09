@@ -46,7 +46,7 @@ describe("RUT_ERROR_CODES", () => {
     });
 
     it.each(ALL_CODES)("%s entry has a non-empty .message string", (code) => {
-      expect(typeof RUT_ERROR_CODES[code].message).toBe("string");
+      expect(RUT_ERROR_CODES[code].message).toBeTypeOf("string");
       expect(RUT_ERROR_CODES[code].message.length).toBeGreaterThan(0);
     });
 

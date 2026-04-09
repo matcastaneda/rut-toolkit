@@ -15,6 +15,7 @@ export default defineConfig({
         "dist",
         "**/*.d.ts",
         "**/*.test.{ts,tsx}",
+        "**/*.test-d.ts",
         "**/*.config.{ts,js}",
         "packages/*/src/index.ts",
         "packages/*/src/**/index.ts",

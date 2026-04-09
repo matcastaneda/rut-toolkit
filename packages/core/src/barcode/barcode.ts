@@ -48,42 +48,26 @@ export function isRegistroCivilQrUrl(input: string): boolean {
  */
 export function analyzeRutBarcode(barcode: string): BarcodeScanResult {
   if (typeof barcode !== "string" || barcode.trim().length === 0) {
-    return Object.freeze({ ok: false, rut: null, source: "UNKNOWN" });
+    return { ok: false, rut: null, source: "UNKNOWN" };
   }
 
-  if (isRegistroCivilQrUrl(barcode)) {
+  if (barcode.includes(SIDIV_DOMAIN)) {
     const parsedRut = parseRutFromBarcode(barcode);
 
     if (parsedRut) {
-      return Object.freeze({
-        ok: true,
-        rut: parsedRut,
-        source: "QR_FRONT",
-      });
+      return { ok: true, rut: parsedRut, source: "QR_FRONT" };
     }
 
-    return Object.freeze({
-      ok: false,
-      rut: null,
-      source: "QR_FRONT",
-    });
+    return { ok: false, rut: null, source: "QR_FRONT" };
   }
 
   const rutFromRaw = parseRutFromBarcode(barcode);
 
   if (rutFromRaw) {
-    return Object.freeze({
-      ok: true,
-      rut: rutFromRaw,
-      source: "PDF417_REAR",
-    });
+    return { ok: true, rut: rutFromRaw, source: "PDF417_REAR" };
   }
 
-  return Object.freeze({
-    ok: false,
-    rut: null,
-    source: "UNKNOWN",
-  });
+  return { ok: false, rut: null, source: "UNKNOWN" };
 }
 
 /**
@@ -121,7 +105,7 @@ export function parseRutFromBarcode(barcode: string): ValidRut | null {
     return null;
   }
 
-  return cleaned as ValidRut;
+  return cleaned;
 }
 
 /**

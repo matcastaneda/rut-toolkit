@@ -11,7 +11,7 @@ import {
   toValidRut,
   tryParseRut,
   verifyDv,
-} from "../validate";
+} from "./validate";
 
 /** Valid RUT whose body is not listed as suspicious. */
 const VALID_NON_SUSPICIOUS = "13.000.000-2";
@@ -172,11 +172,10 @@ describe("validate", () => {
   describe("tryParseRut", () => {
     describe("success", () => {
       it("returns ok: true and cleaned rut", () => {
-        const result = tryParseRut("12.345.678-5");
-        expect(result.ok).toBe(true);
-        if (result.ok) {
-          expect(result.rut).toBe("123456785");
-        }
+        expect(tryParseRut("12.345.678-5")).toMatchObject({
+          ok: true,
+          rut: "123456785",
+        });
       });
     });
 
@@ -190,13 +189,12 @@ describe("validate", () => {
           RUT_ERROR_META.RUT_INVALID_CHARACTERS,
         ],
       ])("code %s for %j", (input, code, meta) => {
-        const result = tryParseRut(input);
-        expect(result.ok).toBe(false);
-        if (!result.ok) {
-          expect(result.code).toBe(code);
-          expect(result.message).toContain(code);
-          expect(result.meta).toBe(meta);
-        }
+        expect(tryParseRut(input)).toMatchObject({
+          ok: false,
+          code,
+          message: expect.stringContaining(code),
+          meta,
+        });
       });
     });
 
