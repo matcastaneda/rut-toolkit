@@ -7,4 +7,4 @@ export {
   toSiiRut,
 } from "./format";
 
-export type { RutFormatOptions, RutMaskOptions } from "./types";
+export type { FormattedRut, RutFormatOptions, RutMaskOptions } from "./types";

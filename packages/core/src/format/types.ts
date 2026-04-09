@@ -1,3 +1,13 @@
+import type { __brand } from "../types";
+
+/**
+ * A branded string that represents a formatted Chilean RUT (e.g. `"12.345.678-5"`).
+ * Returned by {@link formatRut}, {@link toCompactRut}, {@link fromCompactRut}, and
+ * {@link toSiiRut} when the input is a {@link ValidRut} — guarantees a non-empty result.
+ * At runtime this is a plain string, zero overhead.
+ */
+export type FormattedRut = string & { readonly [__brand]: "FormattedRut" };
+
 /** Formatting options shared by {@link formatRut} and {@link buildRut}. */
 export type RutFormatOptions = {
   /** Insert dots as thousands separator (e.g. `12.345.678`). Defaults to `true`. */
