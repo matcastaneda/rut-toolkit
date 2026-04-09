@@ -1,13 +1,38 @@
-import type { RutErrorCode, RutErrorMeta } from "./types";
+import type { RutErrorCode } from "./codes";
 
-export type RutErrorConstructorWithCapture = typeof Error & {
-  captureStackTrace?(
-    targetObject: object,
-    constructorOpt?: new (...args: never[]) => unknown,
-  ): void;
+/**
+ * Categories of errors emitted by {@link RutError}.
+ * Used to group errors by their source or severity.
+ */
+export type RutErrorCategory =
+  | "input"
+  | "parse"
+  | "validation"
+  | "business"
+  | "barcode"
+  | "system";
+
+/**
+ * Severities of errors emitted by {@link RutError}.
+ * Used to categorize errors by their severity.
+ */
+export type RutErrorSeverity = "warning" | "error" | "critical";
+
+/**
+ * Metadata attached to each {@link RutErrorCode}.
+ * Used to provide additional information about the error.
+ */
+export type RutErrorMeta = {
+  readonly category: RutErrorCategory;
+  readonly severity: RutErrorSeverity;
+  readonly httpStatus: number;
 };
 
-/** Semantic metadata for every {@link RutErrorCode}. */
+/**
+ * A frozen, strongly-typed metadata registry from a
+ * `{ CODE: "category" | "severity" | "httpStatus" }` mapping.
+ * Keys must be `UPPER_SNAKE_CASE`.
+ */
 export const RUT_ERROR_META = {
   RUT_EMPTY: { category: "input", severity: "warning", httpStatus: 400 },
   RUT_NULLISH: { category: "input", severity: "warning", httpStatus: 400 },
@@ -67,35 +92,3 @@ export const RUT_ERROR_META = {
     httpStatus: 500,
   },
 } as const satisfies Record<RutErrorCode, RutErrorMeta>;
-
-/**
- * Structured error thrown by rut-toolkit functions.
- * Carries a machine-readable {@link RutErrorCode} and semantic metadata
- * for programmatic handling, logging, and API responses.
- *
- * @example
- * try {
- *   toValidRut(input);
- * } catch (err) {
- *   if (err instanceof RutError) {
- *     err.code;            // "RUT_DV_MISMATCH"
- *     err.meta.category;   // "validation"
- *     err.meta.severity;   // "error"
- *     err.meta.httpStatus; // 422
- *   }
- * }
- */
-export class RutError extends Error {
-  override readonly name = "RutError";
-  readonly code: RutErrorCode;
-  readonly meta: (typeof RUT_ERROR_META)[RutErrorCode];
-
-  constructor(code: RutErrorCode, rut?: string) {
-    super(rut != null ? `[${code}] ("${rut}")` : `[${code}]`);
-
-    this.code = code;
-    this.meta = RUT_ERROR_META[code];
-
-    Object.freeze(this);
-  }
-}

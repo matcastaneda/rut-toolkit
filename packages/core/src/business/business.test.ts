@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { RutError } from "../errors";
 import {
   ensureCompanyRut,
   ensureNotProvisionalRut,
@@ -7,7 +8,6 @@ import {
   isPersonRut,
   isProvisionalRut,
 } from "./business";
-import { RutError } from "./errors";
 
 describe("business", () => {
   describe("isCompanyRut", () => {

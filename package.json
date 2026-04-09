@@ -21,7 +21,7 @@
     "typecheck": "turbo typecheck --filter=./packages/*",
     "changeset": "changeset",
     "release": "changeset version",
-    "pub:release": "pnpm build && changeset publish --access public",
+    "pub:release": "changeset publish --access public",
     "prepare": "husky"
   },
   "devDependencies": {

@@ -18,3 +18,7 @@ linkWorkspacePackages: true
 blockExoticSubdeps: true
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 43200
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - "@rut-toolkit/core"
+  - "@rut-toolkit/zod"

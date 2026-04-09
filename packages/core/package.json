@@ -40,7 +40,7 @@
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
       "import": {
@@ -51,13 +51,66 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/index.d.mts"
-      ]
+    },
+    "./errors": {
+      "import": {
+        "types": "./dist/errors/index.d.mts",
+        "default": "./dist/errors/index.mjs"
+      },
+      "require": {
+        "types": "./dist/errors/index.d.cts",
+        "default": "./dist/errors/index.cjs"
+      }
+    },
+    "./barcode": {
+      "import": {
+        "types": "./dist/barcode/index.d.mts",
+        "default": "./dist/barcode/index.mjs"
+      },
+      "require": {
+        "types": "./dist/barcode/index.d.cts",
+        "default": "./dist/barcode/index.cjs"
+      }
+    },
+    "./business": {
+      "import": {
+        "types": "./dist/business/index.d.mts",
+        "default": "./dist/business/index.mjs"
+      },
+      "require": {
+        "types": "./dist/business/index.d.cts",
+        "default": "./dist/business/index.cjs"
+      }
+    },
+    "./clean": {
+      "import": {
+        "types": "./dist/clean/index.d.mts",
+        "default": "./dist/clean/index.mjs"
+      },
+      "require": {
+        "types": "./dist/clean/index.d.cts",
+        "default": "./dist/clean/index.cjs"
+      }
+    },
+    "./format": {
+      "import": {
+        "types": "./dist/format/index.d.mts",
+        "default": "./dist/format/index.mjs"
+      },
+      "require": {
+        "types": "./dist/format/index.d.cts",
+        "default": "./dist/format/index.cjs"
+      }
+    },
+    "./validate": {
+      "import": {
+        "types": "./dist/validate/index.d.mts",
+        "default": "./dist/validate/index.mjs"
+      },
+      "require": {
+        "types": "./dist/validate/index.d.cts",
+        "default": "./dist/validate/index.cjs"
+      }
     }
   },
   "scripts": {
@@ -65,7 +118,7 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "lint:package": "publint run --strict",
-    "lint:types": "attw --pack .",
+    "lint:types": "attw --profile node16 --pack .",
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "devDependencies": {

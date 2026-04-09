@@ -16,7 +16,8 @@ export default defineConfig({
         "**/*.d.ts",
         "**/*.test.{ts,tsx}",
         "**/*.config.{ts,js}",
-        "**/index.ts",
+        "packages/*/src/index.ts",
+        "packages/*/src/**/index.ts",
         "packages/*/src/types.ts",
       ],
       thresholds: {

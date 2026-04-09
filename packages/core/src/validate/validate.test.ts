@@ -1,7 +1,8 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import * as cleanModule from "./clean";
-import { RUT_ERROR_META, RutError } from "./errors";
-import type { RutDv, RutErrorCode } from "./types";
+import * as cleanModule from "../clean";
+import type { RutErrorCode } from "../errors";
+import { RUT_ERROR_META, RutError } from "../errors";
+import type { RutDv } from "../types";
 import {
   calculateDv,
   ensureRealRut,
@@ -10,7 +11,7 @@ import {
   toValidRut,
   tryParseRut,
   verifyDv,
-} from "./validate";
+} from "../validate";
 
 /** Valid RUT whose body is not listed as suspicious. */
 const VALID_NON_SUSPICIOUS = "13.000.000-2";

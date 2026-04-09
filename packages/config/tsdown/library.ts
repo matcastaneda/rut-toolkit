@@ -9,7 +9,6 @@ import { defineConfig, mergeConfig } from "tsdown";
  */
 export function libraryPreset(overrides: UserConfig = {}): UserConfig {
   const baseConfig = defineConfig({
-    entry: ["src/index.ts"],
     format: ["esm", "cjs"],
     dts: true,
     clean: true,

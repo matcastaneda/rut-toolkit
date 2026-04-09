@@ -1,5 +1,6 @@
-import { splitRut } from "./clean";
-import type { RutDv, RutFormatOptions, RutMaskOptions } from "./types";
+import { splitRut } from "../clean";
+import type { RutDv } from "../types";
+import type { RutFormatOptions, RutMaskOptions } from "./types";
 
 const DOTS_RE = /\B(?=(\d{3})+(?!\d))/g;
 

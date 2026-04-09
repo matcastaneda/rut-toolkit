@@ -1,4 +1,5 @@
-import type { RutCleanOptions, RutComponents, RutDv } from "./types";
+import type { RutDv } from "../types";
+import type { RutCleanOptions, RutComponents } from "./types";
 
 const EMPTY_RUT_COMPONENTS: Readonly<RutComponents> = Object.freeze({
   body: "",

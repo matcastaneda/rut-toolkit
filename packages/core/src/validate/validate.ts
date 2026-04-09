@@ -1,6 +1,7 @@
-import { cleanRut, splitRut } from "./clean";
-import { RUT_ERROR_META, RutError } from "./errors";
-import type { RutDv, RutParseResult, ValidRut } from "./types";
+import { cleanRut, splitRut } from "../clean";
+import type { RutErrorCode, RutErrorMeta } from "../errors";
+import { RUT_ERROR_META, RutError } from "../errors";
+import type { RutDv, ValidRut } from "../types";
 
 /**
  * A set of placeholder RUT bodies that are structurally valid but
@@ -190,6 +191,15 @@ export function ensureRealRut(rut: string): void {
     throw new RutError("RUT_SUSPICIOUS", rut);
   }
 }
+
+export type RutParseResult =
+  | { readonly ok: true; readonly rut: ValidRut }
+  | {
+      readonly ok: false;
+      readonly code: RutErrorCode;
+      readonly message: string;
+      readonly meta: RutErrorMeta;
+    };
 
 /**
  * Non-throwing variant of {@link toValidRut}.

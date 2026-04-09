@@ -36,7 +36,7 @@
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
       "import": {
@@ -49,19 +49,12 @@
       }
     }
   },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/index.d.mts"
-      ]
-    }
-  },
   "scripts": {
     "build": "tsdown",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "lint:package": "publint run --strict",
-    "lint:types": "attw --pack .",
+    "lint:types": "attw --profile node16 --pack .",
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {

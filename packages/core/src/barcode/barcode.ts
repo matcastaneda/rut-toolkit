@@ -1,6 +1,7 @@
-import { cleanRut } from "./clean";
-import type { BarcodeScanResult, ValidRut } from "./types";
-import { isRut } from "./validate";
+import { cleanRut } from "../clean";
+import type { ValidRut } from "../types";
+import { isRut } from "../validate";
+import type { BarcodeScanResult } from "./types";
 
 /**
  * Domain constants for the Chilean Registro Civil.

@@ -1,5 +1,5 @@
-import { splitRut } from "./clean";
-import { RutError } from "./errors";
+import { splitRut } from "../clean";
+import { RutError } from "../errors";
 
 const RUT_COMPANY_MIN = 50_000_000;
 const RUT_COMPANY_MAX = 99_999_999;
