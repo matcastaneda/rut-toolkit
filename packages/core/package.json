@@ -64,52 +64,52 @@
     },
     "./barcode": {
       "import": {
-        "types": "./dist/barcode.d.mts",
-        "default": "./dist/barcode.mjs"
+        "types": "./dist/barcode/index.d.mts",
+        "default": "./dist/barcode/index.mjs"
       },
       "require": {
-        "types": "./dist/barcode.d.cts",
-        "default": "./dist/barcode.cjs"
+        "types": "./dist/barcode/index.d.cts",
+        "default": "./dist/barcode/index.cjs"
       }
     },
     "./business": {
       "import": {
-        "types": "./dist/business.d.mts",
-        "default": "./dist/business.mjs"
+        "types": "./dist/business/index.d.mts",
+        "default": "./dist/business/index.mjs"
       },
       "require": {
-        "types": "./dist/business.d.cts",
-        "default": "./dist/business.cjs"
+        "types": "./dist/business/index.d.cts",
+        "default": "./dist/business/index.cjs"
       }
     },
     "./clean": {
       "import": {
-        "types": "./dist/clean.d.mts",
-        "default": "./dist/clean.mjs"
+        "types": "./dist/clean/index.d.mts",
+        "default": "./dist/clean/index.mjs"
       },
       "require": {
-        "types": "./dist/clean.d.cts",
-        "default": "./dist/clean.cjs"
+        "types": "./dist/clean/index.d.cts",
+        "default": "./dist/clean/index.cjs"
       }
     },
     "./format": {
       "import": {
-        "types": "./dist/format.d.mts",
-        "default": "./dist/format.mjs"
+        "types": "./dist/format/index.d.mts",
+        "default": "./dist/format/index.mjs"
       },
       "require": {
-        "types": "./dist/format.d.cts",
-        "default": "./dist/format.cjs"
+        "types": "./dist/format/index.d.cts",
+        "default": "./dist/format/index.cjs"
       }
     },
     "./validate": {
       "import": {
-        "types": "./dist/validate.d.mts",
-        "default": "./dist/validate.mjs"
+        "types": "./dist/validate/index.d.mts",
+        "default": "./dist/validate/index.mjs"
       },
       "require": {
-        "types": "./dist/validate.d.cts",
-        "default": "./dist/validate.cjs"
+        "types": "./dist/validate/index.d.cts",
+        "default": "./dist/validate/index.cjs"
       }
     }
   },
