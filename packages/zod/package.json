@@ -1,7 +1,7 @@
 {
   "name": "@rut-toolkit/zod",
   "version": "0.1.0",
-  "description": "Strict Zod v4 schemas for Chilean RUT/RUN validation, featuring automatic formatting and deeply typed custom error messages.",
+  "description": "Zod v4 schemas for Chilean RUT/RUN validation with automatic formatting, i18n error messages, and typed custom issues.",
   "author": {
     "name": "Matías Castañeda",
     "url": "https://github.com/matcastaneda"
@@ -18,10 +18,14 @@
   },
   "keywords": [
     "zod",
-    "chilean",
     "rut",
     "run",
-    "toolkit",
+    "chilean",
+    "chile",
+    "schema",
+    "validation",
+    "validator",
+    "parse",
     "typescript"
   ],
   "type": "module",
@@ -72,6 +76,6 @@
     "zod": "^4.0.0"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.0.0"
   }
 }

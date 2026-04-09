@@ -1,16 +1,21 @@
 # @rut-toolkit/zod
 
-> Strict Zod v4 schemas for Chilean RUT/RUN validation and formatting, powered by `@rut-toolkit/core`.
+<!-- [![npm version](https://img.shields.io/npm/v/@rut-toolkit/zod)](https://www.npmjs.com/package/@rut-toolkit/zod)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/@rut-toolkit/zod)](https://bundlephobia.com/package/@rut-toolkit/zod)
+[![license](https://img.shields.io/npm/l/@rut-toolkit/zod)](https://github.com/matcastaneda/rut-toolkit/blob/main/packages/zod/LICENSE) -->
 
-Built for modern TypeScript environments, `@rut-toolkit/zod` provides a strictly typed, high-performance engine to handle Chilean national identification numbers (RUT/RUN). Designed for performance and developer experience.
+> Zod v4 schemas for Chilean RUT/RUN validation with automatic formatting, i18n error messages, and typed custom issues.
+
+Drop-in Zod schemas powered by [`@rut-toolkit/core`](https://www.npmjs.com/package/@rut-toolkit/core). Parse a raw string, get back a validated and formatted RUT — ready for forms, APIs, and DTOs.
 
 ## ✨ Features
 
-- **Ready-to-use Zod schemas:** for forms, APIs, and DTOs.
-- **Safe transformation:** validate first, then return a normalized string.
-- **Rich custom issue metadata:** (`rutErrorCode`, `rutErrorMeta`) in `issue.params`.
-- **Built-in presets:** for compact, clean, and formatted output.
-- **i18n defaults:** (`es`, `en`) with per-error message overrides.
+- **Ready-to-use schemas** — `rutSchema`, `rutCleanSchema`, `rutFormattedSchema` for common output formats.
+- **Validate-then-transform** — modulo-11 check runs first, then the output is normalized via `formatRut`.
+- **Typed custom issues** — every Zod issue carries `rutErrorCode` and `rutErrorMeta` in `issue.params`.
+- **i18n defaults** — error messages in Spanish and English, with per-code overrides.
+- **Placeholder rejection** — optionally reject known fake RUTs (`11.111.111-1`, etc.).
+- **Auto-trim** — leading/trailing whitespace is stripped by default (configurable).
 
 ## 📦 Installation
 
@@ -23,6 +28,9 @@ yarn add @rut-toolkit/zod @rut-toolkit/core zod
 # or
 bun add @rut-toolkit/zod @rut-toolkit/core zod
 ```
+
+> [!IMPORTANT]
+> **Requires [Zod v4](https://zod.dev)** and `@rut-toolkit/core` as peer/runtime dependencies.
 
 ## 🚀 Quick Start
 
@@ -46,56 +54,68 @@ console.log(data.rut); // "12345678-5"
 ```ts
 import { rutCleanSchema, rutFormattedSchema } from "@rut-toolkit/zod";
 
-rutCleanSchema.parse("12.345.678-5"); // "123456785" (DB/storage)
-rutFormattedSchema.parse("123456785"); // "12.345.678-5" (UI/display)
+rutCleanSchema.parse("12.345.678-5");     // "123456785"    (DB/storage)
+rutFormattedSchema.parse("123456785");     // "12.345.678-5" (UI/display)
 ```
 
-### Custom Schema and Typed Error Params
+### Custom Schema
 
 ```ts
 import { createRutSchema } from "@rut-toolkit/zod";
-import type { ZodRutIssueParams } from "@rut-toolkit/zod";
 
-const strictRutSchema = createRutSchema({
+const strictSchema = createRutSchema({
   format: { withDots: true, withHyphen: true },
   rejectPlaceholders: true,
   locale: "en",
   messages: {
     RUT_EMPTY: "Please enter your RUT.",
-    RUT_DV_MISMATCH: "The verification digit is incorrect.",
+    RUT_DV_MISMATCH: "The check digit is wrong.",
   },
 });
 
-const result = strictRutSchema.safeParse("12345678-0");
+strictSchema.parse("12.345.678-5"); // "12.345.678-5"
+```
+
+### Typed Error Params
+
+```ts
+import { rutSchema } from "@rut-toolkit/zod";
+import type { ZodRutIssueParams } from "@rut-toolkit/zod";
+
+const result = rutSchema.safeParse("12345678-0");
 
 if (!result.success) {
   const issue = result.error.issues[0] as { params?: ZodRutIssueParams };
 
-  if (issue.params?.rutErrorCode === "RUT_DV_MISMATCH") {
-    console.log(result.error.issues[0].message);
-  }
+  issue.params?.rutErrorCode; // "RUT_DV_MISMATCH"
+  issue.params?.rutErrorMeta; // { category: "validation", severity: "error", httpStatus: 422 }
 }
 ```
 
-## 📦 Main Exports
+### Disable Trim
+
+```ts
+import { createRutSchema } from "@rut-toolkit/zod";
+
+const noTrimSchema = createRutSchema({ trim: false });
+
+noTrimSchema.safeParse(" 12.345.678-5 "); // fails — whitespace is not stripped
+```
+
+## 📦 Exports
 
 | Export | Type | Description |
 | :--- | :--- | :--- |
-| `createRutSchema` | Function | Factory to build customized schemas. |
-| `rutSchema` | ZodSchema | Default schema (compact output: `12345678-5`). |
-| `rutCleanSchema` | ZodSchema | DB schema (raw output: `123456785`). |
-| `rutFormattedSchema` | ZodSchema | UI schema (dotted output: `12.345.678-5`). |
-| `ZodRutSchemaOptions` | Interface | Configuration options for the factory. |
-| `ZodRutIssueParams` | Interface | Shape of the custom Zod issue metadata. |
-
-## 📝 Notes
-
-- **Requires [Zod v4](https://zod.dev).**
-- **`issue.params` is available at runtime** for custom issues; in TypeScript you may need a cast to access it safely from the union type.
+| `createRutSchema` | Function | Factory to build customized schemas with format, locale, and message overrides. |
+| `rutSchema` | ZodSchema | Default schema — compact output: `"12345678-5"`. |
+| `rutCleanSchema` | ZodSchema | Storage schema — raw digits only: `"123456785"`. |
+| `rutFormattedSchema` | ZodSchema | Display schema — dotted format: `"12.345.678-5"`. |
+| `ZodRutSchemaOptions` | Interface | Configuration for `createRutSchema` (format, locale, messages, trim, rejectPlaceholders). |
+| `ZodRutIssueParams` | Interface | Shape of `issue.params` on custom Zod issues (`rutErrorCode`, `rutErrorMeta`). |
 
 ## 📖 Documentation
 
-Full API docs: [https://docs.rut-toolkit.dev](https://docs.rut-toolkit.dev)
+Full API docs: [rut-toolkit.dev](https://rut-toolkit.dev)
 
 ## 📝 License
 
