@@ -1,5 +1,9 @@
-import type { RutDv } from "../types";
-import type { RutCleanOptions, RutComponents } from "./types";
+import type { RutDv, ValidRut } from "../types";
+import type {
+  FilledRutComponents,
+  RutCleanOptions,
+  RutComponents,
+} from "./types";
 
 const EMPTY_RUT_COMPONENTS: Readonly<RutComponents> = Object.freeze({
   body: "",
@@ -19,6 +23,14 @@ const EMPTY_RUT_COMPONENTS: Readonly<RutComponents> = Object.freeze({
  * cleanRut("  06.543.210-k")                           // "6543210K"
  * cleanRut("06.543.210-k", { keepLeadingZeros: true }) // "06543210K"
  */
+export function cleanRut(
+  rut: ValidRut,
+  options?: Readonly<RutCleanOptions>,
+): ValidRut;
+export function cleanRut(
+  rut: string,
+  options?: Readonly<RutCleanOptions>,
+): string;
 export function cleanRut(
   rut: string,
   options: Readonly<RutCleanOptions> = {},
@@ -52,6 +64,14 @@ export function cleanRut(
  * splitRut("01234567-K", { keepLeadingZeros: true }) // { body: "01234567", dv: "K" }
  */
 export function splitRut(
+  rut: ValidRut,
+  options?: Readonly<RutCleanOptions>,
+): FilledRutComponents;
+export function splitRut(
+  rut: string,
+  options?: Readonly<RutCleanOptions>,
+): RutComponents;
+export function splitRut(
   rut: string,
   options: Readonly<RutCleanOptions> = {},
 ): RutComponents {
@@ -79,6 +99,8 @@ export function splitRut(
  * padRut("1.234.567-8")  // "012345678"  (body padded to 8)
  * padRut("12.345.678-9") // "123456789"  (body already 8 chars)
  */
+export function padRut(rut: ValidRut, bodyLength?: number): string;
+export function padRut(rut: string, bodyLength?: number): string;
 export function padRut(rut: string, bodyLength = 8): string {
   const { body, dv } = splitRut(rut);
 
