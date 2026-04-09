@@ -1,159 +1,113 @@
-# Turborepo starter
+# rut-toolkit
 
-This Turborepo starter is maintained by the Turborepo core team.
+<!-- [![license](https://img.shields.io/github/license/matcastaneda/rut-toolkit)](./LICENSE) -->
 
-## Using this example
+> Zero-dependency, strictly typed Chilean RUT/RUN utilities for modern TypeScript.
 
-Run the following command:
+Validate, format, clean, mask, and parse barcodes from Chilean national IDs — with branded types, structured errors, and i18n support.
 
-```sh
-npx create-turbo@latest
+## 📦 Packages
+
+| Package | Version | Description |
+| :--- | :--- | :--- |
+| [`@rut-toolkit/core`](./packages/core) | [![npm](https://img.shields.io/npm/v/@rut-toolkit/core)](https://www.npmjs.com/package/@rut-toolkit/core) | Core utilities: validation, formatting, cleaning, masking, barcode parsing, business rules, and errors. |
+| [`@rut-toolkit/zod`](./packages/zod) | [![npm](https://img.shields.io/npm/v/@rut-toolkit/zod)](https://www.npmjs.com/package/@rut-toolkit/zod) | Zod v4 schemas with automatic formatting, i18n error messages, and typed custom issues. |
+
+## 🚀 Quick Start
+
+```bash
+# Core only
+pnpm add @rut-toolkit/core
+
+# With Zod integration
+pnpm add @rut-toolkit/zod @rut-toolkit/core zod
 ```
 
-## What's inside?
+```ts
+import { isRut, formatRut, toValidRut } from "@rut-toolkit/core";
 
-This Turborepo includes the following packages/apps:
+if (isRut("12.345.678-5")) {
+  console.log(formatRut("12.345.678-5")); // "12.345.678-5"
+}
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
+const rut = toValidRut("12345678-5"); // ValidRut (branded string)
 ```
 
-Without global `turbo`, use your package manager:
+```ts
+import { rutSchema } from "@rut-toolkit/zod";
 
-```sh
-cd my-turborepo
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+const rut = rutSchema.parse(" 12.345.678-5 "); // "12345678-5"
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## 🏗️ Monorepo Structure
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo build --filter=docs
+```
+rut-toolkit/
+├── packages/
+│   ├── core/          @rut-toolkit/core — validation, formatting, errors
+│   ├── zod/           @rut-toolkit/zod — Zod v4 schema adapter
+│   └── config/        Shared tsconfig and tsdown presets
+├── turbo.json         Turborepo task pipeline
+└── package.json       Root workspace (pnpm)
 ```
 
-Without global `turbo`:
+## 🛠️ Development
 
-```sh
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) >= 22.0.0
+- [pnpm](https://pnpm.io/) >= 10
+
+### Setup
+
+```bash
+git clone https://github.com/matcastaneda/rut-toolkit.git
+cd rut-toolkit
+pnpm install
 ```
 
-### Develop
+### Commands
 
-To develop all apps and packages, run the following command:
+| Command | Description |
+| :--- | :--- |
+| `pnpm build` | Build all packages with tsdown |
+| `pnpm test` | Run all tests (unit + type tests) |
+| `pnpm test:coverage` | Run tests with V8 coverage |
+| `pnpm typecheck` | Type-check all packages with tsc |
+| `pnpm lint` | Lint with Biome |
+| `pnpm format` | Format with Biome |
+| `pnpm lint:packages` | Validate package.json with publint |
+| `pnpm lint:types` | Check export types with attw |
+| `pnpm lint:dependencies` | Detect unused deps with knip |
+| `pnpm lint:spell` | Spell check with cspell |
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+### Filtering
 
-```sh
-cd my-turborepo
-turbo dev
+Run tasks for a specific package:
+
+```bash
+pnpm test --filter=@rut-toolkit/core
+pnpm build --filter=@rut-toolkit/zod
 ```
 
-Without global `turbo`, use your package manager:
+## 📖 Documentation
 
-```sh
-cd my-turborepo
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+Full API docs: [rut-toolkit.dev](https://rut-toolkit.dev)
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## 🤝 Contributing
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feat/my-feature`)
+3. Make your changes and add tests
+4. Run `pnpm test && pnpm lint` to verify
+5. Commit with a descriptive message
+6. Open a Pull Request
 
 > [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+> See [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+This project uses [Changesets](https://github.com/changesets/changesets) for versioning. If your change affects the public API, run `pnpm changeset` and follow the prompts.
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+## 📝 License
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+MIT © [Matías Castañeda](https://github.com/matcastaneda)
