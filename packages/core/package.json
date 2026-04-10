@@ -1,6 +1,6 @@
 {
   "name": "@rut-toolkit/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Zero-dependency Chilean RUT/RUN utilities: validation, formatting, cleaning, and ID-card barcode parsing.",
   "author": {
     "name": "Matías Castañeda",
