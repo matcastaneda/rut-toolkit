@@ -42,79 +42,44 @@
     "README.md",
     "LICENSE"
   ],
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.cts",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/index.d.mts",
-        "default": "./dist/index.mjs"
-      },
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      }
+      "dev-source": "./src/index.ts",
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
     },
     "./errors": {
-      "import": {
-        "types": "./dist/errors/index.d.mts",
-        "default": "./dist/errors/index.mjs"
-      },
-      "require": {
-        "types": "./dist/errors/index.d.cts",
-        "default": "./dist/errors/index.cjs"
-      }
+      "dev-source": "./src/errors/index.ts",
+      "types": "./dist/errors/index.d.mts",
+      "default": "./dist/errors/index.mjs"
     },
     "./barcode": {
-      "import": {
-        "types": "./dist/barcode/index.d.mts",
-        "default": "./dist/barcode/index.mjs"
-      },
-      "require": {
-        "types": "./dist/barcode/index.d.cts",
-        "default": "./dist/barcode/index.cjs"
-      }
+      "dev-source": "./src/barcode/index.ts",
+      "types": "./dist/barcode/index.d.mts",
+      "default": "./dist/barcode/index.mjs"
     },
     "./business": {
-      "import": {
-        "types": "./dist/business/index.d.mts",
-        "default": "./dist/business/index.mjs"
-      },
-      "require": {
-        "types": "./dist/business/index.d.cts",
-        "default": "./dist/business/index.cjs"
-      }
+      "dev-source": "./src/business/index.ts",
+      "types": "./dist/business/index.d.mts",
+      "default": "./dist/business/index.mjs"
     },
     "./clean": {
-      "import": {
-        "types": "./dist/clean/index.d.mts",
-        "default": "./dist/clean/index.mjs"
-      },
-      "require": {
-        "types": "./dist/clean/index.d.cts",
-        "default": "./dist/clean/index.cjs"
-      }
+      "dev-source": "./src/clean/index.ts",
+      "types": "./dist/clean/index.d.mts",
+      "default": "./dist/clean/index.mjs"
     },
     "./format": {
-      "import": {
-        "types": "./dist/format/index.d.mts",
-        "default": "./dist/format/index.mjs"
-      },
-      "require": {
-        "types": "./dist/format/index.d.cts",
-        "default": "./dist/format/index.cjs"
-      }
+      "dev-source": "./src/format/index.ts",
+      "types": "./dist/format/index.d.mts",
+      "default": "./dist/format/index.mjs"
     },
     "./validate": {
-      "import": {
-        "types": "./dist/validate/index.d.mts",
-        "default": "./dist/validate/index.mjs"
-      },
-      "require": {
-        "types": "./dist/validate/index.d.cts",
-        "default": "./dist/validate/index.cjs"
-      }
+      "dev-source": "./src/validate/index.ts",
+      "types": "./dist/validate/index.d.mts",
+      "default": "./dist/validate/index.mjs"
     }
   },
   "typesVersions": {
@@ -144,7 +109,7 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "lint:package": "publint run --strict",
-    "lint:types": "attw --profile node16 --pack .",
+    "lint:types": "attw --profile esm-only --pack .",
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "devDependencies": {

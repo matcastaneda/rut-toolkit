@@ -1,9 +1,4 @@
 {
   "extends": "@rut-toolkit/tsconfig/base.json",
-  "include": [
-    "src/**/*",
-    "vitest.config.ts",
-    "tsdown.config.ts",
-    "**/*.test.ts"
-  ]
+  "include": ["src/**/*", "**/*.test.ts"]
 }
