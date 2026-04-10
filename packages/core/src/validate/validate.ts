@@ -182,18 +182,21 @@ export function isPlaceholderRut(rut: string): boolean {
 
 /**
  * Throws if the RUT matches a known suspicious pattern.
+ * Returns the input unchanged so it can be used inline.
  *
  * @param rut - RUT string in any format.
+ * @returns The same `rut` value, preserving its original type.
  * @throws {RutError} `RUT_SUSPICIOUS` when the RUT body matches a known fake pattern.
  *
  * @example
- * ensureRealRut("12.345.678-5") // ok
- * ensureRealRut("11.111.111-1") // throws RutError
+ * const safe = ensureRealRut("12.345.678-5"); // "12.345.678-5"
+ * ensureRealRut("11.111.111-1"); // throws RutError
  */
-export function ensureRealRut(rut: string): void {
+export function ensureRealRut<T extends string>(rut: T): T {
   if (isPlaceholderRut(rut)) {
     throw new RutError("RUT_SUSPICIOUS", rut);
   }
+  return rut;
 }
 
 export type RutParseResult =
