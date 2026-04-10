@@ -61,10 +61,8 @@
     "lint:types": "attw --profile node16 --pack .",
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
-  "dependencies": {
-    "@rut-toolkit/core": "workspace:*"
-  },
   "devDependencies": {
+    "@rut-toolkit/core": "workspace:*",
     "@rut-toolkit/tsconfig": "workspace:*",
     "@rut-toolkit/tsdown": "workspace:*",
     "tsdown": "catalog:",
@@ -73,9 +71,10 @@
     "zod": "catalog:"
   },
   "peerDependencies": {
+    "@rut-toolkit/core": ">=0.1.0",
     "zod": "^4.0.0"
   },
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=18"
   }
 }
