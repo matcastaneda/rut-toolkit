@@ -21,21 +21,9 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-      "a11y": {
-        "noSvgWithoutTitle": "off",
-        "useButtonType": "off",
-        "useAltText": "off",
-        "useKeyWithClickEvents": "off",
-        "useSemanticElements": "off",
-        "noLabelWithoutControl": "off"
-      },
       "correctness": {
-        "noNestedComponentDefinitions": "off",
-        "useUniqueElementIds": "off",
         "noUnusedImports": "warn",
-        "noUnusedVariables": "warn",
-        "useExhaustiveDependencies": "warn",
-        "useHookAtTopLevel": "warn"
+        "noUnusedVariables": "warn"
       },
       "performance": {
         "noDelete": "error"
@@ -44,11 +32,9 @@
         "noBannedTypes": "off"
       },
       "style": {
-        "useSelfClosingElements": "off",
         "useNodejsImportProtocol": "error",
-        "useConst": "error",
         "noRestrictedTypes": "off",
-        "noRestrictedGlobals": "off",
+        "useConst": "error",
         "useImportType": {
           "level": "error",
           "options": {
@@ -56,32 +42,16 @@
           }
         }
       },
-      "security": {
-        "noDangerouslySetInnerHtml": "off"
-      },
       "suspicious": {
         "noImplicitAnyLet": "warn",
         "noDuplicateObjectKeys": "warn",
         "noTsIgnore": "error",
-        "noDebugger": "error",
-        "noArrayIndexKey": "off"
+        "noDebugger": "error"
       },
       "nursery": {
         "noMisusedPromises": "error",
-        "noFloatingPromises": "error",
-        "useSortedClasses": {
-          "level": "warn",
-          "fix": "safe",
-          "options": {
-            "attributes": ["classList"],
-            "functions": ["clsx", "cva", "tw", "cn"]
-          }
-        }
+        "noFloatingPromises": "error"
       }
-    },
-    "domains": {
-      "next": "recommended",
-      "react": "recommended"
     }
   },
   "files": {
@@ -89,11 +59,9 @@
     "includes": [
       "**/*",
       "!!**/node_modules",
-      "!!**/.next",
       "!!**/.turbo",
       "!!**/dist",
       "!!**/build",
-      "!!**/public",
       "!!**/*.d.ts",
       "!!*.lock",
       "!!*.log",
