@@ -6,10 +6,7 @@ echo "Validating technical standards and type safety..."
 pnpm biome check --staged --write --no-errors-on-unmatched || (
     echo "Verification failed"
     echo "Issues detected in the codebase. Please review the logs above,"
-    echo "fix the architectural inconsistencies and try your commit again."
-    echo "──────────────────────────────────────────────────"
-    echo ""
-    echo "Current message: $(cat $1)"
+    echo "fix the issues and try your commit again."
     exit 1
 )
 
