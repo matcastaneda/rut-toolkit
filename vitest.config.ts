@@ -1,6 +1,11 @@
 import { configDefaults, defineConfig } from "vitest/config";
 
 export default defineConfig({
+  ssr: {
+    resolve: {
+      conditions: ["dev-source"],
+    },
+  },
   test: {
     globals: false,
     projects: ["packages/*", "!packages/config/*"],
