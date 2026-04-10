@@ -1,8 +1,8 @@
 # @rut-toolkit/core
 
-<!-- [![npm version](https://img.shields.io/npm/v/@rut-toolkit/core)](https://www.npmjs.com/package/@rut-toolkit/core)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/@rut-toolkit/core)](https://bundlephobia.com/package/@rut-toolkit/core)
-[![license](https://img.shields.io/npm/l/@rut-toolkit/core)](https://github.com/matcastaneda/rut-toolkit/blob/main/packages/core/LICENSE) -->
+[![npm version](https://img.shields.io/npm/v/@rut-toolkit/core.svg)](https://www.npmjs.com/package/@rut-toolkit/core)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/@rut-toolkit/core.svg)](https://bundlephobia.com/package/@rut-toolkit/core)
+[![license](https://img.shields.io/npm/l/@rut-toolkit/core.svg)](https://github.com/matcastaneda/rut-toolkit/blob/main/packages/core/LICENSE)
 
 > Zero-dependency, strictly typed utilities for Chilean RUT/RUN validation, formatting, cleaning, masking, and ID-card barcode parsing.
 

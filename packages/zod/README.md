@@ -1,8 +1,8 @@
 # @rut-toolkit/zod
 
-<!-- [![npm version](https://img.shields.io/npm/v/@rut-toolkit/zod)](https://www.npmjs.com/package/@rut-toolkit/zod)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/@rut-toolkit/zod)](https://bundlephobia.com/package/@rut-toolkit/zod)
-[![license](https://img.shields.io/npm/l/@rut-toolkit/zod)](https://github.com/matcastaneda/rut-toolkit/blob/main/packages/zod/LICENSE) -->
+[![npm version](https://img.shields.io/npm/v/@rut-toolkit/zod.svg)](https://www.npmjs.com/package/@rut-toolkit/zod)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/@rut-toolkit/zod.svg)](https://bundlephobia.com/package/@rut-toolkit/zod)
+[![license](https://img.shields.io/npm/l/@rut-toolkit/zod.svg)](https://github.com/matcastaneda/rut-toolkit/blob/main/packages/zod/LICENSE)
 
 > Zod v4 schemas for Chilean RUT/RUN validation with automatic formatting, i18n error messages, and typed custom issues.
 
