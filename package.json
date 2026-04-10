@@ -24,6 +24,9 @@
     "pub:release": "changeset publish --access public",
     "prepare": "husky"
   },
+  "engines": {
+    "node": ">=18"
+  },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.2",
     "@biomejs/biome": "2.4.10",
