@@ -1,15 +1,15 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema-jsonc.json",
-  "ignoreDependencies": ["publint"],
+  "ignoreDependencies": ["publint", "@rut-toolkit/core", "zod"],
   "ignoreExportsUsedInFile": {
     "interface": true,
     "type": true
   },
   "tags": ["-lintignore"],
   "workspaces": {
-    "packages": {
+    "packages/*": {
       "entry": ["src/index.ts"],
-      "project": ["src/**/*.ts!"]
+      "project": ["src/**/*.ts"]
     }
   }
 }
