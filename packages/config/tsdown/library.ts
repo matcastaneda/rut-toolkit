@@ -9,13 +9,17 @@ import { defineConfig, mergeConfig } from "tsdown";
  */
 export function libraryPreset(overrides: UserConfig = {}): UserConfig {
   const baseConfig = defineConfig({
-    format: ["esm", "cjs"],
-    dts: true,
+    format: ["esm"],
+    dts: {
+      build: true,
+      incremental: true,
+    },
     clean: true,
     target: "es2022",
-    sourcemap: true,
     publint: true,
     unbundle: true,
+    treeshake: true,
+    sourcemap: false,
   });
 
   return mergeConfig(baseConfig, overrides);

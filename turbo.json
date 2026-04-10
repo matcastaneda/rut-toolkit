@@ -3,7 +3,6 @@
   "ui": "tui",
   "globalDependencies": [
     "package.json",
-    "tsconfig.json",
     "pnpm-lock.yaml",
     "pnpm-workspace.yaml"
   ],
