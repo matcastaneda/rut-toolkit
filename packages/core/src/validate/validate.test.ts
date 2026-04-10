@@ -157,8 +157,8 @@ describe("validate", () => {
   });
 
   describe("ensureRealRut", () => {
-    it("does not throw for a normal RUT", () => {
-      expect(() => ensureRealRut(VALID_NON_SUSPICIOUS)).not.toThrow();
+    it("returns the same value for a normal RUT", () => {
+      expect(ensureRealRut(VALID_NON_SUSPICIOUS)).toBe(VALID_NON_SUSPICIOUS);
     });
 
     it("throws RUT_SUSPICIOUS for a listed body pattern", () => {

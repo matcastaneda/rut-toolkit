@@ -67,8 +67,13 @@ test("isPlaceholderRut returns boolean", () => {
   expectTypeOf(isPlaceholderRut).returns.toBeBoolean();
 });
 
-test("ensureRealRut returns void", () => {
-  expectTypeOf(ensureRealRut).returns.toBeVoid();
+test("ensureRealRut returns the same string type passed in", () => {
+  expectTypeOf(ensureRealRut(anyString)).toBeString();
+});
+
+test("ensureRealRut preserves ValidRut brand", () => {
+  const validated = toValidRut("12.345.678-5");
+  expectTypeOf(ensureRealRut(validated)).toEqualTypeOf<ValidRut>();
 });
 
 test("tryParseRut returns RutParseResult", () => {
