@@ -1,6 +1,6 @@
 # rut-toolkit
 
-[![license](https://img.shields.io/github/license/matcastaneda/rut-toolkit)](https://github.com/matcastaneda/rut-toolkit/blob/main/LICENSE)
+[![GitHub License](https://img.shields.io/github/license/matcastaneda/rut-toolkit)](https://github.com/matcastaneda/rut-toolkit/blob/main/LICENSE)
 
 > Zero-dependency, strictly typed Chilean RUT/RUN utilities for modern TypeScript.
 
