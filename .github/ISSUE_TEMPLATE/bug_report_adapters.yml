@@ -47,7 +47,7 @@ body:
         - label: "@rut-toolkit/core (Validation, Formatting, Utils)"
         - label: "@rut-toolkit/zod (Zod Schemas)"
         - label: "TypeScript (Type definitions, autocompletion)"
-        - label: "Build / Imports (ESM, CJS, resolving the package)"
+        - label: "Build / Imports (ESM, resolving the package)"
         - label: "Documentation"
         - label: "Other"
 

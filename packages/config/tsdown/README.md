@@ -6,7 +6,7 @@ These presets are designed to provide zero-config, highly optimized builds for o
 
 ## ✨ Features
 
-- 📦 **Dual Output:** Generates modern `ESM` and legacy `CJS` simultaneously.
+- 📦 **Output:** Generates modern `ESM` with declaration files, targeting ES2022.
 - 🧩 **Tree-shaking Ready:** Uses `unbundle: true` to preserve the original file structure, allowing modern bundlers (Next.js, Vite) to drop unused code efficiently.
 - 🛡️ **Package Validation:** Built-in `publint` checks to guarantee that your `exports`, `main`, and `types` fields are perfectly aligned with the generated files.
 - ⚛️ **React Ready:** Smart externalization of `react` and `react-dom` to prevent multiple-instance errors in consumer apps.
@@ -15,8 +15,8 @@ These presets are designed to provide zero-config, highly optimized builds for o
 
 | Preset | Output | Description |
 | :--- | :--- | :--- |
-| `libraryPreset` | ESM + CJS | Standard pure TypeScript packages (e.g., core logic, Zod schemas). |
-| `reactLibraryPreset` | ESM + CJS | React component libraries with JSX support. Automatically externalizes React dependencies. |
+| `libraryPreset` | ESM | Standard pure TypeScript packages (e.g., core logic, Zod schemas). |
+| `reactLibraryPreset` | ESM | React component libraries with JSX support. Automatically externalizes React dependencies. |
 
 ## 🚀 Usage
 

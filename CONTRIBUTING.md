@@ -8,7 +8,7 @@ Thank you for your interest in contributing to `@rut-toolkit`! This guide explai
 
 ## 🏗️ Project Architecture (Monorepo)
 
-This project is a monorepo managed by **pnpm workspaces** and **Turborepo**. We use **tsdown** for fast, dual-format (ESM & CJS) bundling.
+This project is a monorepo managed by **pnpm workspaces** and **Turborepo**. We use **tsdown** for fast, single-format (ESM) bundling.
 
 | Directory | Purpose |
 |-----------|---------|
@@ -45,7 +45,7 @@ We welcome the use of AI tools to assist with development. However, **all code m
 
 - ✅ Write unit tests for the AI-generated logic.
 - ✅ Run `pnpm test:all` and ensure coverage does not drop.
-- ❌ **Do not submit "vibe-coded" PRs.** Code that looks correct but fails to compile or breaks the ESM/CJS build will be rejected.
+- ❌ **Do not submit "vibe-coded" PRs.** Code that looks correct but fails to compile or breaks the ESM build will be rejected.
 
 ---
 
@@ -79,7 +79,7 @@ We welcome the use of AI tools to assist with development. However, **all code m
 
 Run these from the root of the repository:
 - `pnpm dev` — Starts the development server with Turbo.
-- `pnpm build` — Compiles TypeScript into ESM & CJS using tsdown.
+- `pnpm build` — Compiles TypeScript into ESM using tsdown.
 - `pnpm test` — Runs Vitest in watch mode.
 - `pnpm test:coverage` — Runs tests and checks coverage.
 - `pnpm lint` — Runs Biome (linting) and TypeScript validation.
