@@ -1,5 +1,11 @@
 # @rut-toolkit/core
 
+## 1.0.0
+
+### Minor Changes
+
+- [`566f571`](https://github.com/matcastaneda/rut-toolkit/commit/566f571f981e321a4f033237ba3a388ade41ea19) Thanks [@matcastaneda](https://github.com/matcastaneda)! - Aggressively optimize bundle size and refactor error architecture.
+
 ## 0.1.3
 
 ### Patch Changes
