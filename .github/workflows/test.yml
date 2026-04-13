@@ -64,5 +64,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           package_manager: pnpm
           script: pnpm exec size-limit --json
-          skip_step: install
-          build_script: ""
+          # skip_step: install
+          build_script: build
