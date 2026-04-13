@@ -1,5 +1,3 @@
-import type { RutErrorCode } from "./codes";
-
 /**
  * Categories of errors emitted by {@link RutError}.
  * Used to group errors by their source or severity.
@@ -19,19 +17,19 @@ export type RutErrorCategory =
 export type RutErrorSeverity = "warning" | "error" | "critical";
 
 /**
- * Metadata attached to each {@link RutErrorCode}.
- * Used to provide additional information about the error.
+ * Expected HTTP status codes mapped to RUT validation rules.
  */
+export type RutErrorHttpStatus = 400 | 403 | 422 | 500;
+
 export type RutErrorMeta = {
   readonly category: RutErrorCategory;
   readonly severity: RutErrorSeverity;
-  readonly httpStatus: number;
+  readonly httpStatus: RutErrorHttpStatus;
 };
 
 /**
- * A frozen, strongly-typed metadata registry from a
- * `{ CODE: "category" | "severity" | "httpStatus" }` mapping.
- * Keys must be `UPPER_SNAKE_CASE`.
+ * A frozen, strongly-typed metadata registry.
+ * Keys are implicitly derived as string literals by `as const`.
  */
 export const RUT_ERROR_META = {
   RUT_EMPTY: { category: "input", severity: "warning", httpStatus: 400 },
@@ -91,4 +89,6 @@ export const RUT_ERROR_META = {
     severity: "critical",
     httpStatus: 500,
   },
-} as const satisfies Record<RutErrorCode, RutErrorMeta>;
+} as const satisfies Record<string, RutErrorMeta>;
+
+Object.freeze(RUT_ERROR_META);

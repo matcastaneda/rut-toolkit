@@ -1,8 +1,12 @@
 import type { RutErrorCode } from "./codes";
-import type { RutLocale } from "./types";
 
 /**
- * Bilingual message dictionary for all error codes.
+ * Supported i18n locales for error messages.
+ */
+export type RutLocale = "es" | "en";
+
+/**
+ * Bilingual message dictionary for all {@link RutErrorCode}s.
  * Use with {@link getRutErrorMessage} to resolve a localized string.
  *
  * @example
@@ -51,18 +55,10 @@ export const RUT_ERROR_MESSAGES: Record<
     BARCODE_RUT_NOT_FOUND: "No RUT found in scanned payload.",
     SYSTEM_UNEXPECTED: "An unexpected error occurred.",
   },
-} as const satisfies Record<RutLocale, Record<RutErrorCode, string>>;
+} as const;
 
 /**
  * Resolves a localized message for the given error code.
- *
- * @param code - The error code to look up.
- * @param locale - Target locale. Defaults to `"es"`.
- * @returns The localized message string.
- *
- * @example
- * getRutErrorMessage("RUT_DV_MISMATCH")        // "El dígito verificador no coincide."
- * getRutErrorMessage("RUT_DV_MISMATCH", "en")  // "Check digit does not match."
  */
 export function getRutErrorMessage(
   code: RutErrorCode,

@@ -1,5 +1,4 @@
 import type { RutErrorCode } from "./codes";
-import { RUT_ERROR_CODES } from "./codes";
 import type { RutErrorMeta } from "./meta";
 import { RUT_ERROR_META } from "./meta";
 
@@ -22,19 +21,18 @@ import { RUT_ERROR_META } from "./meta";
  * }
  */
 export class RutError extends Error {
-  override readonly name = "RutError";
+  override readonly name: "RutError" = "RutError";
   readonly code: RutErrorCode;
   readonly meta: RutErrorMeta;
-  readonly rut?: string | undefined;
+  readonly rut: string | undefined;
 
   constructor(code: RutErrorCode, rut?: string, options?: { cause?: unknown }) {
-    const defaultMessage = RUT_ERROR_CODES[code].message;
-    const fullMessage =
-      rut != null
-        ? `[${code}] ${defaultMessage} ("${rut}")`
-        : `[${code}] ${defaultMessage}`;
+    const message =
+      rut !== undefined
+        ? `[${code}] Validation failed for input: "${rut}"`
+        : `[${code}] Validation failed`;
 
-    super(fullMessage, options);
+    super(message, options);
 
     this.code = code;
     this.meta = RUT_ERROR_META[code];

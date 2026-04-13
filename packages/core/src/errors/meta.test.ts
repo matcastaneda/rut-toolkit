@@ -1,23 +1,25 @@
 import { describe, expect, it } from "vitest";
 import type { RutErrorCode } from "./codes";
+import { RUT_ERROR_CODES } from "./codes";
 import { RUT_ERROR_META } from "./meta";
 
-const ALL_CODES = Object.keys(RUT_ERROR_META) as RutErrorCode[];
-
 describe("RUT_ERROR_META", () => {
-  describe("completeness", () => {
-    it("contains exactly 17 entries — one per RutErrorCode", () => {
-      expect(ALL_CODES).toHaveLength(17);
+  describe("completeness & alignment", () => {
+    it("contains exactly the same number of entries as RUT_ERROR_CODES", () => {
+      const metaKeys = Object.keys(RUT_ERROR_META);
+      expect(metaKeys).toHaveLength(RUT_ERROR_CODES.length);
     });
 
-    it.each(ALL_CODES)("has an entry for %s", (code) => {
-      expect(RUT_ERROR_META[code]).toBeDefined();
+    it("has an entry for every official RutErrorCode", () => {
+      for (const code of RUT_ERROR_CODES) {
+        expect(RUT_ERROR_META[code]).toBeDefined();
+      }
     });
   });
 
   describe("shape", () => {
     it.each(
-      ALL_CODES,
+      RUT_ERROR_CODES,
     )("%s entry has category, severity, and httpStatus", (code) => {
       const meta = RUT_ERROR_META[code];
 
@@ -75,6 +77,8 @@ describe("RUT_ERROR_META", () => {
   });
 
   describe("httpStatus values", () => {
+    const ALLOWED_HTTP_STATUSES = new Set([400, 403, 422, 500]);
+
     const byStatus: [RutErrorCode, number][] = [
       ["RUT_EMPTY", 400],
       ["RUT_NULLISH", 400],
@@ -97,6 +101,20 @@ describe("RUT_ERROR_META", () => {
 
     it.each(byStatus)("%s has httpStatus %d", (code, status) => {
       expect(RUT_ERROR_META[code].httpStatus).toBe(status);
+    });
+
+    it.each(
+      RUT_ERROR_CODES,
+    )("%s httpStatus is one of 400 | 403 | 422 | 500", (code) => {
+      expect(ALLOWED_HTTP_STATUSES.has(RUT_ERROR_META[code].httpStatus)).toBe(
+        true,
+      );
+    });
+  });
+
+  describe("immutability", () => {
+    it("RUT_ERROR_META is frozen at the top level", () => {
+      expect(Object.isFrozen(RUT_ERROR_META)).toBe(true);
     });
   });
 });

@@ -1,12 +1,11 @@
 import type { RutErrorCode } from "@rut-toolkit/core";
 import {
   formatRut,
-  getRutErrorMessage,
   isPlaceholderRut,
-  RUT_ERROR_META,
   toValidRut,
   tryParseRut,
 } from "@rut-toolkit/core";
+import { getRutErrorMessage, RUT_ERROR_META } from "@rut-toolkit/core/errors";
 import { z } from "zod";
 import type { ZodRutIssueParams, ZodRutSchemaOptions } from "./types";
 
