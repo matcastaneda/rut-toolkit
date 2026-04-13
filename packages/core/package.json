@@ -49,37 +49,37 @@
     ".": {
       "dev-source": "./src/index.ts",
       "types": "./dist/index.d.mts",
-      "default": "./dist/index.mjs"
+      "import": "./dist/index.mjs"
     },
     "./errors": {
       "dev-source": "./src/errors/index.ts",
       "types": "./dist/errors/index.d.mts",
-      "default": "./dist/errors/index.mjs"
+      "import": "./dist/errors/index.mjs"
     },
     "./barcode": {
       "dev-source": "./src/barcode/index.ts",
       "types": "./dist/barcode/index.d.mts",
-      "default": "./dist/barcode/index.mjs"
+      "import": "./dist/barcode/index.mjs"
     },
     "./business": {
       "dev-source": "./src/business/index.ts",
       "types": "./dist/business/index.d.mts",
-      "default": "./dist/business/index.mjs"
+      "import": "./dist/business/index.mjs"
     },
     "./clean": {
       "dev-source": "./src/clean/index.ts",
       "types": "./dist/clean/index.d.mts",
-      "default": "./dist/clean/index.mjs"
+      "import": "./dist/clean/index.mjs"
     },
     "./format": {
       "dev-source": "./src/format/index.ts",
       "types": "./dist/format/index.d.mts",
-      "default": "./dist/format/index.mjs"
+      "import": "./dist/format/index.mjs"
     },
     "./validate": {
       "dev-source": "./src/validate/index.ts",
       "types": "./dist/validate/index.d.mts",
-      "default": "./dist/validate/index.mjs"
+      "import": "./dist/validate/index.mjs"
     }
   },
   "typesVersions": {

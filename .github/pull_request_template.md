@@ -42,7 +42,7 @@ For minor fixes (typos, broken links, formatting), you may skip the issue requir
 - [ ] I have tested these changes locally
 - [ ] I have added or updated tests in Vitest for new/changed functionality
 - [ ] `pnpm test` passes and maintains the 90% coverage threshold
-- [ ] `pnpm build` completes successfully (ESM & CJS output is valid)
+- [ ] `pnpm build` completes successfully (ESM output is valid)
 
 ### Test instructions
 
