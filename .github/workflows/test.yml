@@ -36,8 +36,9 @@ jobs:
     name: 🧪 Run Tests & Coverage
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      id-token: write
+      id-token: write 
+      contents: write 
+      pull-requests: write 
     steps:
       - name: 📦 Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -62,5 +63,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           package_manager: pnpm
-          build_script: build
+          script: pnpm exec size-limit --json
           skip_step: install
+          build_script: ""
