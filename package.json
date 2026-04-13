@@ -19,7 +19,8 @@
     "test": "turbo test --continue --filter=./packages/*",
     "test:coverage": "turbo test:coverage --filter=./packages/*",
     "typecheck": "turbo typecheck --filter=./packages/*",
-    "size": "size-limit",
+    "size": "turbo size --filter=./packages/*",
+    "size:json": "turbo size:json --filter=./packages/*",
     "changeset": "changeset",
     "release": "changeset version",
     "pub:release": "changeset publish --access public",
@@ -44,56 +45,5 @@
     "size-limit": "12.0.1",
     "turbo": "2.9.5",
     "vitest": "catalog:vitest"
-  },
-  "size-limit": [
-    {
-      "name": "📦 CORE | Main Export",
-      "path": "packages/core/dist/index.mjs",
-      "limit": "2 kB"
-    },
-    {
-      "name": "📦 CORE | Validate",
-      "path": "packages/core/dist/validate/index.mjs",
-      "limit": "1.1 kB"
-    },
-    {
-      "name": "📦 CORE | Format",
-      "path": "packages/core/dist/format/index.mjs",
-      "limit": "800 B"
-    },
-    {
-      "name": "📦 CORE | Clean",
-      "path": "packages/core/dist/clean/index.mjs",
-      "limit": "300 B"
-    },
-    {
-      "name": "📦 CORE | Barcode",
-      "path": "packages/core/dist/barcode/index.mjs",
-      "limit": "700 B"
-    },
-    {
-      "name": "📦 CORE | Business",
-      "path": "packages/core/dist/business/index.mjs",
-      "limit": "800 B"
-    },
-    {
-      "name": "📦 CORE | Errors",
-      "path": "packages/core/dist/errors/index.mjs",
-      "limit": "1.1 kB"
-    },
-    {
-      "name": "🧩 ZOD | Adapter (Isolated)",
-      "path": "packages/zod/dist/index.mjs",
-      "limit": "700 B",
-      "ignore": [
-        "zod",
-        "@rut-toolkit/core"
-      ]
-    },
-    {
-      "name": "🧩 ZOD | Adapter + Dependencies",
-      "path": "packages/zod/dist/index.mjs",
-      "limit": "55 kB"
-    }
-  ]
+  }
 }

@@ -43,6 +43,15 @@
       "outputs": ["coverage/**"],
       "cache": true
     },
+    "size": {
+      "dependsOn": ["build"],
+      "cache": true
+    },
+    "size:json": {
+      "dependsOn": ["build"],
+      "outputs": [".size-report.json"],
+      "cache": true
+    },
     "deploy": {
       "cache": false
     }
