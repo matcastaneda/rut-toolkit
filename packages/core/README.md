@@ -105,11 +105,8 @@ ensureCompanyRut(rut);
 ### Structured Errors
 
 ```ts
-import {
-  RutError,
-  getRutErrorMessage,
-  toValidRut,
-} from "@rut-toolkit/core";
+import { RutError, toValidRut } from "@rut-toolkit/core";
+import { getRutErrorMessage } from "@rut-toolkit/core/errors";
 
 try {
   toValidRut("12345678-0");
@@ -122,11 +119,11 @@ try {
   }
 }
 
-// i18n error messages
+// i18n error messages (available from the /errors subpath)
 getRutErrorMessage("RUT_DV_MISMATCH", "es");
-// "El dígito verificador (DV) no coincide con el cuerpo del RUT."
+// "El dígito verificador no coincide."
 getRutErrorMessage("RUT_DV_MISMATCH", "en");
-// "The RUT check digit (DV) does not match the calculated body."
+// "Check digit does not match."
 ```
 
 ### Analyze Barcode Data
@@ -155,8 +152,9 @@ if (scan.ok) {
 | **Business** | `isCompanyRut`, `isPersonRut`, `isProvisionalRut`, `ensureCompanyRut`, `ensurePersonRut`, `ensureNotProvisionalRut` | Range classification and enforcement. |
 | **Suspicious** | `isPlaceholderRut`, `ensureRealRut` | Detect and reject known fake RUTs. |
 | **Barcode** | `analyzeRutBarcode`, `parseRutFromBarcode`, `isRegistroCivilQrUrl` | Chilean ID card scanner (QR and PDF417). |
-| **Errors** | `RutError`, `RUT_ERROR_META`, `getRutErrorMessage`, `RUT_ERROR_MESSAGES` | Structured errors with severity, category, httpStatus, and i18n. |
-| **Types** | `ValidRut`, `FormattedRut`, `RutDv`, `RutParseResult`, `RutComponents`, `RutErrorCode`, `RutErrorMeta` | Branded types, literals, and discriminated unions. |
+| **Errors** | `RutError` | Structured error class (main export). |
+| **Errors (subpath)** | `RUT_ERROR_META`, `RUT_ERROR_CODES`, `getRutErrorMessage`, `RUT_ERROR_MESSAGES` | Metadata registry, i18n messages — via `@rut-toolkit/core/errors`. |
+| **Types** | `ValidRut`, `FormattedRut`, `RutDv`, `RutParseResult`, `RutComponents`, `RutErrorCode`, `RutErrorMeta`, `RutErrorHttpStatus` | Branded types, literals, and discriminated unions. |
 
 ## 🌲 Subpath Imports
 
