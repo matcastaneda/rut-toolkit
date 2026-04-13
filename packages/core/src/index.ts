@@ -43,13 +43,7 @@ export type {
   RutErrorSeverity,
   RutLocale,
 } from "./errors";
-export {
-  getRutErrorMessage,
-  RUT_ERROR_CODES,
-  RUT_ERROR_MESSAGES,
-  RUT_ERROR_META,
-  RutError,
-} from "./errors";
+export { RutError } from "./errors";
 
 export type { FormattedRut, RutFormatOptions, RutMaskOptions } from "./format";
 export {

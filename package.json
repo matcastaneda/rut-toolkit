@@ -49,12 +49,12 @@
     {
       "name": "📦 CORE | Main Export",
       "path": "packages/core/dist/index.mjs",
-      "limit": "2.8 kB"
+      "limit": "2 kB"
     },
     {
       "name": "📦 CORE | Validate",
       "path": "packages/core/dist/validate/index.mjs",
-      "limit": "1.4 kB"
+      "limit": "1.1 kB"
     },
     {
       "name": "📦 CORE | Format",
@@ -74,12 +74,12 @@
     {
       "name": "📦 CORE | Business",
       "path": "packages/core/dist/business/index.mjs",
-      "limit": "1.2 kB"
+      "limit": "800 B"
     },
     {
       "name": "📦 CORE | Errors",
       "path": "packages/core/dist/errors/index.mjs",
-      "limit": "1.4 kB"
+      "limit": "1.1 kB"
     },
     {
       "name": "🧩 ZOD | Adapter (Isolated)",
