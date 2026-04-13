@@ -1,10 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { RutError } from "./class";
-import type { RutErrorCode } from "./codes";
 import { RUT_ERROR_CODES } from "./codes";
 import { RUT_ERROR_META } from "./meta";
 
-const ALL_CODES = Object.keys(RUT_ERROR_META) as RutErrorCode[];
+const ALL_CODES = RUT_ERROR_CODES;
 
 describe("RutError", () => {
   describe("identity and prototype chain", () => {
@@ -34,24 +33,24 @@ describe("RutError", () => {
   });
 
   describe("message construction", () => {
-    it("includes [code], default message, and quoted rut when rut is provided", () => {
+    it("includes [code] and the input string when rut is provided", () => {
       const code = "RUT_DV_MISMATCH";
       const rut = "12345678-0";
-      const expected = `[${code}] ${RUT_ERROR_CODES[code].message} ("${rut}")`;
+      const expected = `[${code}] Validation failed for input: "${rut}"`;
 
       expect(new RutError(code, rut).message).toBe(expected);
     });
 
-    it("includes only [code] and default message when rut is omitted", () => {
+    it("includes only [code] and a generic message when rut is omitted", () => {
       const code = "BARCODE_EMPTY";
-      const expected = `[${code}] ${RUT_ERROR_CODES[code].message}`;
+      const expected = `[${code}] Validation failed`;
 
       expect(new RutError(code).message).toBe(expected);
     });
 
     it("treats empty-string rut as provided — includes it in the message", () => {
       const code = "RUT_EMPTY";
-      const expected = `[${code}] ${RUT_ERROR_CODES[code].message} ("")`;
+      const expected = `[${code}] Validation failed for input: ""`;
 
       expect(new RutError(code, "").message).toBe(expected);
     });

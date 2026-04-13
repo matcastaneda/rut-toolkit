@@ -36,16 +36,16 @@ export {
 } from "./clean";
 
 export type {
-  RawError,
   RutErrorCategory,
   RutErrorCode,
+  RutErrorHttpStatus,
   RutErrorMeta,
   RutErrorSeverity,
   RutLocale,
-  ValidateErrorCodes,
 } from "./errors";
 export {
   getRutErrorMessage,
+  RUT_ERROR_CODES,
   RUT_ERROR_MESSAGES,
   RUT_ERROR_META,
   RutError,
