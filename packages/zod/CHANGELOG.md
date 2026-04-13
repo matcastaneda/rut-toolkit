@@ -1,5 +1,12 @@
 # @rut-toolkit/zod
 
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies [[`594f9c1`](https://github.com/matcastaneda/rut-toolkit/commit/594f9c1ec5b97e1d1cdf09b25e0b26f06e4e1a20)]:
+  - @rut-toolkit/core@0.1.4
+
 ## 0.1.3
 
 ### Patch Changes
