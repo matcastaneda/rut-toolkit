@@ -1,6 +1,7 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema-jsonc.json",
   "ignoreDependencies": ["publint", "@rut-toolkit/core", "zod"],
+  "ignore": ["scripts/aggregate-sizes.js"],
   "ignoreExportsUsedInFile": {
     "interface": true,
     "type": true

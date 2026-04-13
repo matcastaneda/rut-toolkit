@@ -110,7 +110,9 @@
     "test:coverage": "vitest run --coverage",
     "lint:package": "publint run --strict",
     "lint:types": "attw --profile esm-only --pack .",
-    "typecheck": "tsc --project tsconfig.json --noEmit"
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "size": "size-limit",
+    "size:json": "size-limit --json > .size-report.json"
   },
   "devDependencies": {
     "@rut-toolkit/tsconfig": "workspace:*",
@@ -121,5 +123,42 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "size-limit": [
+    {
+      "name": "📦 CORE - Main Export",
+      "path": "dist/index.mjs",
+      "limit": "2 kB"
+    },
+    {
+      "name": "📦 CORE - Validate",
+      "path": "dist/validate/index.mjs",
+      "limit": "1.1 kB"
+    },
+    {
+      "name": "📦 CORE - Format",
+      "path": "dist/format/index.mjs",
+      "limit": "800 B"
+    },
+    {
+      "name": "📦 CORE - Clean",
+      "path": "dist/clean/index.mjs",
+      "limit": "300 B"
+    },
+    {
+      "name": "📦 CORE - Barcode",
+      "path": "dist/barcode/index.mjs",
+      "limit": "700 B"
+    },
+    {
+      "name": "📦 CORE - Business",
+      "path": "dist/business/index.mjs",
+      "limit": "800 B"
+    },
+    {
+      "name": "📦 CORE - Errors",
+      "path": "dist/errors/index.mjs",
+      "limit": "1.1 kB"
+    }
+  ]
 }

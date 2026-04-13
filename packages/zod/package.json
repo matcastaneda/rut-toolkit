@@ -54,7 +54,9 @@
     "test:coverage": "vitest run --coverage",
     "lint:package": "publint run --strict",
     "lint:types": "attw --profile esm-only --pack .",
-    "typecheck": "tsc --project tsconfig.json --noEmit"
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "size": "size-limit",
+    "size:json": "size-limit --json > .size-report.json"
   },
   "devDependencies": {
     "@rut-toolkit/core": "workspace:*",
@@ -71,5 +73,16 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "size-limit": [
+    {
+      "name": "🧩 ZOD - Adapter (Isolated)",
+      "path": "dist/index.mjs",
+      "limit": "700 B",
+      "ignore": [
+        "zod",
+        "@rut-toolkit/core"
+      ]
+    }
+  ]
 }

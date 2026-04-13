@@ -41,3 +41,7 @@ tsconfig.build.tsbuildinfo
 # Misc
 .DS_Store
 *.pem
+
+# Size limit temporary reports
+.size-report.json
+.size-summary.md
