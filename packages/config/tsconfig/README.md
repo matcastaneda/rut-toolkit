@@ -2,7 +2,9 @@
 
 Shared TypeScript configurations for the `rut-toolkit` monorepo. 
 
-These configs are strictly typed, ESM-first, and optimized for modern bundlers (like tsdown/tsup) and frameworks (Next.js).
+These configs are strictly typed, ESM-first, and optimized for modern bundlers (for example **tsdown**) and frameworks (Next.js).
+
+This package declares a **peer dependency** on **TypeScript `>=5.0.0`** (see `package.json`).
 
 ## Configs
 
@@ -18,19 +20,18 @@ To use a configuration in a workspace package, simply extend the relevant JSON f
 
 You must also define your `include` and any package-specific compiler options.
 
-### Example (Core or Zod Library)
+### Example (library package in this monorepo)
+
+`@rut-toolkit/core` and `@rut-toolkit/zod` use a minimal `include`:
 
 ```json
 {
   "extends": "@rut-toolkit/tsconfig/base.json",
-  "include": [
-    "src/**/*",
-    "vitest.config.ts",
-    "tsdown.config.ts",
-    "**/*.test.ts"
-  ]
+  "include": ["src/**/*", "**/*.test.ts"]
 }
 ```
+
+Add paths such as `vitest.config.ts` or `tsdown.config.ts` to `include` if you want those files covered by `tsc` in that package.
 
 ### Example (Next.js App)
 
