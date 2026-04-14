@@ -57,19 +57,3 @@ jobs:
           files: "**/coverage/lcov.info" 
           slug: ${{ github.repository }}
           fail_ci_if_error: true
-
-      - name: 🏗️ Build Packages
-        run: pnpm build
-
-      - name: 📏 Generate Size Reports
-        run: pnpm turbo run size:json
-
-      - name: 📝 Aggregate Size Summary
-        run: node ./scripts/aggregate-sizes.js
-      
-      - name: 💬 Comment Size Report
-        if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork
-        uses: marocchino/sticky-pull-request-comment@70d2764d1a7d5d9560b100cbea0077fc8f633987 # v3.0.2
-        with:
-          header: size-limit-report
-          path: .size-summary.md

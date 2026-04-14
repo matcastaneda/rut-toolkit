@@ -1,0 +1,51 @@
+name: 📏 Size Limit Report
+
+on:
+  pull_request:
+    paths:
+      - 'packages/**'
+      - 'scripts/generate-size-report.js'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+  push:
+    branches: ["main"]
+    paths:
+      - 'packages/**'
+      - 'scripts/generate-size-report.js'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  FORCE_COLOR: 3
+
+jobs:
+  size-check:
+    name: 📊 Check Bundle Size
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write 
+    steps:
+      - name: 📦 Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: 🔧 Setup Environment
+        uses: ./.github/actions/setup-environment 
+
+      - name: 📏 Generate Size Reports
+        run: pnpm size:json
+
+      - name: 📝 Aggregate Size Summary
+        run: node ./scripts/generate-size-report.js
+
+      - name: 💬 Comment on PR with Size Report
+        if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork
+        uses: marocchino/sticky-pull-request-comment@70d2764d1a7d5d9560b100cbea0077fc8f633987 # v3.0.2
+        with:
+          header: size-limit-report
+          path: .size-summary.md

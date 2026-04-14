@@ -1,0 +1,18 @@
+{
+  "sizes": {
+    "📦 CORE - Main Export": 1887,
+    "📦 CORE - Validate": 967,
+    "📦 CORE - Format": 707,
+    "📦 CORE - Clean": 217,
+    "📦 CORE - Barcode": 587,
+    "📦 CORE - Business": 686,
+    "📦 CORE - Errors": 958,
+    "🧩 ZOD - Adapter (Isolated)": 553
+  },
+  "_meta": {
+    "updatedAt": "2026-04-14T00:21:41.131Z",
+    "commitSha": "local",
+    "actor": "local",
+    "runId": "unknown"
+  }
+}
