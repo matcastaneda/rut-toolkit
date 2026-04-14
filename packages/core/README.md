@@ -154,7 +154,7 @@ if (scan.ok) {
 | **Barcode** | `analyzeRutBarcode`, `parseRutFromBarcode`, `isRegistroCivilQrUrl` | Chilean ID card scanner (QR and PDF417). |
 | **Errors** | `RutError` | Structured error class (main export). |
 | **Errors (subpath)** | `RUT_ERROR_META`, `RUT_ERROR_CODES`, `getRutErrorMessage`, `RUT_ERROR_MESSAGES` | Metadata registry, i18n messages — via `@rut-toolkit/core/errors`. |
-| **Types** | `ValidRut`, `FormattedRut`, `RutDv`, `RutParseResult`, `RutComponents`, `RutErrorCode`, `RutErrorMeta`, `RutErrorHttpStatus` | Branded types, literals, and discriminated unions. |
+| **Types** | `ValidRut`, `FormattedRut`, `RutDv`, `RutParseResult`, `RutComponents`, `RutErrorCode`, `RutErrorMeta`, `RutErrorHttpStatus`, `BarcodeScanResult`, `BarcodeSource`, … | Branded types, barcode results, literals, and discriminated unions. |
 
 ## 🌲 Subpath Imports
 

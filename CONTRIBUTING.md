@@ -8,20 +8,24 @@ Thank you for your interest in contributing to `@rut-toolkit`! This guide explai
 
 ## 🏗️ Project Architecture (Monorepo)
 
-This project is a monorepo managed by **pnpm workspaces** and **Turborepo**. We use **tsdown** for fast, single-format (ESM) bundling.
+This project is a monorepo managed by **pnpm workspaces** and **Turborepo**. We use **tsdown** for fast, single-format (ESM) bundling. Shared build and TypeScript settings live in internal config packages under `packages/config/`.
 
 | Directory | Purpose |
 |-----------|---------|
-| `packages/core/` | The main library (Validation, formatting, generation). Zero dependencies. |
-| `packages/zod/` | Zod schema integrations depending on the core package. |
+| `packages/core/` | The main library: validation, formatting, cleaning, masking, barcode parsing, business rules, and errors. Zero runtime dependencies. Subpath exports (e.g. `validate`, `format`, `barcode`) are built as separate entry points. |
+| `packages/zod/` | **Zod v4** schema integrations depending on the core package. |
+| `packages/config/tsconfig/` | Shared `tsconfig` preset (`@rut-toolkit/tsconfig`). |
+| `packages/config/tsdown/` | Shared `tsdown` preset (`@rut-toolkit/tsdown`). |
 
-When adding a new feature, you will likely be working inside the `src/` directory of one of these packages.
+When adding a new feature, you will likely be working inside the `src/` directory of `packages/core` or `packages/zod`.
+
+API documentation for users is published at [rut-toolkit.dev](https://rut-toolkit.dev).
 
 ---
 
 ## 🚨 Issue Assignment (Required for code changes)
 
-**Before opening a Pull Request**, unless it is a **minor fix**, **an issue must exist and you must be assigned to it**. 
+**Before opening a Pull Request**, unless it is a **minor fix**, **an issue must exist and you must be assigned to it**.
 
 This ensures:
 - The change aligns with the library's API design goals.
@@ -44,14 +48,14 @@ This ensures:
 We welcome the use of AI tools to assist with development. However, **all code must be tested and executed locally** before submitting.
 
 - ✅ Write unit tests for the AI-generated logic.
-- ✅ Run `pnpm test:all` and ensure coverage does not drop.
+- ✅ Run `pnpm test` and `pnpm test:coverage` and ensure coverage does not drop.
 - ❌ **Do not submit "vibe-coded" PRs.** Code that looks correct but fails to compile or breaks the ESM build will be rejected.
 
 ---
 
 ## 💻 Development Environment Setup
 
-1. **Prerequisites:** Node.js 20+ and `pnpm` installed.
+1. **Prerequisites:** [Node.js](https://nodejs.org/) **18+** (see `engines` in the root `package.json`). CI uses the version pinned in [`.node-version`](.node-version). [pnpm](https://pnpm.io/) **10+** (see `packageManager` in the root `package.json`).
 2. **Clone and install:**
    ```bash
    git clone https://github.com/matcastaneda/rut-toolkit.git
@@ -62,7 +66,7 @@ We welcome the use of AI tools to assist with development. However, **all code m
    ```bash
    pnpm build
    ```
-   > This ensures all cross-package dependencies (like zod depending on core) are properly linked and compiled.
+   > This ensures all cross-package dependencies (for example zod depending on core) are properly linked and compiled.
 
 ---
 
@@ -78,23 +82,38 @@ We welcome the use of AI tools to assist with development. However, **all code m
 ### 💡 Useful Commands
 
 Run these from the root of the repository:
-- `pnpm dev` — Starts the development server with Turbo.
-- `pnpm build` — Compiles TypeScript into ESM using tsdown.
-- `pnpm test` — Runs Vitest in watch mode.
-- `pnpm test:coverage` — Runs tests and checks coverage.
-- `pnpm lint` — Runs Biome (linting) and TypeScript validation.
-- `pnpm lint:fix` — Runs Biome (linting) and TypeScript validation and fixes the issues.
-- `pnpm lint:dependencies` — Runs Knip (dependency checking).
-- `pnpm lint:spell` — Runs CSpell (spell checking).
-- `pnpm lint:types` — Runs ATTW (type checking).
-- `pnpm lint:packages` — Runs Publint (package validation).
-- `pnpm typecheck` — Runs TypeScript type checking.
+
+- `pnpm dev` — Starts development tasks via Turbo (per-package `dev` scripts).
+- `pnpm build` — Builds all packages under `packages/*` with tsdown (via Turbo).
+- `pnpm clean` / `pnpm clean:all` — Cleans build outputs; `clean:all` also removes `node_modules`.
+- `pnpm test` — Runs Vitest for all packages (via Turbo).
+- `pnpm test:coverage` — Runs tests with V8 coverage (matches CI).
+- `pnpm typecheck` — Type-checks all packages with `tsc` (via Turbo).
+- `pnpm format` — Formats the repo with Biome (`biome format --write`).
+- `pnpm lint` — Runs Biome check (lint + format validation) with warnings as errors.
+- `pnpm lint:fix` — Same as lint with auto-fix (`--fix --unsafe` where applicable).
+- `pnpm lint:dependencies` — Runs Knip (strict) for unused dependencies and dead code.
+- `pnpm lint:spell` — Runs CSpell.
+- `pnpm lint:types` — Runs **ATTW** (`attw`) on built packages (depends on a successful build).
+- `pnpm lint:packages` — Runs **Publint** on built packages (depends on a successful build).
+- `pnpm size` — Runs **size-limit** per package (after build).
+- `pnpm size:json` — Writes per-package `.size-report.json` (used in CI for the size report).
+
+**Filtering (single package):**
+
+```bash
+pnpm test --filter=@rut-toolkit/core
+pnpm build --filter=@rut-toolkit/zod
+```
 
 ---
 
-## 📝 Commits (Conventional Commits)
+## 📝 Commits and Pull Request titles (Conventional Commits)
 
-The project uses **Conventional Commits**; messages are validated with **commitlint** in the `commit-msg` hook.
+We follow **[Conventional Commits](https://www.conventionalcommits.org/)**:
+
+- **Pull request titles** are validated in CI ([Semantic Pull Request](.github/workflows/semantic-pull-request.yml)). Use the same style as commit messages. Optional scopes include `core`, `zod`, `infra`, and `deps`. The subject must start with a lowercase letter.
+- **Local Git hooks:** [Husky](https://typicode.github.io/husky/) runs **Biome** on staged files before each commit (see [`.husky/pre-commit`](.husky/pre-commit)); fix any reported issues before committing.
 
 Format: `type(optional scope): imperative description`
 
@@ -112,10 +131,17 @@ docs: update CONTRIBUTING with branch strategy
 
 ## 🔍 Pull Request Process
 
-1. **Automated Checks:** Your PR must pass all GitHub Actions (Biome, Typecheck, Publint, ATTW, and Vitest coverage).
-2. **Coverage Threshold:** We enforce strict test coverage. Ensure you write Vitest cases for any new logic.
-3. **Exports & Types:** Ensure you export any new functions or types in the package's `index.ts`.
-4. **Review:** A maintainer (Code Owner) will review your PR. Address feedback by pushing new commits to your branch.
+1. **Automated checks** (non-exhaustive):
+   - **Code quality:** Biome, Knip, CSpell ([`ci.yml`](.github/workflows/ci.yml)).
+   - **Types:** `pnpm typecheck`.
+   - **Build & package checks:** `pnpm build`, then Publint and ATTW.
+   - **Tests:** `pnpm test:coverage` and Codecov (on non-fork PRs).
+   - **PR title:** Must satisfy Conventional Commits (see above).
+   - **Bundle size:** When `packages/**` or size tooling changes, workflows run **size-limit** and may post a [sticky size summary](.github/workflows/size-report.yml) on the PR.
+2. **Coverage:** We enforce strict test coverage. Add Vitest cases for any new logic.
+3. **Exports & types:** Export new functions or types from the package entry points (and subpath `package.json` `exports` when adding a new entry).
+4. **Changesets:** This repo uses [Changesets](https://github.com/changesets/changesets) for releases. If your change affects something users rely on (public API, behavior, or noteworthy fixes), run `pnpm changeset` locally and commit the generated changeset file so maintainers can version and publish correctly.
+5. **Review:** A maintainer (see [.github/CODEOWNERS](.github/CODEOWNERS)) will review your PR. Address feedback by pushing new commits to your branch.
 
 ---
 
@@ -134,7 +160,7 @@ docs: update CONTRIBUTING with branch strategy
 
 - **🐛 Bug fixes** — Fix existing bugs
 - **✨ Features** — Add new functionality (discuss in an issue first)
-- **📝 Documentation** — Improve guides, README, comments, or docs in `docs/`
+- **📝 Documentation** — Improve guides, README, comments, or the public docs site
 - **🧪 Tests** — Increase coverage or improve tests
 - **🔧 Developer Experience** — Improve tooling, setup, or workflows
 

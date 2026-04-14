@@ -30,7 +30,7 @@ bun add @rut-toolkit/zod @rut-toolkit/core zod
 ```
 
 > [!IMPORTANT]
-> **Requires [Zod v4](https://zod.dev)** and `@rut-toolkit/core` as peer/runtime dependencies.
+> **Peer dependencies:** [`zod` v4](https://zod.dev) (`^4.0.0`) and [`@rut-toolkit/core`](https://www.npmjs.com/package/@rut-toolkit/core) (see `peerDependencies` in this package’s `package.json` for the supported range). Install them alongside `@rut-toolkit/zod` — they are not bundled.
 
 ## 🚀 Quick Start
 

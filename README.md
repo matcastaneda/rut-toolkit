@@ -55,8 +55,8 @@ rut-toolkit/
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) >= 22.0.0
-- [pnpm](https://pnpm.io/) >= 10
+- [Node.js](https://nodejs.org/) **18+** (see `engines` in the root `package.json`). CI uses the version in [`.node-version`](.node-version).
+- [pnpm](https://pnpm.io/) **10+** (see `packageManager` in the root `package.json`).
 
 ### Setup
 
@@ -70,16 +70,21 @@ pnpm install
 
 | Command | Description |
 | :--- | :--- |
-| `pnpm build` | Build all packages with tsdown |
-| `pnpm test` | Run all tests (unit + type tests) |
-| `pnpm test:coverage` | Run tests with V8 coverage |
-| `pnpm typecheck` | Type-check all packages with tsc |
-| `pnpm lint` | Lint with Biome |
+| `pnpm dev` | Run package `dev` scripts via Turbo |
+| `pnpm build` | Build all packages with tsdown (via Turbo) |
+| `pnpm clean` / `pnpm clean:all` | Clean build outputs; `clean:all` also removes `node_modules` |
+| `pnpm test` | Run Vitest for all packages (via Turbo) |
+| `pnpm test:coverage` | Same as tests with V8 coverage (matches CI) |
+| `pnpm typecheck` | Type-check all packages with `tsc` (via Turbo) |
+| `pnpm lint` | Lint with Biome (warnings fail the run) |
+| `pnpm lint:fix` | Lint with Biome and apply fixes |
 | `pnpm format` | Format with Biome |
-| `pnpm lint:packages` | Validate package.json with publint |
-| `pnpm lint:types` | Check export types with attw |
-| `pnpm lint:dependencies` | Detect unused deps with knip |
-| `pnpm lint:spell` | Spell check with cspell |
+| `pnpm lint:packages` | Validate packages with Publint (after build) |
+| `pnpm lint:types` | Check export types with ATTW (after build) |
+| `pnpm lint:dependencies` | Detect unused deps with Knip |
+| `pnpm lint:spell` | Spell check with CSpell |
+| `pnpm size` | Run size-limit per package (after build) |
+| `pnpm size:json` | Write per-package `.size-report.json` (used in CI) |
 
 ### Filtering
 
@@ -99,7 +104,7 @@ Full API docs: [rut-toolkit.dev](https://rut-toolkit.dev)
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feat/my-feature`)
 3. Make your changes and add tests
-4. Run `pnpm test && pnpm lint` to verify
+4. Run `pnpm test`, `pnpm lint`, and `pnpm typecheck` (use `pnpm test:coverage` before opening a PR) to verify
 5. Commit with a descriptive message
 6. Open a Pull Request
 
