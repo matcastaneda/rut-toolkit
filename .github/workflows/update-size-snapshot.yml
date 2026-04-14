@@ -1,0 +1,41 @@
+name: 📸 Update Size Snapshot
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - 'packages/**'
+      - 'scripts/generate-size-report.js'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+
+jobs:
+  update-snapshot:
+    name: 🔄 Update Snapshot JSON
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write 
+    steps:
+      - name: 📦 Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0 
+
+      - name: 🔧 Setup Environment
+        uses: ./.github/actions/setup-environment
+
+      - name: 📏 Generate Size Reports
+        run: pnpm size:json
+
+      - name: 📸 Update Snapshot File
+        run: node ./scripts/generate-size-report.js
+        env:
+          UPDATE_SNAPSHOT: "true"
+
+      - name: 💾 Commit changes
+        uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
+        with:
+          commit_message: "chore: update size snapshot [skip ci]"
+          file_pattern: .size-snapshot.json
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
