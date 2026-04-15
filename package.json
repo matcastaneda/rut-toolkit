@@ -7,8 +7,8 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build --filter=./packages/*",
-    "clean": "turbo run clean",
-    "clean:all": "turbo run clean && shx rm -rf node_modules",
+    "clean": "turbo run clean --filter=./packages/*",
+    "clean:all": "pnpm clean && shx rm -rf node_modules",
     "format": "biome format . --write",
     "lint": "biome check . --error-on-warnings",
     "lint:fix": "biome check . --fix --unsafe",
@@ -22,8 +22,8 @@
     "size": "turbo size --filter=./packages/*",
     "size:json": "turbo size:json --filter=./packages/*",
     "changeset": "changeset",
-    "release": "changeset version",
-    "pub:release": "changeset publish --access public",
+    "ci:version": "changeset version",
+    "ci:release": "changeset publish --access public",
     "prepare": "husky"
   },
   "engines": {
