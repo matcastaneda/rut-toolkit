@@ -50,6 +50,7 @@
   },
   "scripts": {
     "build": "tsdown",
+    "clean": "shx rm -rf dist .cache coverage node_modules",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "lint:package": "publint run --strict",
