@@ -1,6 +1,6 @@
 {
   "name": "@rut-toolkit/tsconfig",
-  "version": "0.0.0",
+  "version": "0.0.0-internal",
   "type": "module",
   "private": true,
   "exports": {
