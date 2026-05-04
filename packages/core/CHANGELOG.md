@@ -1,5 +1,11 @@
 # @rut-toolkit/core
 
+## 0.1.5
+
+### Patch Changes
+
+- [#49](https://github.com/matcastaneda/rut-toolkit/pull/49) [`064a5b0`](https://github.com/matcastaneda/rut-toolkit/commit/064a5b0fa7b77d4b12365db2ba06ecf1c4741890) Thanks [@matcastaneda](https://github.com/matcastaneda)! - fix(core): allow single character formatting in formatRut
+
 ## 0.1.4
 
 ### Patch Changes
