@@ -1,8 +1,8 @@
 {
   "sizes": {
-    "📦 CORE - Main Export": 1887,
+    "📦 CORE - Main Export": 1925,
     "📦 CORE - Validate": 967,
-    "📦 CORE - Format": 707,
+    "📦 CORE - Format": 740,
     "📦 CORE - Clean": 217,
     "📦 CORE - Barcode": 587,
     "📦 CORE - Business": 686,
@@ -10,9 +10,9 @@
     "🧩 ZOD - Adapter (Isolated)": 553
   },
   "_meta": {
-    "updatedAt": "2026-04-28T21:46:24.290Z",
-    "commitSha": "80b6f079a3493f6d3a5ce5147ac36e365ed4d0fb",
+    "updatedAt": "2026-05-04T21:45:33.941Z",
+    "commitSha": "064a5b0fa7b77d4b12365db2ba06ecf1c4741890",
     "actor": "matcastaneda",
-    "runId": "25079357502"
+    "runId": "25345227379"
   }
 }
