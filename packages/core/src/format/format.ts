@@ -1,4 +1,4 @@
-import { splitRut } from "../clean";
+import { cleanRut, splitRut } from "../clean";
 import type { RutDv, ValidRut } from "../types";
 import type { FormattedRut, RutFormatOptions, RutMaskOptions } from "./types";
 
@@ -29,6 +29,13 @@ export function formatRut(
   rut: string,
   options: Readonly<RutFormatOptions> = {},
 ): string {
+  const cleaned = cleanRut(rut);
+
+  if (cleaned.length === 1) {
+    const uppercaseDv = options.uppercaseDv ?? true;
+    return uppercaseDv ? cleaned.toUpperCase() : cleaned.toLowerCase();
+  }
+
   const { body, dv } = splitRut(rut);
 
   if (!body) {

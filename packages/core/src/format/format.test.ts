@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import * as cleanModule from "../clean";
 import {
   buildRut,
   formatRut,
@@ -42,13 +43,20 @@ describe("format", () => {
     });
 
     describe("invalid input", () => {
-      it.each([
-        "",
-        "   ",
-        "abc",
-        "1",
-      ])("returns empty string for %j", (input) => {
+      it.each(["", "   ", "abc"])("returns empty string for %j", (input) => {
         expect(formatRut(input)).toBe("");
+      });
+
+      it("returns the digit (uppercased) when cleaned length is 1", () => {
+        const spy = vi.spyOn(cleanModule, "cleanRut").mockReturnValueOnce("1");
+        expect(formatRut("1")).toBe("1");
+        spy.mockRestore();
+      });
+
+      it("returns lowercase DV when cleaned length is 1 and uppercaseDv is false", () => {
+        const spy = vi.spyOn(cleanModule, "cleanRut").mockReturnValueOnce("K");
+        expect(formatRut("K", { uppercaseDv: false })).toBe("k");
+        spy.mockRestore();
       });
     });
   });
